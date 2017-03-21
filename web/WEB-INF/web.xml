@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>SimpleJspServletDB</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <description/>
+        <display-name>CrisisServlet</display-name>
+        <servlet-name>CrisisServlet</servlet-name>
+        <servlet-class>core.servlet.CrisisServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CrisisServlet</servlet-name>
+        <url-pattern>/CrisisServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description/>
+        <display-name>CrisisTypeController</display-name>
+        <servlet-name>CrisisTypeController</servlet-name>
+        <servlet-class>core.controller.CrisisTypeController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CrisisTypeController</servlet-name>
+        <url-pattern>/CrisisTypeController</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description/>
+        <display-name>BroadcastController</display-name>
+        <servlet-name>BroadcastController</servlet-name>
+        <servlet-class>Broadcast.BroadcastController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BroadcastController</servlet-name>
+        <url-pattern>/BroadcastController</url-pattern>
+    </servlet-mapping>
+</web-app>
