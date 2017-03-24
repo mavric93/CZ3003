@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script> 
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_D5gb2uHoSAOnR_i9sWrQxjMUzKKK-Io&libraries=places,geometry&callback=initMap">
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <style>
+            #map{
+                float:right;
+                width:1200px;
+                height:800px;
+            }
+            #displayform{
+                float:left;
+            }
+        </style>
+        <script>
+                    function initMap() {
+                        var mapDiv = document.getElementById('map');
+                        map = new google.maps.Map(mapDiv, {
+                            center: {lat: 1.359599, lng: 103.812364},
+                            zoom: 12
+                        });
+                    }
+                    $(document).ready(function () {
+                        displayCrisisTypes();
+                    });
+                    function displayCrisisTypes() {
+                        //standard function for retrieve data
+                        $.ajax({
+                            type: 'GET',
+                            url: 'http://155.69.149.181:8080/SSAD/CrisisTypeController?action=list',
+                            async: true,
+                            dataType: 'json',
+                            success: function (result) {
+
+                                var data = result.data;
+                                //Do stuff with the JSON data
+                                for (var i = 0; i < data.length; i++) {
+                                    var type = data[i];
+                                    console.log(type);
+                                    var option = $("<option value='" + type.crisisType + "'>" + type.crisisType + "</option>");
+                                    option.data("icon", type.Icon);
+                                    $("#CrisisTypeSelection").append(option);
+                                }
+                                displayCorrespondingForms();
+                            }
+                        });
+                    }
+
+                    function displayCorrespondingForms() {
+                        var x = document.getElementById("CrisisTypeSelection").value;
+                        document.getElementById("displayFormHeader").innerHTML = "<H2>Submit " + x + " form</h2>";
+                        document.getElementById("displayFormHeader").innerHTML += "Please fill in all details to submit a report on terrorism";
+                        $("#displayform").load("/SSAD/form_" + x + "/form.html", function () {
+                            $("#displayformJS script").load("/SSAD/form_" + x + "/create.js", function () {
+                                CrisisInit();
+                            });
+                        });
+
+
+                    }
+        </script>
+    </head>
+    <body>
+        <div id="formContainer">
+            <h1> Submit Crisis Information Here </h1>
+            Select Crisis Type :
+            <div><select name="CrisisType" id="CrisisTypeSelection" onchange="displayCorrespondingForms()"></select></div>
+            <div id="displayFormHeader"></div>
+            <div id="displayformJS">
+                <script type="text/javascript"></script>
+            </div>
+            <div id="displayform">
+
+
+            </div>
+            <div id="map"></div>
+        </div>
+
+
+    </body>
+</html>

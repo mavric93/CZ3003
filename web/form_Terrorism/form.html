@@ -1,0 +1,42 @@
+<div id="form_container">
+    <div>
+        <table>
+            <tr>
+                <td><label for="CrisisName">Crisis Name </label></td>
+                <td><input type="text" id="crisisName" value="Terrorism" /></td>
+            </tr>
+            <tr>
+                <td><label for="address">Address </label></td>
+                <td>
+                    <input id="address" type="text" maxlength="255" />
+                    <input id="latitude" type="hidden" maxlength="255" />
+                    <input id="longitude" type="hidden" maxlength="255" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="typeOfAttack">Type of Attack</label></td>
+                <td>
+                    <select id="typeOfAttack">
+                        <option>Chemical</option>
+                        <option>Bomb</option>
+                    </select><br/>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="radius">Radius</label></td>
+                <td><input id="radius" type="text" maxlength="255" /></td>
+            </tr>
+            <tr>
+                <td><label for="Description">Description </label></td>
+                <td><textarea id="description"/><br/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="hidden" id="crisistype" value="TrainBreakDown" readonly/>
+                    <input type="button" id="submit" onclick="submitCrisis()" value="Submit" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

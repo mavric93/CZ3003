@@ -36,7 +36,7 @@ public class CrisisServlet extends HttpServlet {
     //GET for Read and List
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //retrieve all information from post
+        //retrieve all information from get
         String type = "";
         if(request.getParameter("crisistype")!=null){
             type = request.getParameter("crisistype");
@@ -61,7 +61,8 @@ public class CrisisServlet extends HttpServlet {
                     controller.update();
                     break;
                 case "read":
-                    controller.read();
+                    //Crisis crisis = controller.read();
+                    //output = crisis.toJSON().toString();
                     break;
                 case "list":
                     List<Crisis> list = controller.list(request);
@@ -102,7 +103,7 @@ public class CrisisServlet extends HttpServlet {
                     controller.update();
                     break;
                 case "read":
-                    controller.read();
+                   // controller.read();
                     break;
                 case "list":
                     List<Crisis> list = controller.list(request);

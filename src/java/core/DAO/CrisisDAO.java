@@ -17,6 +17,8 @@ import core.model.Crisis;
 import core.model.TerrorismCrisis;
 import core.util.CrisisFactory;
 import core.util.DbUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -75,15 +77,15 @@ public class CrisisDAO {
 
     public void updateCrisis(Crisis crisis) {
         /*try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("update crisis set crisisname=? where crisisid =?");
-            // Parameters start with 1
-            preparedStatement.setString(1, crisis.getCrisisName());
-            preparedStatement.executeUpdate();
+         PreparedStatement preparedStatement = connection
+         .prepareStatement("update crisis set crisisname=? where crisisid =?");
+         // Parameters start with 1
+         preparedStatement.setString(1, crisis.getCrisisName());
+         preparedStatement.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+         } catch (SQLException e) {
+         e.printStackTrace();
+         }*/
     }
 
     public ArrayList<Crisis> getAllCrisis() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -94,9 +96,11 @@ public class CrisisDAO {
                     + "on ssad.crisis.CType = ssad.crisistype.CType;");
             while (rs.next()) {
                 //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
-                
+
                 CrisisFactory fact = new CrisisFactory();
                 Crisis crisis = fact.createCrisis(rs.getString("CType"));
+
+                //initialise general fields
                 crisis.setCrisisID(rs.getInt("CrisisID"));
                 crisis.setCrisisType(rs.getString("CType"));
                 crisis.setAddress(rs.getString("Address"));
@@ -107,6 +111,9 @@ public class CrisisDAO {
                 crisis.setTimeResolved(rs.getString("TimeResolved"));
                 crisis.setDescription(rs.getString("Description"));
                 crisis.setIcon(rs.getString("Icon"));
+
+                //intialise specialised fields
+                //crisis.initSpecField();
                 crisisList.add(crisis);
             }
         } catch (SQLException e) {
@@ -118,7 +125,7 @@ public class CrisisDAO {
 
     public Crisis getCrisisById(int crisisID) {
         Crisis crisis = new Crisis();
-        /*try {
+        try {
             PreparedStatement preparedStatement = connection.
                     prepareStatement("select * from crisis where crisisid=?");
             preparedStatement.setInt(1, crisisID);
@@ -126,13 +133,11 @@ public class CrisisDAO {
 
             if (rs.next()) {
                 crisis.setCrisisID(rs.getInt("crisisID"));
-                crisis.setCrisisName(rs.getString("crisisName"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
-
+        } catch (SQLException ex) {
+            Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return crisis;
-    }
 
+    }
 }

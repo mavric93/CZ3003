@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+        </style>
+        <link rel="stylesheet" type="text/css" href="css/console.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/markerClusterer.js"></script>
+        <script src="js/CrisisUpdate.js"></script>
+        <script>
+            function initMap() {
+                var mapDiv = document.getElementById('map');
+                map = new google.maps.Map(mapDiv, {
+                    center: {lat: 1.359599, lng: 103.812364},
+                    zoom: 12
+                });
+                retrieveNewCrisis();
+            }
+            function broadcastMessage(x) {
+                var message = document.getElementById("message").value;
+
+
+                $.ajax({
+                    type: "GET",
+                    url: 'http://155.69.149.181:8080/SSAD/BroadcastController?agent=' + x.value + '&message=' + message,
+                    success: function (result) {
+                        alert("http://155.69.149.181:8080/SSAD/BroadcastController?agent=" + x.value + "message=" + message);
+                    }
+                });
+
+                //	alert("http://155.69.149.181:8080/SSAD/BroadcastController?agent="+x.value+"message="+message);
+
+            }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_D5gb2uHoSAOnR_i9sWrQxjMUzKKK-Io&libraries=places,geometry&callback=initMap">
+        </script>
+    </head>
+    <body>
+        <div class="mapAndList">
+            <div id="map">
+            </div>
+            <div class="filterWrapper">
+                <div class="content">
+                    <input class="type" name="FIRE" checked type="checkbox"/><label for="fire">fire</label><br/>
+                    <input class="type" name="FLASHFLOOD" checked type="checkbox"/><label for="flashflood">flash flood</label>
+                </div>
+            </div>
+            <div class="chronoList">
+                <div class="content">
+
+                </div>
+            </div>
+            <div class="function">
+                <div class="content">
+                    <div class="CrisisState">
+                        CRISIS STATE
+                    </div>
+                    <div class="BroadCast">
+                        <div class="broadcastConsole"> 
+                            <h2> Broadcast Console </h2>
+                            Message: <input type="text" id="message" >  </input>     <br />
+                            <input type="image" class="btn" src="img/icon/tw-icon.png" value="twitter" onClick="broadcastMessage(this)"/>
+                            <input type="image" class="btn" src="img/icon/fb-icon.png" value="facebook" onClick="broadcastMessage(this)"/>
+                            <input type="image" class="btn" src="img/icon/sms-icon.png" value="sms" onClick="broadcastMessage(this)"/>
+                            <input type="image" class="btn" src="img/icon/email-icon.png" value="email" onClick="broadcastMessage(this)"/>
+                        </div>
+                    </div>
+                    <div class="createCrisis">
+                        <a href="../public/SubmitCrisis.html"  target="_blank">
+                           <input type="button" value="Report new crisis"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="CrisisContent">
+            <div class="Crisis">
+                <div class="content">
+                    <h3>Crisis Details</h3>
+                    <script></script>
+                    <div class="form">
+
+                    </div>
+                    <!--Place: <input id="locationInput" type="text"/>-->
+                </div>
+            </div>
+            <div class="Action">
+                <div class="content">
+                    <h3>Actions</h3>
+                    <table id="actionTable">
+                        <tr>
+                            <td></td>
+                            <td><input type='button' value="Add" onclick="addAction()" id="addActions"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="DispatchTeam">
+                <div class="content">
+                    <h3>Dispatch Team Deployed</h3>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </body>
+</html>

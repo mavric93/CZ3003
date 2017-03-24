@@ -11,8 +11,6 @@ import core.DAO.CrisisDAO;
 import java.util.ArrayList;
 import java.util.List;
 import core.model.Crisis;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -40,8 +38,9 @@ public class CrisisController {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Crisis read() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Crisis read(int crisisID) {
+        Crisis crisis  = dao.getCrisisById(crisisID);
+        return crisis;
     }
 
     public List<Crisis> list(HttpServletRequest request) {
@@ -53,6 +52,7 @@ public class CrisisController {
         try{
             //instanceOf is the specialized version
             crisisList = dao.getAllCrisis();
+            
             //check instanceOf then get data from specialized table
             for(int i=0;i<crisisList.size();i++){
                 

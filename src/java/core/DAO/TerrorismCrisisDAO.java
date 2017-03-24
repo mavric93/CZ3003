@@ -13,7 +13,7 @@ import core.util.DbUtil;
 
 /**
  *
- * @author mavric
+* @author mavric
  */
 public class TerrorismCrisisDAO {
 

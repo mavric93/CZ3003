@@ -1,6 +1,6 @@
 <%-- 
-    Document   : index.jsp
-    Created on : Feb 27, 2017, 3:45:41 PM
+    Document   : newjsp
+    Created on : Mar 21, 2017, 6:09:03 PM
     Author     : mavric
 --%>
 
@@ -12,8 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h2>Submit crisis information</h2>
-        
-        <jsp:forward page="/CrisisServlet?action=listCrisis" />
+        <h1>Hello World!</h1>
+        <
     </body>
 </html>

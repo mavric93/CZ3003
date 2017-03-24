@@ -1,0 +1,98 @@
+.CrisisContent{
+	width: 100%;
+	height: 600px;
+	background:#e6e6e6;
+}
+.CrisisContent>div{
+	float:left;
+}
+.CrisisContent .Crisis{
+	width:28%;
+}
+.CrisisContent .Action{
+	width:48%;
+}
+.CrisisContent .DispatchTeam{
+	width:18%;
+}
+.CrisisContent .clear{
+	clear:both;
+}
+.mapAndList{
+	width:100%;
+	height:600px;
+	margin:auto;
+}
+.mapAndList #map{
+	width:60%;
+	height:100%;
+}
+.mapAndList .chronoList{
+	width:25%;
+	background:#e6e6e6;
+	border-radius:0px 15px 0px 0px;
+	height:100%;
+}
+.mapAndList .function{
+	width:15%;
+	background:#e6e6e6;
+	border-radius:0px 15px 0px 0px;
+	height:100%;
+}
+div .content{
+	padding:10px;
+}
+.mapAndList>div{
+	float:left;
+}
+/*table tr:hover {
+	background:orange;
+}*/
+.chronoList{
+	overflow-y:scroll;
+}
+.chronoList .content{
+	
+	min-height:100%;
+}
+.chronoList .content .entry{
+	margin-bottom:2px;
+	min-height:70px;
+}
+.chronoList .content .entry.even{
+	background:grey;
+}
+.chronoList .content .entry.odd{
+	background:white;
+}
+.chronoList .content .entry>div{
+	float:left;
+}
+.chronoList .content .entry>div>p{
+	margin:0px;
+}
+.chronoList .content .entry:hover{
+	background:orange;
+}
+.chronoList .content .entry .address{
+	width:52%;
+}
+.chronoList .content .entry .type{
+	width:17%;
+}
+.chronoList .content .entry .timeReported{
+	width:30%;
+}
+
+.filterWrapper{
+	position: absolute;
+    background: white;
+    right: 43%;
+    top: 5%;
+}
+.broadcastConsole .btn {
+	width: 35px;
+	height: auto;
+}
+
+
