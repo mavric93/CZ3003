@@ -1,0 +1,15 @@
+JSON fixed field names
+field:			JSON_Name
+CrisisID: 		crisisID
+CType: 			crisistype
+Description: 	description
+Address: 		address
+Lat: 			latitude
+Lng: 			longitude
+Status: 		status 		"Pending", "Comfirmed", "Resolved"
+TimeReported: 	timeReported
+TimeResolved: 	timeResolved
+
+//TERRORISM FIELDS
+radius:			radius
+typeOfAttack:	typeOfAttack
