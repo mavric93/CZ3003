@@ -1,3 +1,7 @@
+<script type="text/javascript"src="../assets/javascript/map.js"></script>
+<script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_D5gb2uHoSAOnR_i9sWrQxjMUzKKK-Io&libraries=places,geometry&callback=initMap">
+</script>
 <script>
     function CrisisInit() {
         document.getElementById("submit").onclick = submitCrisis();
@@ -33,27 +37,38 @@
             document.getElementById("longitude").value = marker.getPosition().lng();
         }
     });
+
     function submitCrisis() {
         var url = "http://155.69.149.181:8080/SSAD/CrisisServlet"
         var crisisName = document.getElementById("crisisName").value;
-        var address = document.getElementById("address").value;
-        var latitude = document.getElementById("latitude").value;
-        var longitude = document.getElementById("longitude").value;
-        var typeOfAttack = document.getElementById("typeOfAttack").value;
-        var radius = document.getElementById("radius").value;
-        var description = document.getElementById("description").value;
         var crisistype = document.getElementById("crisistype").value;
+        var address = document.getElementById("fromStation").value;
+	var address2 = document.getElementById("toStation").value;
+        var fromLatitude = document.getElementById("fromStationLat").value;
+        var fromLongitude = document.getElementById("fromStationLng").value;
+        var toLatitude = document.getElementById("toStationLat").value;
+        var toLongitude = document.getElementById("toStationLng").value;
+        var description = document.getElementById("description").value;
         var action = "create";
 
+        var status = document.getElementById("status").value;
+	var timeReported = document.getElementById("timeReported");
+	var timeResolved = document.getElementById("timeResolved");
+
         var parameter = {
-            "radius": radius,
+	    "crisisName": crisisName,
             "crisistype": crisistype,
             "address": address,
-            "latitude": latitude,
-            "longitude": longitude,
+            "address2": address2,
+            "fromLatitude": fromLatitude,
+            "fromLongitude": fromLongitude,
+            "toLatitude": toLatitude,
+            "toLongitude": toLongitude,
             "description": description,
-            "typeOfAttack": typeOfAttack,
-            "action": action
+            "action": action,
+            "status": status,
+            "timeReported": timeReported,
+            "timeResolved": timeResolved
         };
         $.ajax({
             type: 'POST',
@@ -73,47 +88,110 @@
         });
 
     }
+	
+	function initForm(){
+		//Load MRT Stations 
+		file = "file:mrtStation.txt"
+		var rawFile = new XMLHttpRequest();
+		rawFile.open("GET", file, false);
+		rawFile.onreadystatechange = function ()
+		{
+			if(rawFile.readyState === 4) {
+				if(rawFile.status === 200 || rawFile.status == 0) {
+					var mrtListText = rawFile.responseText;
+					var mrtList = mrtListText.split('\n');
+					var fromStation = document.getElementById("fromStation");
+					var toStation = document.getElementById("toStation");
+						
+					for (i in mrtList){				
+						option = document.createElement("option");
+						option.value = mrtList[i];
+						option.innerHTML = mrtList[i];
+						fromStation.append(option);					
+
+						option = document.createElement("option");
+						option.value = mrtList[i];
+						option.innerHTML = mrtList[i];
+						toStation.append(option);
+
+
+					}
+				}
+			}
+		}
+		rawFile.send(null);
+
+		
+		//init the latlng
+		var address = "Singapore " + document.getElementById("fromStation").value + "MRT";
+		convertToLatLng(address,function(result){
+			document.getElementById("fromStationLat").value = result[0].geometry.location.lat();
+			document.getElementById("fromStationLng").value = result[0].geometry.location.lng();
+			document.getElementById("toStationLat").value = result[0].geometry.location.lat();
+			document.getElementById("toStationLng").value = result[0].geometry.location.lng();
+		});
+		
+	}
+
+	function updateLatLng(a){
+		
+		var address = "Singapore " + document.getElementById(a.id).value + "MRT";
+
+		convertToLatLng(address,function(result){
+		document.getElementById(a.id+"Lat").value = result[0].geometry.location.lat();
+		document.getElementById(a.id+"Lng").value = result[0].geometry.location.lng();
+		});
+
+	
+	}
 
 </script> 
+
+<body onload="initForm()"> 
 <div id="form_container">
     <div>
         <table>
             <tr>
                 <td><label for="CrisisName">Crisis Name </label></td>
-                <td><input type="text" id="crisisName" value="Terrorism" /></td>
+                <td><input type="text" id="crisisName" value="Mrt Breakdown" /></td>
             </tr>
             <tr>
-                <td><label for="address">Address </label></td>
+                <td><label for="fromStation"> From Station </label></td>
                 <td>
-                    <input id="address" type="text" maxlength="255" />
-                    <input id="latitude" type="hidden" maxlength="255" />
-                    <input id="longitude" type="hidden" maxlength="255" />
+			<!-- To be Generated using loadMrtStations-->
+			<select id="fromStation" onchange="updateLatLng(this)" >  
+			</select> 
                 </td>
             </tr>
             <tr>
-                <td><label for="typeOfAttack">Type of Attack</label></td>
+                <td><label for="toStation"> To Station </label></td>
                 <td>
-                    <select id="typeOfAttack">
-                        <option>Chemical</option>
-                        <option>Bomb</option>
-                    </select><br/>
+			<!-- To be Generated using loadMrtStations-->
+			<select id="toStation" onchange="updateLatLng(this)"> 
+			</select> 
                 </td>
-            </tr>
-            <tr>
-                <td><label for="radius">Radius</label></td>
-                <td><input id="radius" type="text" maxlength="255" /></td>
             </tr>
             <tr>
                 <td><label for="Description">Description </label></td>
-                <td><textarea id="description"/><br/></td>
+                <td><textarea id="description"> </textarea> </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <input type="hidden" id="crisistype" value="TrainBreakDown" readonly/>
                     <input type="button" onclick="submitCrisis()" value="Submit" />
+		    <!-- Hidden Forms -->
+		    <br />
+                    <input hidden readonly id="cType" value="TrainBreakDown" />		
+                    <input hidden readonly id="timeReported" />   			          
+		    <input hidden readonly id="timeResolved" />				
+                    <input hidden readonly id="status" value="Pending" />		            
+		    <input hidden readonly id="fromStationLat"  />				    
+		    <input hidden readonly id="fromStationLng"  />			
+		    <input hidden readonly id="toStationLat"  />			    
+		    <input hidden readonly id="toStationLng"  />			
                 </td>
             </tr>
         </table>
     </div>
 </div>
+</body>
