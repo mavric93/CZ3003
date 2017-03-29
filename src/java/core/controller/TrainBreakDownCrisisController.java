@@ -1,5 +1,3 @@
-TrainBreakDownCrisisController.java
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,6 +8,7 @@ package core.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import core.DAO.TrainBreakDownCrisisDAO;
+import core.model.Crisis;
 import core.model.TrainBreakDownCrisis;
 
 /**
@@ -37,11 +36,11 @@ public class TrainBreakDownCrisisController extends CrisisController {
         }
         return id;
     }
-	@Override
-	public Crisis read(HttpServletRequest request) {
-        Crisis crisis  = super().read(request);
-		int crisisID = Integer.parseInt(request.getParameter("crisisID"));
-		crisis = dao.getCrisisById(crisisID,crisis);
+    @Override
+    public Crisis read(HttpServletRequest request) {
+        Crisis crisis  = super.read(request);
+        int crisisID = Integer.parseInt(request.getParameter("crisisID"));
+        crisis = dao.getCrisisById(crisisID,crisis);
         return crisis;
     }
     

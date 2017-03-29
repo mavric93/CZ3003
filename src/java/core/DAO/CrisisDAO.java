@@ -25,12 +25,17 @@ import java.util.logging.Logger;
  * @author mavric
  */
 public class CrisisDAO {
-	//FUNCTIONS: CREATE,UPDATE,READ,LIST
+
+    //FUNCTIONS: CREATE,UPDATE,READ,LIST
+
     private Connection connection;
+
     public CrisisDAO() {
         connection = DbUtil.getConnection();
     }
-	//DONE
+
+    //DONE
+
     public int addCrisis(Crisis crisis) {
         int id = -1;
         try {
@@ -60,7 +65,9 @@ public class CrisisDAO {
         }
         return id;
     }
-	//NOT SURE NEEDED OR NOT
+
+    //NOT SURE NEEDED OR NOT
+
     public void deleteCrisis(String crisisID) {
         try {
             PreparedStatement preparedStatement = connection
@@ -73,37 +80,42 @@ public class CrisisDAO {
             e.printStackTrace();
         }
     }
-	//DONE
+
+    //DONE
+
     public boolean updateCrisis(Crisis crisis) {
-		SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String sqlStatement_resolved = "update ssad.crisis set Description=?,Status=?,TimeResolved=? where crisisid =?";
-		String sqlStatement_not_resolved = "update ssad.crisis set Description=?,Status=? where crisisid =?";
-		boolean success = false;
+        SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sqlStatement_resolved = "update ssad.crisis set Description=?,Status=?,TimeResolved=? where crisisid =?";
+        String sqlStatement_not_resolved = "update ssad.crisis set Description=?,Status=? where crisisid =?";
+        boolean success = false;
         try {
-			//CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
-			PreparedStatement preparedStatement = null; 
-			if(crisis.getResolvedOccured()!=null){
-				preparedStatement = connection.prepareStatement(sqlStatement_resolved);
-			}else{
-				preparedStatement = connection.prepareStatement(sqlStatement_not_resolved);
-			}
-			// Parameters start with 1
-			preparedStatement.setString(1, crisis.getDescription());
-			preparedStatement.setString(2, crisis.getStatus());
-			if(crisis.getResolvedOccured()!=null){
-				preparedStatement.setString(3, datetimeformat.format(crisis.getResolvedOccured().getTime()));
-			}
-			if(preparedStatement.executeUpdate()>-1){
-				success = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return success;
+            //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
+            PreparedStatement preparedStatement = null;
+            if (crisis.getTimeResolved()!= null) {
+                preparedStatement = connection.prepareStatement(sqlStatement_resolved);
+            } else {
+                preparedStatement = connection.prepareStatement(sqlStatement_not_resolved);
+            }
+            // Parameters start with 1
+            preparedStatement.setString(1, crisis.getDescription());
+            preparedStatement.setString(2, crisis.getStatus());
+            if (crisis.getTimeResolved() != null) {
+                preparedStatement.setString(3, datetimeformat.format(crisis.getTimeResolved().getTime()));
+            }
+            if (preparedStatement.executeUpdate() > -1) {
+                success = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return success;
     }
-	//DONE
+
+    //DONE
+
     public ArrayList<Crisis> getAllCrisis() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ArrayList<Crisis> crisisList = new ArrayList<>();
+
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM ssad.crisis join ssad.crisistype "
@@ -111,6 +123,7 @@ public class CrisisDAO {
             while (rs.next()) {
                 //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
                 //initialise general fields
+                Crisis crisis = new Crisis();
                 crisis.setCrisisID(rs.getInt("CrisisID"));
                 crisis.setCrisisType(rs.getString("CType"));
                 crisis.setAddress(rs.getString("Address"));
@@ -130,21 +143,23 @@ public class CrisisDAO {
 
         return crisisList;
     }
-	//DONE
+
+    //DONE
+
     public Crisis getCrisisById(int crisisID) {
         Crisis crisis = new Crisis();
         try {
             PreparedStatement preparedStatement = connection.
                     prepareStatement("SELECT * FROM ssad.crisis join ssad.crisistype "
-                    + "on ssad.crisis.CType = ssad.crisistype.CType WHERE CrisisID=?;");
+                            + "on ssad.crisis.CType = ssad.crisistype.CType WHERE CrisisID=?;");
             preparedStatement.setInt(1, crisisID);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-				//create specialized class
-				CrisisFactory fact = new CrisisFactory();
-                Crisis crisis = fact.createCrisis(rs.getString("CType"));
-				//retrieve data
-				crisis.setCrisisID(rs.getInt("CrisisID"));
+                //create specialized class
+                CrisisFactory fact = new CrisisFactory();
+                crisis = fact.createCrisis(rs.getString("CType"));
+                //retrieve data
+                crisis.setCrisisID(rs.getInt("CrisisID"));
                 crisis.setCrisisType(rs.getString("CType"));
                 crisis.setAddress(rs.getString("Address"));
                 crisis.setLatitude(rs.getDouble("Lat"));

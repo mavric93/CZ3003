@@ -13,10 +13,10 @@ import org.json.JSONObject;
  */
 public class TrainBreakDownCrisis extends Crisis {
     private String secondMRTAddress;
-	private double secondMRTLat;
-	private double secondMRTLng;
+    private double secondMRTLat;
+    private double secondMRTLng;
 	
-	public TerrorismCrisis(String crisisType, String address, double latitude, double longitude, String description,String secondMRTAddress,double secondMRTLng,double secondMRTLat) {
+    public TrainBreakDownCrisis(String crisisType, String address, double latitude, double longitude, String description,String secondMRTAddress,double secondMRTLng,double secondMRTLat) {
         super(crisisType, address, latitude, longitude, description);
         this.secondMRTAddress = secondMRTAddress;
         this.secondMRTLat = secondMRTLat;

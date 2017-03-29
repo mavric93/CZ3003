@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import core.model.Crisis;
 import org.json.JSONArray;
 import core.util.CrisisFactory;
+import org.json.JSONObject;
 
 /**
  *

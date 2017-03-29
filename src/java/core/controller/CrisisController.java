@@ -11,6 +11,7 @@ import core.DAO.CrisisDAO;
 import java.util.ArrayList;
 import java.util.List;
 import core.model.Crisis;
+import java.util.Calendar;
 
 /**
  *
@@ -37,7 +38,7 @@ public class CrisisController {
     public boolean update(HttpServletRequest request) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 		//able to update description, status and timeResolved
-		boolean success = false
+		boolean success = false;
 		try {
 			int crisisID = Integer.parseInt(request.getParameter("crisisID"));
 			String description = request.getParameter("description");

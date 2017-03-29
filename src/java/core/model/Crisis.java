@@ -160,7 +160,10 @@ public class Crisis {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
+    
+    
+    
     public JSONObject toJSON() {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

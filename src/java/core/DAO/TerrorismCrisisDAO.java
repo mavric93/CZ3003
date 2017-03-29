@@ -5,11 +5,14 @@
  */
 package core.DAO;
 
+import core.model.Crisis;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import core.model.TerrorismCrisis;
 import core.util.DbUtil;
+import java.sql.ResultSet;
+import java.util.logging.Level;
 
 /**
  *
@@ -53,7 +56,7 @@ public class TerrorismCrisisDAO {
 				crisis.setTypeOfAttack(rs.getString("typeOfAttack"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return crisis;
     }

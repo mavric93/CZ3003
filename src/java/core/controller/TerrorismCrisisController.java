@@ -8,6 +8,7 @@ package core.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import core.DAO.TerrorismCrisisDAO;
+import core.model.Crisis;
 import core.model.TerrorismCrisis;
 
 /**
@@ -33,11 +34,11 @@ public class TerrorismCrisisController extends CrisisController {
         }
         return id;
     }
-	@Override
-	public Crisis read(HttpServletRequest request) {
-        Crisis crisis  = super().read(request);
-		int crisisID = Integer.parseInt(request.getParameter("crisisID"));
-		crisis = dao.getCrisisById(crisisID,crisis);
+    @Override
+    public Crisis read(HttpServletRequest request) {
+        Crisis crisis  = super.read(request);
+	int crisisID = Integer.parseInt(request.getParameter("crisisID"));
+	crisis = dao.getCrisisById(crisisID,crisis);
         return crisis;
     }
     
