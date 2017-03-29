@@ -1,62 +1,82 @@
-<script>
+<div id="form_container">
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <label for="crisisType">Crisis Type</label>
+                </td>
+                <td>
+                    <input type="text" readonly id="crisisType" value="TrainBreakDown" /> </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="description">Description </label>
+                </td>
+                <td>
+                    <textarea id="description"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="fromStation"> From Station</label>
+                </td>
+                <td>
+                    <!-- To be Generated using loadMrtStations-->
+                    <select id="fromStation">
+                        <option value="">Please choose a station</option>
+                    </select>
+                    <input type="hidden" readonly id="fromStationLat" />
+                    <input type="hidden" readonly id="fromStationLng" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="toStation"> To Station </label>
+                </td>
+                <td>
+                    <!-- To be Generated using loadMrtStations-->
+                    <select id="toStation">
+                        <option value="">Please choose a station</option>
+                    </select>
+                    <input type="hidden" readonly id="toStationLat" />
+                    <input type="hidden" readonly id="toStationLng" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="status">Status</label>
+                </td>
+                <td>
+                    <select id="status">
+                        <option value="Pending">Pending</option>
+                        <option value="Comfirmed">Comfirmed</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="timeReported">Time Reported</label>
+                </td>
+                <td>
+                    <input type="text" readonly id="timeReported" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="timeResolved">Time Resolved</label>
+                </td>
+                <td>
+                    <input type="text" readonly id="timeResolved" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input id="submit" type="button" onclick="submitCrisis()" value="Submit" />
 
-</script> 
-
-<body onload="initForm()"> 
-    <div id="form_container">
-        <div>
-            <table>
-                <tr>
-                    <td><label for="CrisisName">Crisis Type </label></td>
-                    <td><input type="text" id="crisisType" value="TrainBreakdown" /></td>
-                </tr>
-                <tr>
-                    <td><label for="fromStation"> From Station </label></td>
-                    <td>
-                        <!-- To be Generated using loadMrtStations-->
-                        <select id="fromStation" >  
-                            <option>Please choose a station</option>
-                        </select> 
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="fromStation"> To Station </label></td>
-                    <td>
-                        <!-- To be Generated using loadMrtStations-->
-                        <select id="toStation" > 
-                            <option>Please choose a station</option>
-                        </select> 
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="Description">Description </label></td>
-                    <td><textarea id="description"> </textarea> </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input id="submit" type="button" onclick="submitCrisis()" value="Submit" />
-                        <!-- Hidden Forms -->
-                        <br />
-                        <input type="text"  readonly id="cType" value="TrainBreakDown" />		
-                        <br/>
-                        <input type="text"  readonly id="timeReported" /> 
-                        <br/>			          
-                        <input type="text"  readonly id="timeResolved" />		
-                        <br/>		
-                        <input type="text"  readonly id="status" value="Pending" />	
-                        <br/>	            
-                        <input type="text"  readonly id="fromStationLat"  />		
-                        <br/>		    
-                        <input type="text"  readonly id="fromStationLng"  />
-                        <br/>		
-                        <input type="text"  readonly id="toStationLat"  />	
-                        <br/>	    
-                        <input type ="text"  readonly id="toStationLng"  />
-                        <br/>		
-                    </td>
-                </tr>
-            </table>
-        </div>
+                </td>
+            </tr>
+        </table>
     </div>
-</body>
+</div>

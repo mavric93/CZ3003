@@ -14,7 +14,7 @@ Terrorism.submitCrisisInit = function () {
     //set the form onsubmit to submtiCrisis
     document.getElementById("submit").onclick = function(){Terrorism.submitCrisis()};;
 
-    //autocomplete stuff
+    //autocomplete
     var locationInput = document.getElementById("address");
     var marker;
     var autocomplete = new google.maps.places.Autocomplete(locationInput);
@@ -51,24 +51,25 @@ Terrorism.submitCrisisInit = function () {
 
 //called when a crisis is submited
 Terrorism.submitCrisis = function () {
-
-    var url = "http://155.69.149.181:8080/SSAD/CrisisServlet"
+    var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
+	var action = "create";
+	//general
     var crisisType = document.getElementById("crisisType").value;
+	var description = document.getElementById("description").value;
     var address = document.getElementById("address").value;
     var latitude = document.getElementById("latitude").value;
     var longitude = document.getElementById("longitude").value;
-    var typeOfAttack = document.getElementById("typeOfAttack").value;
+	//specialized
+	var typeOfAttack = document.getElementById("typeOfAttack").value;
     var radius = document.getElementById("radius").value;
-    var description = document.getElementById("description").value;
-    var action = "create";
 
     var parameter = {
-        "radius": radius,
         "crisisType": crisisType,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
         "description": description,
+		"radius": radius,
         "typeOfAttack": typeOfAttack,
         "action": action
     };

@@ -10,7 +10,12 @@ TrainBreakDown.plot = function () {
 TrainBreakDown.submitCrisisInit = function () {
     //read textfile
     readMRTFromText();
-
+	
+	//hide fields
+	$("#status").parent().parent().css("display","none");
+	$("#timeReported").parent().parent().css("display","none");
+	$("#timeResolved").parent().parent().css("display","none");
+	
     //set submit parameters
     document.getElementById("submit").onclick = function () {
         TrainBreakDown.submitCrisis()
@@ -24,34 +29,34 @@ TrainBreakDown.submitCrisisInit = function () {
     document.getElementById("toStation").onchange = function () {
         translateLatLongFromAddress(document.getElementById("toStation"))
     };
-
 };
 
 //called when a crisis is submited
 TrainBreakDown.submitCrisis = function () {
     console.log("form submiited");
-
     var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
-    var crisisType = document.getElementById("crisisType").value;
-    var address = document.getElementById("fromStation").value;
-    var address2 = document.getElementById("toStation").value;
-    var fromLatitude = document.getElementById("fromStationLat").value;
-    var fromLongitude = document.getElementById("fromStationLng").value;
-    var toLatitude = document.getElementById("toStationLat").value;
-    var toLongitude = document.getElementById("toStationLng").value;
-    var description = document.getElementById("description").value;
     var action = "create";
-
+	//general
+	var crisisType = document.getElementById("crisisType").value;
+	var action = "create";
+	var description = document.getElementById("description").value;
+	var address = document.getElementById("fromStation").value;
+	var fromLatitude = document.getElementById("fromStationLat").value;
+    var fromLongitude = document.getElementById("fromStationLng").value;
+	//specialized
+	var address2 = document.getElementById("toStation").value;
+	var toLatitude = document.getElementById("toStationLat").value;
+    var toLongitude = document.getElementById("toStationLng").value;
 
     var parameter = {
         "crisisType": crisisType,
         "address": address,
-        "secondMRTAddress": address2,
         "latitude": fromLatitude,
         "longitude": fromLongitude,
+		"description": description,
+		"secondMRTAddress": address2,
         "secondMRTLat": toLatitude,
         "secondMRTLng": toLongitude,
-        "description": description,
         "action": action
     };
     $.ajax({

@@ -1,7 +1,7 @@
 JSON fixed field names
 field:			JSON_Name/Parameter_Name
 CrisisID: 		crisisID
-CType: 			crisistype
+CType: 			crisisType
 Description: 	description
 Address: 		address
 Lat: 			latitude
