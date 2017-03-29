@@ -1,5 +1,5 @@
-	var Icon_path="img/nearbyImg/";
-	var cluster_icon_path='img/clusterImg/m';
+	var Icon_path="asset/img/nearbyImg/";
+	var cluster_icon_path='asset/img/clusterImg/m';
 	var types = ["gym","atm","school","shopping_mall","library"];
 	var all_types=["gym","atm","school","shopping_mall","library"];
 	var API_key = "AIzaSyD_D5gb2uHoSAOnR_i9sWrQxjMUzKKK-Io";
