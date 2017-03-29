@@ -7,6 +7,7 @@ package core.util;
 
 import core.controller.CrisisController;
 import core.controller.TerrorismCrisisController;
+import core.controller.TrainBreakDownCrisisController;
 import core.model.Crisis;
 import core.model.TerrorismCrisis;
 
@@ -22,7 +23,7 @@ public class CrisisFactory {
                 controller = new TerrorismCrisisController();
                 break;
             case "TrainBreakdown":
-                //controller = new MRTBreakdownController();
+                controller = new TrainBreakDownCrisisController();
                 break;
             default:
                 controller = new CrisisController();

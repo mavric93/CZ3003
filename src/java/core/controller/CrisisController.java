@@ -79,7 +79,7 @@ public class CrisisController {
     protected Crisis createCrisisFromRequest(HttpServletRequest request) throws Exception {
         try {
             //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
-            String type = request.getParameter("crisistype");
+            String type = request.getParameter("crisisType");
             String address = request.getParameter("address");
             double latitude = Double.parseDouble(request.getParameter("latitude"));
             double longitude = Double.parseDouble(request.getParameter("longitude"));

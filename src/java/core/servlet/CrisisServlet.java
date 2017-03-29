@@ -84,7 +84,7 @@ public class CrisisServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //retrieve all information from post
         String type = "";
-        type = request.getParameter("crisistype");
+        type = request.getParameter("crisisType");
         String action = "";
         action = request.getParameter("action");
         CrisisController controller = CrisisFactory.createController(type);
@@ -95,21 +95,21 @@ public class CrisisServlet extends HttpServlet {
                 case "create":
                     int id = controller.create(request);
                     if(id!=-1){
-						output.put("status", "success");
+			output.put("status", "success");
                     }else{
-						output.put("status", "fail");
+			output.put("status", "fail");
                     }
                     break;
                 case "update":
-					if(controller.update(request)){
-						output.put("status", "success");
+                    if(controller.update(request)){
+			output.put("status", "success");
                     }else{
-						output.put("status", "fail");
-					}
+			output.put("status", "fail");
+                    }
                     break;
                 case "read":
                     Crisis crisis = controller.read(request);
-					output.put("data",crisis.toJSON());
+                    output.put("data",crisis.toJSON());
                     break;
                 case "list":
                     List<Crisis> list = controller.list(request);
