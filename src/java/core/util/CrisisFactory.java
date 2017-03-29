@@ -10,6 +10,7 @@ import core.controller.TerrorismCrisisController;
 import core.controller.TrainBreakDownCrisisController;
 import core.model.Crisis;
 import core.model.TerrorismCrisis;
+import core.model.TrainBreakDownCrisis;
 
 /**
  *
@@ -18,11 +19,12 @@ import core.model.TerrorismCrisis;
 public class CrisisFactory {
     public static CrisisController createController(String type){
         CrisisController controller = null;
+        type = type.toUpperCase();
         switch (type) {
-            case "Terrorism":
+            case "TERRORISM":
                 controller = new TerrorismCrisisController();
                 break;
-            case "TrainBreakdown":
+            case "TRAINBREAKDOWN":
                 controller = new TrainBreakDownCrisisController();
                 break;
             default:
@@ -32,12 +34,13 @@ public class CrisisFactory {
     }
     public Crisis createCrisis(String type){
         Crisis c = null;
+        type = type.toUpperCase();
         switch (type) {
-            case "Terrorism":
+            case "TERRORISM":
                 c = new TerrorismCrisis();
                 break;
-            case "TrainBreakdown":
-                //controller = new MRTBreakdownController();
+            case "TRAINBREAKDOWN":
+                c = new TrainBreakDownCrisis();
                 break;
             default:
                 c = new Crisis();

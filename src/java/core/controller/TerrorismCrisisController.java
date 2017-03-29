@@ -26,7 +26,15 @@ public class TerrorismCrisisController extends CrisisController {
         int id =-1;
         try {
             id = super.create(request);
-            TerrorismCrisis crisis = createCrisisFromRequest(request);
+            int radius = Integer.parseInt(request.getParameter("radius"));
+            String type = request.getParameter("crisistype");
+            String address = request.getParameter("address");
+            double latitude = Double.parseDouble(request.getParameter("latitude"));
+            double longitude = Double.parseDouble(request.getParameter("longitude"));
+            String description = request.getParameter("description");
+            String typeOfAttack = request.getParameter("typeOfAttack");
+            
+            TerrorismCrisis crisis = new TerrorismCrisis(typeOfAttack, radius, type, address, latitude, longitude, description);
             crisis.setCrisisID(id);
             dao.create(crisis);
         } catch (Exception ex) {
@@ -42,7 +50,7 @@ public class TerrorismCrisisController extends CrisisController {
         return crisis;
     }
     
-    @Override
+    /*@Override
     protected TerrorismCrisis createCrisisFromRequest(HttpServletRequest request) {
         int radius = Integer.parseInt(request.getParameter("radius"));
         String type = request.getParameter("crisistype");
@@ -53,5 +61,5 @@ public class TerrorismCrisisController extends CrisisController {
         String typeOfAttack = request.getParameter("typeOfAttack");
 
         return new TerrorismCrisis(typeOfAttack, radius, type, address, latitude, longitude, description);
-    }
+    }*/
 }

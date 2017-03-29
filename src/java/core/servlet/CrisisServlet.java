@@ -33,54 +33,8 @@ public class CrisisServlet extends HttpServlet {
         super();
         dao = new CrisisTypeDAO();
     }
-
-    //GET for Read and List
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //retrieve all information from get
-        String type = "";
-        if(request.getParameter("crisistype")!=null){
-            type = request.getParameter("crisistype");
-        }
-        
-        String action = "";
-        action = request.getParameter("action");
-        CrisisController controller = CrisisFactory.createController(type);
-        
-        String output = "";
-        try {
-            switch (action) {
-                case "create":
-                    int id = controller.create(request);
-                    if(id!=-1){
-                        output = "success";
-                    }else{
-                        output = "fail";
-                    }
-                    break;
-                case "update":
-                    controller.update(request);
-                    break;
-                case "read":
-                    Crisis crisis = controller.read(request);
-                    output = crisis.toJSON().toString();
-                    break;
-                case "list":
-                    List<Crisis> list = controller.list(request);
-                    JSONArray ja = new JSONArray();
-                    for(int i=0;i<list.size();i++){
-                        ja.put(list.get(i).toJSON());
-                    }
-                    output = ja.toString();
-                default:
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace(response.getWriter());
-        }
-        response.getWriter().write(output);
-    }
-
-    @Override
+    
+     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //retrieve all information from post
         String type = "";
@@ -125,5 +79,51 @@ public class CrisisServlet extends HttpServlet {
         }
         response.setContentType("application/json");
         response.getWriter().print(output.toString());
+    }
+    
+    //GET for Read and List
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //retrieve all information from get
+        /*String type = "";
+        if(request.getParameter("crisistype")!=null){
+            type = request.getParameter("crisistype");
+        }
+        
+        String action = "";
+        action = request.getParameter("action");
+        CrisisController controller = CrisisFactory.createController(type);
+        
+        String output = "";
+        try {
+            switch (action) {
+                case "create":
+                    int id = controller.create(request);
+                    if(id!=-1){
+                        output = "success";
+                    }else{
+                        output = "fail";
+                    }
+                    break;
+                case "update":
+                    controller.update(request);
+                    break;
+                case "read":
+                    Crisis crisis = controller.read(request);
+                    output = crisis.toJSON().toString();
+                    break;
+                case "list":
+                    List<Crisis> list = controller.list(request);
+                    JSONArray ja = new JSONArray();
+                    for(int i=0;i<list.size();i++){
+                        ja.put(list.get(i).toJSON());
+                    }
+                    output = ja.toString();
+                default:
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace(response.getWriter());
+        }
+        response.getWriter().write(output);*/
     }
 }

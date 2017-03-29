@@ -43,7 +43,7 @@ public class CrisisDAO {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO `ssad`.`crisis` "
                             + "(`CType`, `Description`, `Address`, `Lat`, `Lng`, `Status`, `TimeReported`) "
-                            + "VALUES ( ?, ?, ?, ?, ?, ?, ?);");
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?);");
             // Parameters start with 1
             preparedStatement.setString(1, crisis.getCrisisType());
             preparedStatement.setString(2, crisis.getDescription());
@@ -123,7 +123,9 @@ public class CrisisDAO {
             while (rs.next()) {
                 //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
                 //initialise general fields
-                Crisis crisis = new Crisis();
+                //Crisis crisis = new Crisis();
+                CrisisFactory fact = new CrisisFactory();
+                Crisis crisis = fact.createCrisis(rs.getString("CType"));
                 crisis.setCrisisID(rs.getInt("CrisisID"));
                 crisis.setCrisisType(rs.getString("CType"));
                 crisis.setAddress(rs.getString("Address"));
@@ -134,7 +136,6 @@ public class CrisisDAO {
                 crisis.setTimeResolved(rs.getString("TimeResolved"));
                 crisis.setDescription(rs.getString("Description"));
                 crisis.setIcon(rs.getString("Icon"));
-
                 crisisList.add(crisis);
             }
         } catch (SQLException e) {

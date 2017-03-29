@@ -169,7 +169,7 @@ public class Crisis {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         JSONObject json = new JSONObject();
         json.put("crisisID", crisisID);
-        json.put("crisistype", crisisType);
+        json.put("crisisType", crisisType);
         json.put("address", address);
         json.put("latitude", latitude);
         json.put("longitude", longitude);

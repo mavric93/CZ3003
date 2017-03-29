@@ -28,10 +28,10 @@ public class TrainBreakDownCrisisDAO {
     public void create(TrainBreakDownCrisis trainBreakDownCrisis) {
         try {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO `ssad`.`TrainBreakDown` "
+                    .prepareStatement("INSERT INTO `ssad`.`trainbreakdown` "
                             + "(`crisisID`, `Second_mrt_address`, `Second_mrt_lat`, `Second_mrt_lng`) "
                             + "VALUES (?, ?, ?, ?);");
-
+            System.out.println("CREATING");
             // Parameters start with 1
             preparedStatement.setInt(1, trainBreakDownCrisis.getCrisisID());
             preparedStatement.setString(2, trainBreakDownCrisis.getSecondMRTAddress());
@@ -47,15 +47,15 @@ public class TrainBreakDownCrisisDAO {
 		TrainBreakDownCrisis crisis = (TrainBreakDownCrisis)c;
         try {
             PreparedStatement preparedStatement = connection.
-                    prepareStatement("SELECT * FROM ssad.TrainBreakDown WHERE CrisisID=?;");
+                    prepareStatement("SELECT * FROM ssad.trainbreakdown WHERE CrisisID=?;");
             preparedStatement.setInt(1, crisisID);
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 //retrieve data
                 crisis.setCrisisID(rs.getInt("CrisisID"));
-                crisis.setSecondMRTAddress(rs.getString(""));
-                crisis.setSecondMRTLat(rs.getDouble(""));
-                crisis.setSecondMRTLng(rs.getDouble(""));
+                crisis.setSecondMRTAddress(rs.getString("Second_mrt_address"));
+                crisis.setSecondMRTLat(rs.getDouble("Second_mrt_lat"));
+                crisis.setSecondMRTLng(rs.getDouble("Second_mrt_lng"));
             }
         } catch (SQLException ex) {
             //Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);

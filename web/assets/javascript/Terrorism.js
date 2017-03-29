@@ -13,7 +13,11 @@ Terrorism.plot = function () {
 Terrorism.submitCrisisInit = function () {
     //set the form onsubmit to submtiCrisis
     document.getElementById("submit").onclick = function(){Terrorism.submitCrisis()};;
-
+    
+    //hide fields
+    $("#status").parent().parent().css("display","none");
+    $("#timeReported").parent().parent().css("display","none");
+    $("#timeResolved").parent().parent().css("display","none");
     //autocomplete
     var locationInput = document.getElementById("address");
     var marker;
@@ -55,12 +59,12 @@ Terrorism.submitCrisis = function () {
 	var action = "create";
 	//general
     var crisisType = document.getElementById("crisisType").value;
-	var description = document.getElementById("description").value;
+    var description = document.getElementById("description").value;
     var address = document.getElementById("address").value;
     var latitude = document.getElementById("latitude").value;
     var longitude = document.getElementById("longitude").value;
 	//specialized
-	var typeOfAttack = document.getElementById("typeOfAttack").value;
+    var typeOfAttack = document.getElementById("typeOfAttack").value;
     var radius = document.getElementById("radius").value;
 
     var parameter = {
@@ -73,6 +77,7 @@ Terrorism.submitCrisis = function () {
         "typeOfAttack": typeOfAttack,
         "action": action
     };
+    console.log(parameter);
     $.ajax({
         type: 'POST',
         url: url,

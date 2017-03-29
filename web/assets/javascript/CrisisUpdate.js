@@ -107,10 +107,11 @@ function plotMarkers(json) {
     var j = markers.length;
     for (var i = 0; i < json.length; i++) {
         var crisis = json[i];
+        console.log(crisis);
         var location = {lat: crisis.latitude, lng: crisis.longitude};
         //var icon = crisis.icon;
         var onclick = function () {
-            displayCorrespondingForms(crisis.crisistype, crisis.crisisID);
+            displayCorrespondingForms(crisis.crisisType, crisis.crisisID);
         };
         addEntry(crisis, onclick, j);
         j++;
@@ -123,14 +124,19 @@ function plotMarkers(json) {
 }
 function retrieveNewCrisis() {
     //standard function for retrieve data
+    var parameter = {
+        "action":"list",
+        "crisisType":"ALL"
+    }
     $.ajax({
-        type: 'GET',
-        url: 'http://155.69.149.181:8080/SSAD/CrisisServlet?action=list',
+        type: 'POST',
+        url: 'http://155.69.149.181:8080/SSAD/CrisisServlet',
+        data:parameter,
         async: true,
         dataType: 'json',
         success: function (result) {
             console.log(result);
-            plotMarkers(result);
+            plotMarkers(JSON.parse(result.data));
         }
     });
 }

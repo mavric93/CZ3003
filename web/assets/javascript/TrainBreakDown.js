@@ -11,10 +11,10 @@ TrainBreakDown.submitCrisisInit = function () {
     //read textfile
     readMRTFromText();
 	
-	//hide fields
-	$("#status").parent().parent().css("display","none");
-	$("#timeReported").parent().parent().css("display","none");
-	$("#timeResolved").parent().parent().css("display","none");
+    //hide fields
+    $("#status").parent().parent().css("display","none");
+    $("#timeReported").parent().parent().css("display","none");
+    $("#timeResolved").parent().parent().css("display","none");
 	
     //set submit parameters
     document.getElementById("submit").onclick = function () {

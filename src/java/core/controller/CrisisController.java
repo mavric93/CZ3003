@@ -8,9 +8,13 @@ package core.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import core.DAO.CrisisDAO;
+import core.DAO.TerrorismCrisisDAO;
+import core.DAO.TrainBreakDownCrisisDAO;
 import java.util.ArrayList;
 import java.util.List;
 import core.model.Crisis;
+import core.model.TerrorismCrisis;
+import core.model.TrainBreakDownCrisis;
 import java.util.Calendar;
 
 /**
@@ -27,7 +31,15 @@ public class CrisisController {
     public int create(HttpServletRequest request) throws Exception {
         int id = -1;
         try {
-            Crisis newCrisis = createCrisisFromRequest(request);
+            System.out.println(request.getParameter("crisisType"));
+            //Crisis newCrisis = createCrisisFromRequest(request);
+            String type = request.getParameter("crisisType");
+            String address = request.getParameter("address");
+            double latitude = Double.parseDouble(request.getParameter("latitude"));
+            double longitude = Double.parseDouble(request.getParameter("longitude"));
+            String description = request.getParameter("description");
+            
+            Crisis newCrisis =  new Crisis(type, address, latitude, longitude, description);
             id = dao.addCrisis(newCrisis);
         } catch (Exception ex) {
             throw ex;
@@ -45,7 +57,7 @@ public class CrisisController {
 			String status = request.getParameter("status");
 			Calendar timeResolved = null;
 			if(status.toUpperCase().equals("Resolved")){
-				timeResolved = Calendar.getInstance();
+                            timeResolved = Calendar.getInstance();
 			}
 			
 			Crisis crisis = new Crisis();
@@ -61,7 +73,7 @@ public class CrisisController {
 	}
 
     public Crisis read(HttpServletRequest request) {
-		int crisisID = Integer.parseInt(request.getParameter("crisisID"));
+	int crisisID = Integer.parseInt(request.getParameter("crisisID"));
         Crisis crisis  = dao.getCrisisById(crisisID);
         return crisis;
     }
@@ -70,23 +82,36 @@ public class CrisisController {
         ArrayList<Crisis> crisisList = new ArrayList<Crisis>();
         try{
             crisisList = dao.getAllCrisis();
+            
+            for(int i=0;i<crisisList.size();i++){
+                Crisis crisis = crisisList.get(i);
+                if(crisis instanceof TrainBreakDownCrisis){
+                    TrainBreakDownCrisisDAO tbdDAO = new TrainBreakDownCrisisDAO();
+                    crisisList.set(i, tbdDAO.getCrisisById(crisis.getCrisisID(), crisis));
+                }else if(crisis instanceof TerrorismCrisis){
+                    TerrorismCrisisDAO tDAO = new TerrorismCrisisDAO();
+                    crisisList.set(i, tDAO.getCrisisById(crisis.getCrisisID(), crisis));
+                }
+            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
         return crisisList;
     }
     
-    protected Crisis createCrisisFromRequest(HttpServletRequest request) throws Exception {
-        try {
+    /*private Crisis createCrisisFromRequest(HttpServletRequest request) throws Exception {
+        //try {
             //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
             String type = request.getParameter("crisisType");
+            System.out.println(type);
             String address = request.getParameter("address");
             double latitude = Double.parseDouble(request.getParameter("latitude"));
             double longitude = Double.parseDouble(request.getParameter("longitude"));
             String description = request.getParameter("description");
             return new Crisis(type, address, latitude, longitude, description);
-        } catch (Exception ex) {
-            throw ex;
-        }
-    }
+        //} catch (Exception ex) {
+            //System.out.println("ERROR");
+            //throw ex;
+        //}
+    }*/
 }

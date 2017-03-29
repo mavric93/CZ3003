@@ -41,7 +41,7 @@ public class TerrorismCrisisDAO {
             e.printStackTrace();
         }
     }
-	//read 1 crisis base on CrisisID
+    //read 1 crisis base on CrisisID
 	public Crisis getCrisisById(int crisisID,Crisis c) {
 		TerrorismCrisis crisis = (TerrorismCrisis)c;
         try {

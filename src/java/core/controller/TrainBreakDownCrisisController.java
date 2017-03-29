@@ -28,7 +28,17 @@ public class TrainBreakDownCrisisController extends CrisisController {
         int id =-1;
         try {
             id = super.create(request);
-            TrainBreakDownCrisis crisis = createCrisisFromRequest(request);
+            String type = request.getParameter("crisisType");
+            String address = request.getParameter("address");
+            double latitude = Double.parseDouble(request.getParameter("latitude"));
+            double longitude = Double.parseDouble(request.getParameter("longitude"));
+            String description = request.getParameter("description");
+
+            String second_address = request.getParameter("secondMRTAddress");
+            double second_latitude = Double.parseDouble(request.getParameter("secondMRTLat"));
+            double second_longitude = Double.parseDouble(request.getParameter("secondMRTLng"));
+
+            TrainBreakDownCrisis crisis = new TrainBreakDownCrisis(type, address, latitude, longitude, description,second_address,second_longitude,second_latitude);
             crisis.setCrisisID(id);
             dao.create(crisis);
         } catch (Exception ex) {
@@ -43,20 +53,20 @@ public class TrainBreakDownCrisisController extends CrisisController {
         crisis = dao.getCrisisById(crisisID,crisis);
         return crisis;
     }
-    
+    /*
     @Override
     protected TrainBreakDownCrisis createCrisisFromRequest(HttpServletRequest request) {
         
-        String type = request.getParameter("crisistype");
+        String type = request.getParameter("crisisType");
         String address = request.getParameter("address");
         double latitude = Double.parseDouble(request.getParameter("latitude"));
         double longitude = Double.parseDouble(request.getParameter("longitude"));
         String description = request.getParameter("description");
 		
         String second_address = request.getParameter("secondMRTAddress");
-		double second_latitude = Double.parseDouble(request.getParameter("secondMRTLat"));
-		double second_longitude = Double.parseDouble(request.getParameter("secondMRTLng"));
+        double second_latitude = Double.parseDouble(request.getParameter("secondMRTLat"));
+	double second_longitude = Double.parseDouble(request.getParameter("secondMRTLng"));
 	
         return new TrainBreakDownCrisis(type, address, latitude, longitude, description,second_address,second_longitude,second_latitude);
-    }
+    }*/
 }
