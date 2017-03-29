@@ -66,8 +66,8 @@ and open the template in the editor.
                         var x = document.getElementById("CrisisTypeSelection").value;
                         document.getElementById("displayFormHeader").innerHTML = "<H2>Submit " + x + " form</h2>";
                         document.getElementById("displayFormHeader").innerHTML += "Please fill in all details to submit a report on terrorism";
-                        $("#displayform").load("/SSAD/form_" + x + "/form.html", function () {
-                            $("#displayformJS script").load("/SSAD/form_" + x + "/create.js", function () {
+                        $("#displayform").load("/SSAD/CrisisType_" + x + "/form.html", function () {
+                            $("#displayformJS script").load("/SSAD/CrisisType_" + x + "/create.js", function () {
                                 CrisisInit();
                             });
                         });

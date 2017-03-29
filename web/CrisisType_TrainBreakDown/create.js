@@ -1,4 +1,4 @@
-
+//JS file for creation of trainbreakdown crisis
 function CrisisInit() {
     //map stuff
 
@@ -16,7 +16,7 @@ function CrisisInit() {
             }
             marker = plot(map, geometry.location, null, true, null, null);
             //dragDrop and set address to textbox 
-            
+
             google.maps.event.addListener(marker, "dragend", function (event) {
                 lat = event.latLng.lat();
                 lng = event.latLng.lng();
@@ -70,10 +70,16 @@ function submitCrisis() {
                 xhr.overrideMimeType('application/json;charset=utf-8');
             }
         },
-        dataType: 'json',
-        success: function (result) {
-            //Do stuff with the JSON data
-            console.log(result);
+        dataType: 'text',
+        success: function (data) {
+            if (data.status == 'success') {
+                alert("Thank you for subscribing!");
+            } else if (data.status == 'error') {
+                alert("Error on query!");
+            }
+        },
+        error: function(data){
+            alert();
         }
     });
 

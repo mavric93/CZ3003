@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import core.model.Crisis;
 import org.json.JSONArray;
 import core.util.CrisisFactory;
+import org.json.JSONObject;
 
 /**
  *
@@ -117,6 +118,10 @@ public class CrisisServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace(response.getWriter());
         }
-        response.getWriter().write(output);
+        
+        JSONObject json = new JSONObject();
+        response.setContentType("application/json");
+        json.put("status", "success");
+        response.getWriter().print(json);
     }
 }
