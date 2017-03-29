@@ -63,16 +63,14 @@ and open the template in the editor.
                     }
 
                     function displayCorrespondingForms() {
-                        var x = document.getElementById("CrisisTypeSelection").value;
-                        document.getElementById("displayFormHeader").innerHTML = "<H2>Submit " + x + " form</h2>";
+                        var crisisType = document.getElementById("CrisisTypeSelection").value;
+                        document.getElementById("displayFormHeader").innerHTML = "<H2>Submit " + crisisType + " form</h2>";
                         document.getElementById("displayFormHeader").innerHTML += "Please fill in all details to submit a report on terrorism";
-                        $("#displayform").load("/SSAD/CrisisType_" + x + "/form.html", function () {
-                            $("#displayformJS script").load("/SSAD/CrisisType_" + x + "/create.js", function () {
-                                CrisisInit();
+                        $("#displayform").load("/SSAD/" + crisisType + "form.html", function () {
+                            $.getScript("assets/javascript/" + crisisType + ".js", function () {
+                                eval(crisisType+".submitCrisisInit()");
                             });
                         });
-
-
                     }
         </script>
     </head>
@@ -86,8 +84,6 @@ and open the template in the editor.
                 <script type="text/javascript"></script>
             </div>
             <div id="displayform">
-
-
             </div>
             <div id="map"></div>
         </div>

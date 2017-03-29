@@ -9,7 +9,33 @@
         <script src="assets/javascript/map.js"></script>
         <script src="assets/javascript/markerClusterer.js"></script>
         <script src="assets/javascript/CrisisUpdate.js"></script>
+        <script src="assets/javascript/broadcast.js"></script>
         <script>
+            var crisisTypes = [];
+            function init() {
+                //get all crisistypes
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://155.69.149.181:8080/SSAD/CrisisTypeController?action=list',
+                    async: true,
+                    dataType: 'json',
+                    success: function (result) {
+                        var data = result.data;
+                        
+                        //obtain all crisis types and their correspoding javascripts
+                        for (var i = 0; i < data.length; i++) {
+                            var type = data[i];
+                            crisisTypes.push(type.crisisType);
+                            //load individual javascripts
+                            $( document ).load("assets/javascript/" + type.crisisType + ".js");
+                        }
+                        
+                        //obtain each crisis from database and plot onto map
+                        
+                    }
+                });
+            }
+
             function initMap() {
                 var mapDiv = document.getElementById('map');
                 map = new google.maps.Map(mapDiv, {
@@ -18,34 +44,18 @@
                 });
                 retrieveNewCrisis();
             }
-            function broadcastMessage(x) {
-                var message = document.getElementById("message").value;
 
-
-                $.ajax({
-                    type: "GET",
-                    url: 'http://155.69.149.181:8080/SSAD/BroadcastController?agent=' + x.value + '&message=' + message,
-                    success: function (result) {
-                        alert("http://155.69.149.181:8080/SSAD/BroadcastController?agent=" + x.value + "message=" + message);
-                    }
-                });
-
-                //	alert("http://155.69.149.181:8080/SSAD/BroadcastController?agent="+x.value+"message="+message);
-
-            }
         </script>
         <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_D5gb2uHoSAOnR_i9sWrQxjMUzKKK-Io&libraries=places,geometry&callback=initMap">
         </script>
     </head>
-    <body>
+    <body onload="init()">
         <div class="mapAndList">
             <div id="map">
             </div>
             <div class="filterWrapper">
                 <div class="content">
-                    <input class="type" name="FIRE" checked type="checkbox"/><label for="fire">fire</label><br/>
-                    <input class="type" name="FLASHFLOOD" checked type="checkbox"/><label for="flashflood">flash flood</label>
                 </div>
             </div>
             <div class="chronoList">
@@ -70,7 +80,7 @@
                     </div>
                     <div class="createCrisis">
                         <a href="SubmitCrisis.html"  target="_blank">
-                           <input type="button" value="Report new crisis"/>
+                            <input type="button" value="Report new crisis"/>
                         </a>
                     </div>
                 </div>

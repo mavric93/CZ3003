@@ -171,10 +171,8 @@ function removeAction(button) {
     row.remove();
 }
 function displayCorrespondingForms(crisisType, crisisID) {
-    var format = "/SSAD/form_";
-    console.log(format + crisisType + "/form.html");
     //load form 
-    $(".CrisisContent .Crisis .content .form").load(format + crisisType + "/form.html", function () {
+    $(".CrisisContent .Crisis .content .form").load(crisisType + "form.html", function () {
         // load json from database
         $.ajax({
             type: 'GET',
@@ -182,14 +180,9 @@ function displayCorrespondingForms(crisisType, crisisID) {
             async: true,
             dataType: 'json',
             success: function (result) {
-                console.log(result);
-
                 //change content of form with json
                 $(".CrisisContent .Crisis .content .form #crisisName").val("haha");
             }
         });
-
     });
-
-    console.log("changed");
 }
