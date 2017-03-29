@@ -34,9 +34,6 @@ public class CrisisFactory {
         switch (type) {
             case "Terrorism":
                 c = new TerrorismCrisis();
-                
-                //initialise c;
-                
                 break;
             case "TrainBreakdown":
                 //controller = new MRTBreakdownController();

@@ -1,5 +1,5 @@
 JSON fixed field names
-field:			JSON_Name
+field:			JSON_Name/Parameter_Name
 CrisisID: 		crisisID
 CType: 			crisistype
 Description: 	description
@@ -13,3 +13,8 @@ TimeResolved: 	timeResolved
 //TERRORISM FIELDS
 radius:			radius
 typeOfAttack:	typeOfAttack
+
+//TRAINBREAKDOWN FIELDS
+Second_mrt_address:secondMRTAddress
+Second_mrt_lat:secondMRTLat
+Second_mrt_lng:secondMRTLng

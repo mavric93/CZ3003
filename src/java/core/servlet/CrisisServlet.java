@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import core.model.Crisis;
 import org.json.JSONArray;
 import core.util.CrisisFactory;
-import org.json.JSONObject;
 
 /**
  *
@@ -59,11 +58,11 @@ public class CrisisServlet extends HttpServlet {
                     }
                     break;
                 case "update":
-                    controller.update();
+                    controller.update(request);
                     break;
                 case "read":
-                    //Crisis crisis = controller.read();
-                    //output = crisis.toJSON().toString();
+                    Crisis crisis = controller.read(request);
+                    output = crisis.toJSON().toString();
                     break;
                 case "list":
                     List<Crisis> list = controller.list(request);
@@ -89,22 +88,27 @@ public class CrisisServlet extends HttpServlet {
         action = request.getParameter("action");
         CrisisController controller = CrisisFactory.createController(type);
         
-        String output = "";
+        JSONObject output = new JSONObject();
         try {
             switch (action) {
                 case "create":
                     int id = controller.create(request);
                     if(id!=-1){
-                        output = "success";
+						output.put("status", "success");
                     }else{
-                        output = "fail";
+						output.put("status", "fail");
                     }
                     break;
                 case "update":
-                    controller.update();
+					if(controller.update(request)){
+						output.put("status", "success");
+                    }else{
+						output.put("status", "fail");
+					}
                     break;
                 case "read":
-                   // controller.read();
+                    Crisis crisis = controller.read(request);
+					output.put("data",crisis.toJSON());
                     break;
                 case "list":
                     List<Crisis> list = controller.list(request);
@@ -112,16 +116,13 @@ public class CrisisServlet extends HttpServlet {
                     for(int i=0;i<list.size();i++){
                         ja.put(list.get(i).toJSON());
                     }
-                    output = ja.toString();
+                    output = output.put("data",ja.toString());
                 default:
             }
         } catch (Exception ex) {
             ex.printStackTrace(response.getWriter());
         }
-        
-        JSONObject json = new JSONObject();
         response.setContentType("application/json");
-        json.put("status", "success");
-        response.getWriter().print(json);
+        response.getWriter().print(output.toString());
     }
 }

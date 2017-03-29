@@ -16,14 +16,13 @@ import core.util.DbUtil;
 * @author mavric
  */
 public class TerrorismCrisisDAO {
-
+	//FUNCTIONS: CREATE,READ
     private Connection connection;
-
     public TerrorismCrisisDAO() {
         connection = DbUtil.getConnection();
     }
-
-    public void addTerrorismCrisis(TerrorismCrisis terrorismCrisis) {
+	//create
+    public void create(TerrorismCrisis terrorismCrisis) {
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO `ssad`.`terrorism` "
@@ -39,17 +38,23 @@ public class TerrorismCrisisDAO {
             e.printStackTrace();
         }
     }
-
-    public void modifyTerrorismCrisis(TerrorismCrisis terrorismCrsis) {
-        /*try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("update crisis set crisisname=?,crisi where crisisid =?");
-            // Parameters start with 1
-            preparedStatement.setString(1, terrorismCrsis.getCrisisName());
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+	//read 1 crisis base on CrisisID
+	public Crisis getCrisisById(int crisisID,Crisis c) {
+		TerrorismCrisis crisis = (TerrorismCrisis)c;
+        try {
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("SELECT * FROM ssad.Terrorism WHERE CrisisID=?;");
+            preparedStatement.setInt(1, crisisID);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+				//retrieve data
+				crisis.setCrisisID(rs.getInt("CrisisID"));
+                crisis.setRadius(rs.getInt("radius"));
+				crisis.setTypeOfAttack(rs.getString("typeOfAttack"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return crisis;
     }
 }

@@ -25,13 +25,12 @@ import java.util.logging.Logger;
  * @author mavric
  */
 public class CrisisDAO {
-
+	//FUNCTIONS: CREATE,UPDATE,READ,LIST
     private Connection connection;
-
     public CrisisDAO() {
         connection = DbUtil.getConnection();
     }
-
+	//DONE
     public int addCrisis(Crisis crisis) {
         int id = -1;
         try {
@@ -61,7 +60,7 @@ public class CrisisDAO {
         }
         return id;
     }
-
+	//NOT SURE NEEDED OR NOT
     public void deleteCrisis(String crisisID) {
         try {
             PreparedStatement preparedStatement = connection
@@ -74,20 +73,35 @@ public class CrisisDAO {
             e.printStackTrace();
         }
     }
-
-    public void updateCrisis(Crisis crisis) {
-        /*try {
-         PreparedStatement preparedStatement = connection
-         .prepareStatement("update crisis set crisisname=? where crisisid =?");
-         // Parameters start with 1
-         preparedStatement.setString(1, crisis.getCrisisName());
-         preparedStatement.executeUpdate();
-
-         } catch (SQLException e) {
-         e.printStackTrace();
-         }*/
+	//DONE
+    public boolean updateCrisis(Crisis crisis) {
+		SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String sqlStatement_resolved = "update ssad.crisis set Description=?,Status=?,TimeResolved=? where crisisid =?";
+		String sqlStatement_not_resolved = "update ssad.crisis set Description=?,Status=? where crisisid =?";
+		boolean success = false;
+        try {
+			//CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
+			PreparedStatement preparedStatement = null; 
+			if(crisis.getResolvedOccured()!=null){
+				preparedStatement = connection.prepareStatement(sqlStatement_resolved);
+			}else{
+				preparedStatement = connection.prepareStatement(sqlStatement_not_resolved);
+			}
+			// Parameters start with 1
+			preparedStatement.setString(1, crisis.getDescription());
+			preparedStatement.setString(2, crisis.getStatus());
+			if(crisis.getResolvedOccured()!=null){
+				preparedStatement.setString(3, datetimeformat.format(crisis.getResolvedOccured().getTime()));
+			}
+			if(preparedStatement.executeUpdate()>-1){
+				success = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return success;
     }
-
+	//DONE
     public ArrayList<Crisis> getAllCrisis() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ArrayList<Crisis> crisisList = new ArrayList<>();
         try {
@@ -96,10 +110,6 @@ public class CrisisDAO {
                     + "on ssad.crisis.CType = ssad.crisistype.CType;");
             while (rs.next()) {
                 //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
-
-                CrisisFactory fact = new CrisisFactory();
-                Crisis crisis = fact.createCrisis(rs.getString("CType"));
-
                 //initialise general fields
                 crisis.setCrisisID(rs.getInt("CrisisID"));
                 crisis.setCrisisType(rs.getString("CType"));
@@ -112,8 +122,6 @@ public class CrisisDAO {
                 crisis.setDescription(rs.getString("Description"));
                 crisis.setIcon(rs.getString("Icon"));
 
-                //intialise specialised fields
-                //crisis.initSpecField();
                 crisisList.add(crisis);
             }
         } catch (SQLException e) {
@@ -122,17 +130,30 @@ public class CrisisDAO {
 
         return crisisList;
     }
-
+	//DONE
     public Crisis getCrisisById(int crisisID) {
         Crisis crisis = new Crisis();
         try {
             PreparedStatement preparedStatement = connection.
-                    prepareStatement("select * from crisis where crisisid=?");
+                    prepareStatement("SELECT * FROM ssad.crisis join ssad.crisistype "
+                    + "on ssad.crisis.CType = ssad.crisistype.CType WHERE CrisisID=?;");
             preparedStatement.setInt(1, crisisID);
             ResultSet rs = preparedStatement.executeQuery();
-
             if (rs.next()) {
-                crisis.setCrisisID(rs.getInt("crisisID"));
+				//create specialized class
+				CrisisFactory fact = new CrisisFactory();
+                Crisis crisis = fact.createCrisis(rs.getString("CType"));
+				//retrieve data
+				crisis.setCrisisID(rs.getInt("CrisisID"));
+                crisis.setCrisisType(rs.getString("CType"));
+                crisis.setAddress(rs.getString("Address"));
+                crisis.setLatitude(rs.getDouble("Lat"));
+                crisis.setLongitude(rs.getDouble("Lng"));
+                crisis.setStatus(rs.getString("Status"));
+                crisis.setTimeReported(rs.getString("TimeReported"));
+                crisis.setTimeResolved(rs.getString("TimeResolved"));
+                crisis.setDescription(rs.getString("Description"));
+                crisis.setIcon(rs.getString("Icon"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);

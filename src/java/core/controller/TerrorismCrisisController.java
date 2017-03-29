@@ -15,9 +15,7 @@ import core.model.TerrorismCrisis;
  * @author mavric
  */
 public class TerrorismCrisisController extends CrisisController {
-
     private TerrorismCrisisDAO dao;
-
     public TerrorismCrisisController() {
         super();
         dao = new TerrorismCrisisDAO();
@@ -29,11 +27,18 @@ public class TerrorismCrisisController extends CrisisController {
             id = super.create(request);
             TerrorismCrisis crisis = createCrisisFromRequest(request);
             crisis.setCrisisID(id);
-            dao.addTerrorismCrisis(crisis);
+            dao.create(crisis);
         } catch (Exception ex) {
             throw ex;
         }
         return id;
+    }
+	@Override
+	public Crisis read(HttpServletRequest request) {
+        Crisis crisis  = super().read(request);
+		int crisisID = Integer.parseInt(request.getParameter("crisisID"));
+		crisis = dao.getCrisisById(crisisID,crisis);
+        return crisis;
     }
     
     @Override

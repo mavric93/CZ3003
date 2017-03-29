@@ -34,29 +34,41 @@ public class CrisisController {
         return id;
     }
 
-    public boolean update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public boolean update(HttpServletRequest request) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		//able to update description, status and timeResolved
+		boolean success = false
+		try {
+			int crisisID = Integer.parseInt(request.getParameter("crisisID"));
+			String description = request.getParameter("description");
+			String status = request.getParameter("status");
+			Calendar timeResolved = null;
+			if(status.toUpperCase().equals("Resolved")){
+				timeResolved = Calendar.getInstance();
+			}
+			
+			Crisis crisis = new Crisis();
+			crisis.setCrisisID(crisisID);
+			crisis.setDescription(description);
+			crisis.setStatus(status);
+			crisis.setTimeResolved(timeResolved);
+            success = dao.updateCrisis(crisis);
+        } catch (Exception ex) {
+            throw ex;
+        }
+		return success;
+	}
 
-    public Crisis read(int crisisID) {
+    public Crisis read(HttpServletRequest request) {
+		int crisisID = Integer.parseInt(request.getParameter("crisisID"));
         Crisis crisis  = dao.getCrisisById(crisisID);
         return crisis;
     }
 
     public List<Crisis> list(HttpServletRequest request) {
-        //is there a need to get different types of crisis?
-        //need to add where clause
-        String where = "";
         ArrayList<Crisis> crisisList = new ArrayList<Crisis>();
-        
         try{
-            //instanceOf is the specialized version
             crisisList = dao.getAllCrisis();
-            
-            //check instanceOf then get data from specialized table
-            for(int i=0;i<crisisList.size();i++){
-                
-            }
         }catch(Exception ex){
             ex.printStackTrace();
         }
