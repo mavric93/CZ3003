@@ -88,14 +88,29 @@ and open the template in the editor.
 
             <div class="broadcast_container">
                 <h2> Broadcast Console </h2>
-                Message: <textarea type="text" id="message" >  </textarea>     <br />
+                <textarea type="text" id="message" text="Message">  Message</textarea>     <br />
                 <input type="image" class="btn" src="assets/img/icon/tw-icon.png" value="twitter" onClick="broadcastMessage(this)"/>
                 <input type="image" class="btn" src="assets/img/icon/fb-icon.png" value="facebook" onClick="broadcastMessage(this)"/>
                 <input type="image" class="btn" src="assets/img/icon/sms-icon.png" value="sms" onClick="broadcastMessage(this)"/>
                 <input type="image" class="btn" src="assets/img/icon/email-icon.png" value="email" onClick="broadcastMessage(this)"/>
 
             </div>
-            <div class="console_container">  console</div>
+            <div class="console_container">  
+                <h2>Command Console</h2>
+                <br>
+                <select>
+                    <option> Police - 999</option>
+                    <option> SCDF - 995</option>
+                </select>
+                <input type ="button" value="Call"> </input>
+                <br/><br/>
+                <input type="button" value=" Set Crisis Resolved"/>
+                <input type="button" value=" Set Crisis Confirmed"/>
+                <br/><br/>
+                <input type="button" value="Set National State into Crisis State "/>
+                <br>
+                <input type="button" value="display all hospital"/>
+            </div>
         </div>
     </body>
 </html>
