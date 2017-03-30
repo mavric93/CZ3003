@@ -64,45 +64,6 @@ $(document).ready(function () {
     });
 });
 
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-    directionsService.route({
-        origin: "Bishan Mrt",
-        destination: "Ang Mo Kio Mrt",
-        travelMode: 'TRANSIT'
-    }, function (response, status) {
-        if (status === 'OK') {
-            var flightPath = new google.maps.Polyline({
-                path: response.routes[0].overview_path,
-                geodesic: true,
-                strokeColor: '#000000',
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-            });
-            flightPath.setMap(map);
-        } else {
-            window.alert('Directions request failed due to ' + status);
-        }
-    });
-    directionsService.route({
-        origin: "Yishun Mrt",
-        destination: "Sembawang Mrt",
-        travelMode: 'TRANSIT'
-    }, function (response, status) {
-        if (status === 'OK') {
-            var flightPath = new google.maps.Polyline({
-                path: response.routes[0].overview_path,
-                geodesic: true,
-                strokeColor: '#000000',
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-            });
-            flightPath.setMap(map);
-        } else {
-            window.alert('Directions request failed due to ' + status);
-        }
-    });
-}
-
 function plotMarkers(json) {
     var j = markers.length;
     for (var i = 0; i < json.length; i++) {
@@ -135,8 +96,15 @@ function retrieveNewCrisis() {
         async: true,
         dataType: 'json',
         success: function (result) {
-            console.log(result);
-            plotMarkers(JSON.parse(result.data));
+            var data = JSON.parse(result.data);
+            for(i=0;i<data.length;i++){
+                eval(data[i].crisisType+".plot(data[i]);");
+                /*if(data[i].crisisType=="TrainBreakDown"){
+                    TrainBreakDown.plot(data[i]);
+                }else if(data[i].crisisType=="Terrorism"){
+                    Terrorism.plot(data[i]);
+                }*/
+            }
         }
     });
 }

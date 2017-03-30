@@ -3,14 +3,23 @@
 TrainBreakDown = {
 };
 
-TrainBreakDown.plot = function () {
+TrainBreakDown.plot = function (crisis) {
+    console.log(crisis);
+    var locationfrom = {lat: crisis.latitude, lng: crisis.longitude};
+    var locationto = {lat: crisis.secondMRTLat, lng: crisis.secondMRTLng};
+    var fromMarker = plot(map, locationfrom, null, false, null, TrainBreakDown.onClick);
+    var toMarker = plot(map, locationto, null, false, null, TrainBreakDown.onClick);
+    fromMarker.json = crisis;
+    toMarker.json = crisis;
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    calculateAndDisplayRoute(directionsService,directionsDisplay,crisis.address,crisis.secondMRTAddress);
 };
 
 //called when the submission form is loaded
 TrainBreakDown.submitCrisisInit = function () {
     //read textfile
     readMRTFromText();
-	
     //hide fields
     $("#status").parent().parent().css("display","none");
     $("#timeReported").parent().parent().css("display","none");
@@ -36,16 +45,16 @@ TrainBreakDown.submitCrisis = function () {
     console.log("form submiited");
     var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
     var action = "create";
-	//general
-	var crisisType = document.getElementById("crisisType").value;
-	var action = "create";
-	var description = document.getElementById("description").value;
-	var address = document.getElementById("fromStation").value;
-	var fromLatitude = document.getElementById("fromStationLat").value;
+    //general
+    var crisisType = document.getElementById("crisisType").value;
+    var action = "create";
+    var description = document.getElementById("description").value;
+    var address = document.getElementById("fromStation").value;
+    var fromLatitude = document.getElementById("fromStationLat").value;
     var fromLongitude = document.getElementById("fromStationLng").value;
-	//specialized
-	var address2 = document.getElementById("toStation").value;
-	var toLatitude = document.getElementById("toStationLat").value;
+    //specialized
+    var address2 = document.getElementById("toStation").value;
+    var toLatitude = document.getElementById("toStationLat").value;
     var toLongitude = document.getElementById("toStationLng").value;
 
     var parameter = {
@@ -95,8 +104,31 @@ TrainBreakDown.updateCrisis = function () {
 
 //called when a terrorism crisis is onclick
 TrainBreakDown.onClick = function () {
+    var crisis = this.json;
+    $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
+        readMRTFromText();
+        $("#crisisType").val(crisis.crisisType).attr("disabled",true);
+        $("#crisisID").val(crisis.crisisID);
+        $("#description").val(crisis.description);
+        $("#fromStation").val(crisis.address).attr("disabled",true);
+        $("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+        $("#timeReported").val(crisis.timereported).attr("disabled",true);
+        $("#timeResolved").attr("disabled",true);
+        if(crisis.status=="resolved"){
+            $("#status").val(crisis.status).attr("disabled",true);
+        }
+        if(crisis.timeresolved=="null"){
+            $("#timeResolved").parent().parent().css("display","none");
+        }
+    });
+    editButton();
 };
 
+// called togehter with on click
+// will enable or disable buttons for each crisistype
+function editButton(){
+    
+}
 
 function readMRTFromText() {
     //Load MRT Stations 

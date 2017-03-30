@@ -3,21 +3,28 @@
 Terrorism = {
 };
 
-Terrorism.plot = function () {
-    //fetch specialise field based on crisis id
-
+Terrorism.plot = function (crisis) {
+    console.log(crisis);
+    var location = {lat: crisis.latitude, lng: crisis.longitude};
+    var marker = plot(map, location, null, false, null, Terrorism.onClick);
+    marker.json = crisis;
+    plotCircle(location, crisis.radius);
     //display ontop map
+
 };
 
 //called when the submission form is loaded
 Terrorism.submitCrisisInit = function () {
     //set the form onsubmit to submtiCrisis
-    document.getElementById("submit").onclick = function(){Terrorism.submitCrisis()};;
-    
+    document.getElementById("submit").onclick = function () {
+        Terrorism.submitCrisis()
+    };
+    ;
+
     //hide fields
-    $("#status").parent().parent().css("display","none");
-    $("#timeReported").parent().parent().css("display","none");
-    $("#timeResolved").parent().parent().css("display","none");
+    $("#status").parent().parent().css("display", "none");
+    $("#timeReported").parent().parent().css("display", "none");
+    $("#timeResolved").parent().parent().css("display", "none");
     //autocomplete
     var locationInput = document.getElementById("address");
     var marker;
@@ -56,14 +63,14 @@ Terrorism.submitCrisisInit = function () {
 //called when a crisis is submited
 Terrorism.submitCrisis = function () {
     var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
-	var action = "create";
-	//general
+    var action = "create";
+    //general
     var crisisType = document.getElementById("crisisType").value;
     var description = document.getElementById("description").value;
     var address = document.getElementById("address").value;
     var latitude = document.getElementById("latitude").value;
     var longitude = document.getElementById("longitude").value;
-	//specialized
+    //specialized
     var typeOfAttack = document.getElementById("typeOfAttack").value;
     var radius = document.getElementById("radius").value;
 
@@ -73,7 +80,7 @@ Terrorism.submitCrisis = function () {
         "latitude": latitude,
         "longitude": longitude,
         "description": description,
-		"radius": radius,
+        "radius": radius,
         "typeOfAttack": typeOfAttack,
         "action": action
     };
@@ -117,4 +124,23 @@ Terrorism.updateCrisis = function () {
 
 //called when a terrorism crisis is onclick
 Terrorism.onClick = function () {
+    var crisis = this.json;
+    $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
+        $("#crisisType").val(crisis.crisisType).attr("disabled", true);
+        $("#crisisID").val(crisis.crisisID);
+        $("#description").val(crisis.description);
+        $("#address").val(crisis.address).attr("disabled", true);
+        $("#timeReported").val(crisis.timereported).attr("disabled", true);
+        $("#timeResolved").attr("disabled", true);
+        $("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
+        ;
+        $("#radius").val(crisis.radius).attr("disabled", true);
+        $("#status").val(crisis.status);
+        if (crisis.status == "resolved") {
+            $("#status").val(crisis.status).attr("disabled", true);
+        }
+        if (crisis.timeresolved == "null") {
+            $("#timeResolved").parent().parent().css("display", "none");
+        }
+    });
 };

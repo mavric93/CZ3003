@@ -163,3 +163,23 @@
                 mymap.setCenter(new google.maps.LatLng(y, x));
             });
 		*/
+function calculateAndDisplayRoute(directionsService,directionsDisplay,from,to){
+    directionsService.route({
+        origin: from+" MRT",
+        destination: to+" MRT",
+        travelMode: 'TRANSIT'
+    }, function (response, status) {
+        if (status === 'OK') {
+            var flightPath = new google.maps.Polyline({
+                path: response.routes[0].overview_path,
+                geodesic: true,
+                strokeColor: '#000000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            flightPath.setMap(map);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
+    });
+}
