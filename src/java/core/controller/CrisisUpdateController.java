@@ -7,67 +7,38 @@ package core.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import core.DAO.CrisisDAO;
+import core.DAO.CrisisUpdateDAO;
 import core.DAO.TerrorismCrisisDAO;
 import core.DAO.TrainBreakDownCrisisDAO;
 import java.util.ArrayList;
 import java.util.List;
 import core.model.Crisis;
+import core.model.CrisisUpdate;
 import core.model.TerrorismCrisis;
 import core.model.TrainBreakDownCrisis;
-import java.util.Calendar;
 
 /**
  *
  * @author mavric
  */
-public class CrisisController {
-    private CrisisDAO dao;
-    private String errorStack;
-    public CrisisController() {
+public class CrisisUpdateController {
+    private CrisisUpdateDAO dao;
+    public CrisisUpdateController() {
         super();
-        dao = new CrisisDAO();
+        dao = new CrisisUpdateDAO();
     }
     public int create(HttpServletRequest request) throws Exception {
         int id = -1;
         try {
-            System.out.println(request.getParameter("crisisType"));
-            String type = request.getParameter("crisisType");
-            String address = request.getParameter("address");
-            double latitude = Double.parseDouble(request.getParameter("latitude"));
-            double longitude = Double.parseDouble(request.getParameter("longitude"));
-            String description = request.getParameter("description");
+            int crisisID = Integer.parseInt(request.getParameter("crisisID"));
+            String update = request.getParameter("update");
             
-            Crisis newCrisis =  new Crisis(type, address, latitude, longitude, description);
-            id = dao.addCrisis(newCrisis);
+            CrisisUpdate newCrisisUpdate =  new CrisisUpdate(crisisID,update);
+            id = dao.addCrisisUpdate(newCrisisUpdate);
         } catch (Exception ex) {
             throw ex;
         }
         return id;
-    }
-
-    public boolean update(HttpServletRequest request) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //able to update description, status and timeResolved
-        boolean success = false;
-	try {
-            int crisisID = Integer.parseInt(request.getParameter("crisisID"));
-            String description = request.getParameter("description");
-            String status = request.getParameter("status");
-            Calendar timeResolved = null;
-            if(status.toUpperCase().equals("Resolved")){
-                timeResolved = Calendar.getInstance();
-            }
-            Crisis crisis = new Crisis();
-            crisis.setCrisisID(crisisID);
-            crisis.setDescription(description);
-            crisis.setStatus(status);
-            crisis.setTimeResolved(timeResolved);
-            success = dao.updateCrisis(crisis);
-        } catch (Exception ex) {
-            throw ex;
-        }
-	return success;
     }
 
     public Crisis read(HttpServletRequest request) {
@@ -96,5 +67,4 @@ public class CrisisController {
         }
         return crisisList;
     }
-    
 }

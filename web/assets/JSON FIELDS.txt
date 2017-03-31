@@ -2,19 +2,25 @@ JSON fixed field names
 field:			JSON_Name/Parameter_Name
 CrisisID: 		crisisID
 CType: 			crisisType
-Description: 	description
+Description:            description
 Address: 		address
 Lat: 			latitude
 Lng: 			longitude
 Status: 		status 		"Pending", "Comfirmed", "Resolved"
-TimeReported: 	timeReported
-TimeResolved: 	timeResolved
+TimeReported:           timeReported
+TimeResolved:           timeResolved
 
 //TERRORISM FIELDS
 radius:			radius
-typeOfAttack:	typeOfAttack
+typeOfAttack:           typeOfAttack
 
 //TRAINBREAKDOWN FIELDS
-Second_mrt_address:secondMRTAddress
-Second_mrt_lat:secondMRTLat
-Second_mrt_lng:secondMRTLng
+Second_mrt_address:     secondMRTAddress
+Second_mrt_lat:         secondMRTLat
+Second_mrt_lng:         secondMRTLng
+
+//crisisupdates
+crisisUpdateID          crisisUpdateID
+crisisID:               crisisID
+update:                 update
+timeUpdated:            timeUpdated

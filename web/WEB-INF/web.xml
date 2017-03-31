@@ -4,11 +4,21 @@
     <welcome-file-list>
         <welcome-file>CommandCenterConsole.html</welcome-file>
     </welcome-file-list>
+    <display-name>MyListeningApplication</display-name>
+    <listener>
+        <listener-class>core.util.CrisisStateListener</listener-class>
+    </listener>
     <servlet>
         <description/>
         <display-name>CrisisServlet</display-name>
         <servlet-name>CrisisServlet</servlet-name>
         <servlet-class>core.servlet.CrisisServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <description/>
+        <display-name>CrisisStateServlet</display-name>
+        <servlet-name>CrisisStateServlet</servlet-name>
+        <servlet-class>core.servlet.CrisisStateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CrisisServlet</servlet-name>
@@ -33,5 +43,19 @@
     <servlet-mapping>
         <servlet-name>BroadcastController</servlet-name>
         <url-pattern>/BroadcastController</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description/>
+        <display-name>CrisisUpdateController</display-name>
+        <servlet-name>CrisisUpdateController</servlet-name>
+        <servlet-class>core.controller.CrisisUpdateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CrisisUpdateController</servlet-name>
+        <url-pattern>/CrisisUpdateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CrisisStateServlet</servlet-name>
+        <url-pattern>/CrisisStateServlet</url-pattern>
     </servlet-mapping>
 </web-app>

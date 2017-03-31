@@ -83,29 +83,28 @@ function plotMarkers(json) {
     }
     //setTimeout(retrieveNewCrisis, 3000);
 }
-
+var INTERVAL = 5000;
 function refresh(){
 	//retrieve new crisis
 	retrieveNewCrisis();
 	//check crisisState
 	checkCrisisState();
-	setTimeout(refresh,INTERVAL)
+	//setTimeout(refresh,INTERVAL)
 }
 function checkCrisisState(){
 	$.ajax({
-        type: 'POST',
+        type: 'GET',
         url: 'http://155.69.149.181:8080/SSAD/CrisisStateServlet',
         async: true,
         dataType: 'json',
         success: function (result) {
-            console.log(result.crisisState);
-			if(result.crisisState){
-				//if in crisisState
-				$(".CrisisState span").removeClass("peace").addClass("crisis").val("Crisis");
-			}else{
-				//if not in crisisState
-				$(".CrisisState span").removeClass("crisis").addClass("peace").val("Peace");
-			}
+            if(result.crisisState){
+		//if in crisisState
+		$(".CrisisState span").removeClass("peace").addClass("crisis").html("Crisis");
+            }else{
+                //if not in crisisState
+                $(".CrisisState span").removeClass("crisis").addClass("peace").html("Peace");
+            }
         }
     });
 }

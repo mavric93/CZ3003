@@ -85,7 +85,7 @@ public class CrisisServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //retrieve all information from get
-        /*String type = "";
+        String type = "";
         if(request.getParameter("crisistype")!=null){
             type = request.getParameter("crisistype");
         }
@@ -124,6 +124,6 @@ public class CrisisServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace(response.getWriter());
         }
-        response.getWriter().write(output);*/
+        response.getWriter().write(output);
     }
 }
