@@ -120,12 +120,61 @@ Terrorism.updateCrisisInit = function () {
 
 //called when the update form is submmited
 Terrorism.updateCrisis = function () {
+    var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
+    var action = "update";
+    //general
+    var crisisID = document.getElementById("crisisID").value;
+    var crisisType = document.getElementById("crisisType").value;
+    var description = document.getElementById("description").value;
+    var status = document.getElementById("status").value;
+    
+    var parameter = {
+        "crisisID":crisisID,
+        "crisisType": crisisType,
+        "status":status,
+	"description": description,
+        "action": action
+    };
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: parameter,
+        async: true,
+        beforeSend: function (xhr) {
+            if (xhr && xhr.overrideMimeType) {
+                xhr.overrideMimeType('application/json;charset=utf-8');
+            }
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (data.status == 'success') {
+                alert("Crisis has been updated");
+            } else if (data.status == 'error') {
+                alert("Error on submission");
+            }
+        },
+        error: function (data) {
+            alert("Server returned an error");
+        }
+    });
 };
 
 //called when a terrorism crisis is onclick
 Terrorism.onClick = function () {
     var crisis = this.json;
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
+        document.getElementById("submit").onclick = function () {
+            TrainBreakDown.updateCrisis();
+        };
+        if(crisis.status=="Resolved"){
+            $("#status").attr("disabled",true);
+            $("#description").attr("disabled",true);
+            $("#submit").attr("disabled",true);
+        }
+        if(crisis.timeresolved=="null"){
+            $("#timeResolved").parent().parent().css("display","none");
+        }
+        
         $("#crisisType").val(crisis.crisisType).attr("disabled", true);
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
@@ -133,14 +182,7 @@ Terrorism.onClick = function () {
         $("#timeReported").val(crisis.timereported).attr("disabled", true);
         $("#timeResolved").attr("disabled", true);
         $("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
-        ;
         $("#radius").val(crisis.radius).attr("disabled", true);
         $("#status").val(crisis.status);
-        if (crisis.status == "resolved") {
-            $("#status").val(crisis.status).attr("disabled", true);
-        }
-        if (crisis.timeresolved == "null") {
-            $("#timeResolved").parent().parent().css("display", "none");
-        }
     });
 };

@@ -99,11 +99,6 @@ function retrieveNewCrisis() {
             var data = JSON.parse(result.data);
             for(i=0;i<data.length;i++){
                 eval(data[i].crisisType+".plot(data[i]);");
-                /*if(data[i].crisisType=="TrainBreakDown"){
-                    TrainBreakDown.plot(data[i]);
-                }else if(data[i].crisisType=="Terrorism"){
-                    Terrorism.plot(data[i]);
-                }*/
             }
         }
     });
