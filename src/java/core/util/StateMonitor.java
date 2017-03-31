@@ -38,7 +38,7 @@ public class StateMonitor extends TimerTask {
         if (currentCrisisState) {
             System.out.println("send email " + System.nanoTime());
         } else {
-            System.out.println("no ongoing crisis " + System.nanoTime());
+            System.out.println("no ongoing crisis new message " + System.nanoTime());
 
         }
     }
