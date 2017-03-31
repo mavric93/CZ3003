@@ -6,11 +6,10 @@ Terrorism = {
 Terrorism.plot = function (crisis) {
     console.log(crisis);
     var location = {lat: crisis.latitude, lng: crisis.longitude};
-    var marker = plot(map, location, null, false, null, Terrorism.onClick);
+	var icon = crisis.icon+"_"+crisis.status+".png";
+    var marker = plot(map, location, icon, false, null, Terrorism.onClick);
     marker.json = crisis;
     plotCircle(location, crisis.radius);
-    //display ontop map
-
 };
 
 //called when the submission form is loaded
@@ -19,7 +18,6 @@ Terrorism.submitCrisisInit = function () {
     document.getElementById("submit").onclick = function () {
         Terrorism.submitCrisis()
     };
-    ;
 
     //hide fields
     $("#status").parent().parent().css("display", "none");
@@ -114,8 +112,6 @@ Terrorism.submitCrisis = function () {
 
 //called when the update form is loaded
 Terrorism.updateCrisisInit = function () {
-    //set the form onsubmit to submtiCrisis
-    document.getElementById("submit").onclick = updateCrisis();
 };
 
 //called when the update form is submmited
@@ -132,7 +128,7 @@ Terrorism.updateCrisis = function () {
         "crisisID":crisisID,
         "crisisType": crisisType,
         "status":status,
-	"description": description,
+		"description": description,
         "action": action
     };
     $.ajax({
@@ -179,6 +175,8 @@ Terrorism.onClick = function () {
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
         $("#address").val(crisis.address).attr("disabled", true);
+		$("#latitude").val(crisis.latitude).attr("disabled", true);
+		$("#longitude").val(crisis.longitude).attr("disabled", true);
         $("#timeReported").val(crisis.timereported).attr("disabled", true);
         $("#timeResolved").attr("disabled", true);
         $("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);

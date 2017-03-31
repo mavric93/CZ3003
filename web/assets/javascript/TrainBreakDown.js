@@ -7,8 +7,9 @@ TrainBreakDown.plot = function (crisis) {
     console.log(crisis);
     var locationfrom = {lat: crisis.latitude, lng: crisis.longitude};
     var locationto = {lat: crisis.secondMRTLat, lng: crisis.secondMRTLng};
-    var fromMarker = plot(map, locationfrom, null, false, null, TrainBreakDown.onClick);
-    var toMarker = plot(map, locationto, null, false, null, TrainBreakDown.onClick);
+	var icon = crisis.icon+"_"+crisis.status+".png";
+    var fromMarker = plot(map, locationfrom, icon, false, null, TrainBreakDown.onClick);
+    var toMarker = plot(map, locationto, icon, false, null, TrainBreakDown.onClick);
     fromMarker.json = crisis;
     toMarker.json = crisis;
     var directionsService = new google.maps.DirectionsService;
@@ -113,7 +114,7 @@ TrainBreakDown.updateCrisis = function () {
         "crisisID":crisisID,
         "crisisType": crisisType,
         "status":status,
-	"description": description,
+		"description": description,
         "action": action
     };
     $.ajax({
@@ -162,11 +163,14 @@ TrainBreakDown.onClick = function () {
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
         $("#fromStation").val(crisis.address).attr("disabled",true);
-        $("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+		$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
+    	$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
+		$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+		$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
+    	$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
         $("#timeReported").val(crisis.timereported).attr("disabled",true);
         $("#timeResolved").attr("disabled",true);
         $("#status").val(crisis.status)
-        
     });
     editButton();
 };
