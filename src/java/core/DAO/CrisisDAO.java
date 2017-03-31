@@ -146,7 +146,6 @@ public class CrisisDAO {
     }
 
     //DONE
-
     public Crisis getCrisisById(int crisisID) {
         Crisis crisis = new Crisis();
         try {
@@ -170,6 +169,21 @@ public class CrisisDAO {
                 crisis.setTimeResolved(rs.getString("TimeResolved"));
                 crisis.setDescription(rs.getString("Description"));
                 crisis.setIcon(rs.getString("Icon"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return crisis;
+    }
+	//to check if any crisis is in comfirmed status
+	public boolean checkComfirmedCrisis() {
+		boolean crisis = false;
+        try {
+            PreparedStatement preparedStatement = connection.
+                    prepareStatement("SELECT CrisisID FROM ssad.crisis  WHERE Status=`Comfirmed` LIMIT 1");
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+				crisis = true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);
