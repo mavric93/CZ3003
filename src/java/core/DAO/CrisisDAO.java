@@ -85,13 +85,13 @@ public class CrisisDAO {
 
     public boolean updateCrisis(Crisis crisis) {
         SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sqlStatement_resolved = "update ssad.crisis set Description=?,Status=?,TimeResolved=? where crisisid =?";
+        String sqlStatement_resolved = "update ssad.crisis set Description=?,Status=?,TimeResolved=NOW() where crisisid =?";
         String sqlStatement_not_resolved = "update ssad.crisis set Description=?,Status=? where crisisid =?";
         boolean success = false;
         try {
             //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
             PreparedStatement preparedStatement = null;
-            if (crisis.getTimeResolved()!= null) {
+            if (crisis.getStatus().equals("Resolved")) {
                 preparedStatement = connection.prepareStatement(sqlStatement_resolved);
             } else {
                 preparedStatement = connection.prepareStatement(sqlStatement_not_resolved);
@@ -100,9 +100,6 @@ public class CrisisDAO {
             preparedStatement.setString(1, crisis.getDescription());
             preparedStatement.setString(2, crisis.getStatus());
             preparedStatement.setInt(3, crisis.getCrisisID());
-            if (crisis.getTimeResolved() != null) {
-                preparedStatement.setString(3, datetimeformat.format(crisis.getTimeResolved().getTime()));
-            }
             if (preparedStatement.executeUpdate() > -1) {
                 success = true;
             }

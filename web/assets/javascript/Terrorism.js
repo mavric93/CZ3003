@@ -122,15 +122,16 @@ Terrorism.updateCrisis = function () {
     var crisisID = document.getElementById("crisisID").value;
     var crisisType = document.getElementById("crisisType").value;
     var description = document.getElementById("description").value;
-    var status = document.getElementById("status").value;
+    var status =document.getElementById("status").value;
     
     var parameter = {
         "crisisID":crisisID,
         "crisisType": crisisType,
         "status":status,
-		"description": description,
+	"description": description,
         "action": action
     };
+    console.log(parameter);
     $.ajax({
         type: 'POST',
         url: url,
@@ -160,7 +161,7 @@ Terrorism.onClick = function () {
     var crisis = this.json;
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
         document.getElementById("submit").onclick = function () {
-            TrainBreakDown.updateCrisis();
+            Terrorism.updateCrisis();
         };
         if(crisis.status=="Resolved"){
             $("#status").attr("disabled",true);
@@ -175,10 +176,10 @@ Terrorism.onClick = function () {
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
         $("#address").val(crisis.address).attr("disabled", true);
-		$("#latitude").val(crisis.latitude).attr("disabled", true);
-		$("#longitude").val(crisis.longitude).attr("disabled", true);
+	$("#latitude").val(crisis.latitude).attr("disabled", true);
+	$("#longitude").val(crisis.longitude).attr("disabled", true);
         $("#timeReported").val(crisis.timereported).attr("disabled", true);
-        $("#timeResolved").attr("disabled", true);
+        $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
         $("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
         $("#radius").val(crisis.radius).attr("disabled", true);
         $("#status").val(crisis.status);

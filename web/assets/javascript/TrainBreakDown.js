@@ -163,13 +163,13 @@ TrainBreakDown.onClick = function () {
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
         $("#fromStation").val(crisis.address).attr("disabled",true);
-		$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
+	$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
     	$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
-		$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
-		$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
+	$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+	$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
     	$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
         $("#timeReported").val(crisis.timereported).attr("disabled",true);
-        $("#timeResolved").attr("disabled",true);
+        $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
         $("#status").val(crisis.status)
     });
     editButton();
