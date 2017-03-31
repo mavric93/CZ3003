@@ -39,3 +39,22 @@
     width: 35px;
     height: auto;
 }
+.CrisisState{
+	z-index:400;
+	position:absolute;
+	background:white;
+	right: 31%;
+    top: 5%;
+	padding: 0px 10px;
+	border:2px solid black;
+	border-radius:3px;
+}
+
+.CrisisState .peace{
+	font-weight: bold;
+	color:rgb(42, 247, 48);
+}
+.CrisisState .crisis{
+	font-weight: bold;
+	color:rgb(198, 11, 30);
+}

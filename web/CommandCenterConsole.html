@@ -10,7 +10,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" type="text/css" href="assets/css/test.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/console.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="assets/javascript/map.js"></script>
         <script src="assets/javascript/markerClusterer.js"></script>
@@ -51,9 +51,8 @@ and open the template in the editor.
 
                         //load crisis from DB
                         $.getScript("assets/javascript/CrisisUpdate.js", function () {
-
                             //obtain each crisis from database and plot onto map
-                            retrieveNewCrisis();
+                            refresh();
                         });
                     }
                 });
@@ -66,10 +65,12 @@ and open the template in the editor.
     </head>
     <body>
         <div class="top">
-            <div id="map_container" class="map_container">Map </div>
+			<div class="CrisisState">
+				<p>Crisis State:<span class="peace">Peace</span></p>
+			</div>
+            <div id="map_container" class="map_container"></div>
             <div class="details_actions">
                 <div class="crisisDetails_container">
-
                     <h2> Individual crisis details</h2>
                     <div ></div>
                 </div>
