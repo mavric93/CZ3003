@@ -5,7 +5,7 @@ function initMap() {
         zoom: 12
     });
     //autocomplete
-    var locationInput = document.getElementById("locationInput");
+    /*var locationInput = document.getElementById("locationInput");
     var autocomplete = new google.maps.places.Autocomplete(locationInput);
     autocomplete.addListener('place_changed', function () {
         var place = autocomplete.getPlace();
@@ -36,10 +36,10 @@ function initMap() {
     console.log("retrieve crisis");
     retrieveNewCrisis();
     directionsDisplay.setMap(map);
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    calculateAndDisplayRoute(directionsService, directionsDisplay);*/
 }
 $(document).ready(function () {
-    $(".filterWrapper input[type='checkbox'].type").on("change", function () {
+    /*$(".filterWrapper input[type='checkbox'].type").on("change", function () {
         var types = [];
         $(".filterWrapper input[type='checkbox'].type").each(function () {
             if (this.checked) {
@@ -61,35 +61,21 @@ $(document).ready(function () {
                 j++;
             }
         }
-    });
+    });*/
 });
 
-function plotMarkers(json) {
-    var j = markers.length;
-    for (var i = 0; i < json.length; i++) {
-        var crisis = json[i];
-        console.log(crisis);
-        var location = {lat: crisis.latitude, lng: crisis.longitude};
-        //var icon = crisis.icon;
-        var onclick = function () {
-            displayCorrespondingForms(crisis.crisisType, crisis.crisisID);
-        };
-        addEntry(crisis, onclick, j);
-        j++;
-        var marker = plot(map, location, null, false, null, onclick);
-        marker.json = crisis;
-
-        markers.push(marker);
-    }
-    //setTimeout(retrieveNewCrisis, 3000);
-}
 var INTERVAL = 5000;
 function refresh(){
 	//retrieve new crisis
 	retrieveNewCrisis();
 	//check crisisState
 	checkCrisisState();
-	//setTimeout(refresh,INTERVAL)
+	setTimeout(refresh,INTERVAL)
+}
+function removePlot(){
+    removeplotsPerma(markers);
+    removeplotsPerma(circlesOverlays);
+    removeplotsPerma(polylines);
 }
 function checkCrisisState(){
 	$.ajax({
@@ -121,6 +107,7 @@ function retrieveNewCrisis() {
         async: true,
         dataType: 'json',
         success: function (result) {
+            removePlot();
             var data = JSON.parse(result.data);
             for(i=0;i<data.length;i++){
                 eval(data[i].crisisType+".plot(data[i]);");

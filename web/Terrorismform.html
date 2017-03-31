@@ -4,26 +4,26 @@
             <tr>
                 <td><label for="crisisType">Crisis Type</label></td>
                 <td>
-                    <input type="text" id="crisisType" value="Terrorism" />
+                    <input type="text" class="form-control" id="crisisType" value="Terrorism" />
                     <input type="hidden" readonly id="crisisID" value="" />
                 </td>
             </tr>
             <tr>
                 <td><label for="address">Address</label></td>
                 <td>
-                    <input id="address" type="text" maxlength="255" />
+                    <textarea id="address" class="form-control"></textarea>
                     <input id="latitude" type="hidden" maxlength="255" />
                     <input id="longitude" type="hidden" maxlength="255" />
                 </td>
             </tr>
 			<tr>
                 <td><label for="Description">Description</label></td>
-                <td><textarea id="description"></textarea></td>
+                <td><textarea class="form-control" id="description"></textarea></td>
             </tr>
             <tr>
                 <td><label for="typeOfAttack">Type of Attack</label></td>
                 <td>
-                    <select id="typeOfAttack">
+                    <select class="form-control" id="typeOfAttack">
                         <option>Chemical</option>
                         <option>Bomb</option>
                     </select><br/>
@@ -31,13 +31,13 @@
             </tr>
             <tr>
                 <td><label for="radius">Radius</label></td>
-                <td><input id="radius" type="text" maxlength="255" /></td>
+                <td><input class="form-control" id="radius" type="text" maxlength="255" /></td>
             </tr>
 			<tr>
                 <td><label for="status">Status</label></td>
                 <td>
                     <!-- To be Generated using loadMrtStations-->
-                    <select id="status">
+                    <select class="form-control" id="status">
 			<option value="Pending">Pending</option>
 			<option value="Comfirmed">Comfirmed</option>
 			<option value="Resolved">Resolved</option>
@@ -47,19 +47,19 @@
 			<tr>
                 <td><label for="timeReported">Time Reported</label></td>
                 <td>
-					<input type="text"  readonly id="timeReported" /> 
+                    <input type="text" class="form-control" readonly id="timeReported" /> 
                 </td>
             </tr>
-			<tr>
-				<td><label for="timeResolved">Time Resolved</label></td>
+                <tr>
+                    <td><label for="timeResolved">Time Resolved</label></td>
                 <td>
-					<input type="text" readonly id="timeResolved" />
+                    <input class="form-control" type="text" readonly id="timeResolved" />
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <input type="button" id="submit" value="Submit" />
+                    <input class="btn btn-success" type="button" id="submit" value="Submit" />
                 </td>
             </tr>
         </table>

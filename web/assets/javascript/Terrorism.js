@@ -6,10 +6,12 @@ Terrorism = {
 Terrorism.plot = function (crisis) {
     console.log(crisis);
     var location = {lat: crisis.latitude, lng: crisis.longitude};
-	var icon = crisis.icon+"_"+crisis.status+".png";
+    var icon = crisis.icon+"_"+crisis.status+".png";
     var marker = plot(map, location, icon, false, null, Terrorism.onClick);
     marker.json = crisis;
-    plotCircle(location, crisis.radius);
+    var circle = plotCircle(location, crisis.radius);
+    markers.push(marker);
+    circlesOverlays.push(circle);
 };
 
 //called when the submission form is loaded

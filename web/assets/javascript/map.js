@@ -12,6 +12,7 @@
 	var NearbyMarkers = [];
 	var NearbyClusterMarker = [];
 	var circlesOverlays = [];
+        var polylines = [];
 	var noOfAjax = 0;
 	
 	var markers=[];
@@ -66,8 +67,8 @@
 				marker = new google.maps.Marker({
 					position: location,
 					map: map,
-					draggable: draggable,
-					animation: google.maps.Animation.DROP,
+					draggable: draggable
+					//animation: google.maps.Animation.DROP,
 				});
 			}else{
 				marker = new google.maps.Marker({
@@ -75,7 +76,7 @@
 					map: map,
 					icon: icon,
 					draggable: draggable,
-					animation: google.maps.Animation.DROP,
+					//animation: google.maps.Animation.DROP,
 				});
 			}
 			if(content){
@@ -177,6 +178,7 @@ function calculateAndDisplayRoute(directionsService,directionsDisplay,from,to){
                 strokeOpacity: 1.0,
                 strokeWeight: 2
             });
+            polylines.push(flightPath);
             flightPath.setMap(map);
         } else {
             window.alert('Directions request failed due to ' + status);

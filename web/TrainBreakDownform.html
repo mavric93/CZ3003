@@ -6,7 +6,7 @@
                     <label for="crisisType">Crisis Type</label>
                 </td>
                 <td>
-                    <input type="text" readonly id="crisisType" value="TrainBreakDown" />
+                    <input type="text" class="form-control" readonly id="crisisType" value="TrainBreakDown" />
                     <input type="hidden" readonly id="crisisID" value="" />
                 </td>
             </tr>
@@ -15,7 +15,7 @@
                     <label for="description">Description </label>
                 </td>
                 <td>
-                    <textarea id="description"></textarea>
+                    <textarea id="description" class="form-control"></textarea>
                 </td>
             </tr>
             <tr>
@@ -24,7 +24,7 @@
                 </td>
                 <td>
                     <!-- To be Generated using loadMrtStations-->
-                    <select id="fromStation">
+                    <select class="form-control" id="fromStation">
                         <option value="">Please choose a station</option>
                     </select>
                     <input type="hidden" readonly id="fromStationLat" />
@@ -37,7 +37,7 @@
                 </td>
                 <td>
                     <!-- To be Generated using loadMrtStations-->
-                    <select id="toStation">
+                    <select class="form-control" id="toStation">
                         <option value="">Please choose a station</option>
                     </select>
                     <input type="hidden" readonly id="toStationLat" />
@@ -49,7 +49,7 @@
                     <label for="status">Status</label>
                 </td>
                 <td>
-                    <select id="status">
+                    <select class="form-control" id="status">
                         <option value="Pending">Pending</option>
                         <option value="Comfirmed">Comfirmed</option>
                         <option value="Resolved">Resolved</option>
@@ -61,7 +61,7 @@
                     <label for="timeReported">Time Reported</label>
                 </td>
                 <td>
-                    <input type="text" readonly id="timeReported" />
+                    <input class="form-control" type="text" readonly id="timeReported" />
                 </td>
             </tr>
             <tr>
@@ -69,13 +69,13 @@
                     <label for="timeResolved">Time Resolved</label>
                 </td>
                 <td>
-                    <input type="text" readonly id="timeResolved" />
+                    <input class="form-control" type="text" readonly id="timeResolved" />
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <input id="submit" type="button" value="Submit" />
+                    <input class="btn btn-success" id="submit" type="button" value="Submit" />
 
                 </td>
             </tr>

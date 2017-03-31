@@ -15,6 +15,8 @@ TrainBreakDown.plot = function (crisis) {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     calculateAndDisplayRoute(directionsService,directionsDisplay,crisis.address,crisis.secondMRTAddress);
+    markers.push(fromMarker);
+    markers.push(toMarker);
 };
 
 //called when the submission form is loaded
