@@ -147,7 +147,10 @@ Terrorism.updateCrisis = function () {
         dataType: 'json',
         success: function (data) {
             if (data.status == 'success') {
+                clearTimeout(timer);
+                refresh();
                 alert("Crisis has been updated");
+                
             } else if (data.status == 'error') {
                 alert("Error on submission");
             }

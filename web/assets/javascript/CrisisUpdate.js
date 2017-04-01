@@ -64,18 +64,19 @@ $(document).ready(function () {
     });*/
 });
 
-var INTERVAL = 5000;
+var INTERVAL = 20000;
+var timer;
 function refresh(){
 	//retrieve new crisis
 	retrieveNewCrisis();
 	//check crisisState
 	checkCrisisState();
-	setTimeout(refresh,INTERVAL)
+	timer = setTimeout(refresh,INTERVAL);
 }
-function removePlot(){
-    removeplotsPerma(markers);
-    removeplotsPerma(circlesOverlays);
-    removeplotsPerma(polylines);
+function removePlot(oldmarkers,oldcirclesOverlays,oldpolylines){
+    removeplotsPerma(oldmarkers);
+    removeplotsPerma(oldcirclesOverlays);
+    removeplotsPerma(oldpolylines);
 }
 function checkCrisisState(){
 	$.ajax({
@@ -107,11 +108,18 @@ function retrieveNewCrisis() {
         async: true,
         dataType: 'json',
         success: function (result) {
-            removePlot();
+            var oldmarkers = markers;
+            var oldcirclesOverlays = circlesOverlays;
+            var oldpolylines = polylines;
+            
+            markers = [];
+            circlesOverlays = [];
+            polylines = [];
             var data = JSON.parse(result.data);
             for(i=0;i<data.length;i++){
                 eval(data[i].crisisType+".plot(data[i]);");
             }
+            removePlot(oldmarkers,oldcirclesOverlays,oldpolylines);
         }
     });
 }
