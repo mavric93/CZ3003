@@ -22,17 +22,13 @@ and open the template in the editor.
         <script>
             var crisisTypes = [];
             function init() {
-
-            }
-
-            function init() {
                 //load map 
                 var mapDiv = document.getElementById('map_container');
                 map = new google.maps.Map(mapDiv, {
                     center: {lat: 1.359599, lng: 103.812364},
                     zoom: 12
                 });
-
+				//$(".top").css("height",$(document).height()*0.49);
                 //load crisistypes and scripts
                 $.ajax({
                     type: 'GET',
