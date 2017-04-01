@@ -12,10 +12,14 @@ and open the template in the editor.
 
         <link rel="stylesheet" type="text/css" href="assets/css/console.css">
         
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="assets/javascript/map.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		
+		
+		<script src="assets/javascript/map.js"></script>
         <script src="assets/javascript/markerClusterer.js"></script>
         <!--<script src="assets/javascript/CrisisUpdate.js"></script>-->
         <script src="assets/javascript/broadcast.js"></script>
@@ -37,7 +41,6 @@ and open the template in the editor.
                     dataType: 'json',
                     success: function (result) {
                         var data = result.data;
-
                         //obtain all crisis types and their correspoding javascripts
                         for (var i = 0; i < data.length; i++) {
                             var type = data[i];
@@ -69,7 +72,33 @@ and open the template in the editor.
 			</div>
             <div id="map_container" class="map_container"></div>
             <div class="details_actions">
-                <div class="crisisDetails_container">
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" data-toggle="tab" href="#details" role="tab">Details</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#actions" role="tab">Actions</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="details" role="tabpanel">
+						<div class="crisisDetails_container">
+							<h2> Individual crisis details</h2>
+							<div ></div>
+						</div>
+					</div>
+					<div class="tab-pane" id="actions" role="tabpanel">
+						<div class="crisisUpdates_container"> Individual crisis updates info
+							<ul>
+								<li>Called police </li>
+								<li>Called police </li>
+							</ul>
+							<p> Called police </p>
+							<p> Police arrived </p>
+						</div>
+					</div>
+				</div>
+                <!--<div class="crisisDetails_container">
                     <h2> Individual crisis details</h2>
                     <div ></div>
                 </div>
@@ -81,7 +110,7 @@ and open the template in the editor.
                     <p> Called police </p>
                     <p> Police arrived </p>
 
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="bottom">

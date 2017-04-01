@@ -58,7 +58,7 @@ body{
     overflow-y:auto;
 }
 .crisisUpdates_container{
-    border-top:3px solid grey;
+    //border-top:3px solid grey;
     height:40%;
     //background:yellow;
     padding: 20px;
