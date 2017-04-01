@@ -176,7 +176,8 @@ TrainBreakDown.onClick = function () {
     	$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
         $("#timeReported").val(crisis.timereported).attr("disabled",true);
         $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
-        $("#status").val(crisis.status)
+        $("#status").val(crisis.status);
+        $("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
     });
     editButton();
 };

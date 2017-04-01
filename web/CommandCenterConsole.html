@@ -11,16 +11,17 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" type="text/css" href="assets/css/console.css">
-        
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-		
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-		
-		
-		<script src="assets/javascript/map.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+
+        <script src="assets/javascript/map.js"></script>
         <script src="assets/javascript/markerClusterer.js"></script>
+        <script src="assets/javascript/commandconsole.js"></script>
         <!--<script src="assets/javascript/CrisisUpdate.js"></script>-->
         <script src="assets/javascript/broadcast.js"></script>
         <script>
@@ -32,7 +33,7 @@ and open the template in the editor.
                     center: {lat: 1.359599, lng: 103.812364},
                     zoom: 12
                 });
-				//$(".top").css("height",$(document).height()*0.49);
+                //$(".top").css("height",$(document).height()*0.49);
                 //load crisistypes and scripts
                 $.ajax({
                     type: 'GET',
@@ -67,50 +68,37 @@ and open the template in the editor.
     </head>
     <body>
         <div class="top">
-			<div class="CrisisState">
-				<p>Crisis State:<span class="peace">Peace</span></p>
-			</div>
+            <div class="CrisisState">
+                <p>Crisis State:<span class="peace">Peace</span></p>
+            </div>
             <div id="map_container" class="map_container"></div>
             <div class="details_actions">
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#details" role="tab">Details</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#actions" role="tab">Actions</a>
-					</li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="details" role="tabpanel">
-						<div class="crisisDetails_container">
-							<h2> Individual crisis details</h2>
-							<div ></div>
-						</div>
-					</div>
-					<div class="tab-pane" id="actions" role="tabpanel">
-						<div class="crisisUpdates_container"> Individual crisis updates info
-							<ul>
-								<li>Called police </li>
-								<li>Called police </li>
-							</ul>
-							<p> Called police </p>
-							<p> Police arrived </p>
-						</div>
-					</div>
-				</div>
-                <!--<div class="crisisDetails_container">
-                    <h2> Individual crisis details</h2>
-                    <div ></div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#details" role="tab">Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#actions" role="tab">Actions</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="details" role="tabpanel">
+                        <div class="crisisDetails_container">
+                            <h2> Individual crisis details</h2>
+                            <div ></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="actions" role="tabpanel">
+                        <div class="crisisUpdates_container"> Individual crisis updates info
+                            <ul>
+                                <li>Called police </li>
+                                <li>Called police </li>
+                            </ul>
+                            <p> Called police </p>
+                            <p> Police arrived </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="crisisUpdates_container"> Individual crisis updates info
-                    <ul>
-                        <li>Called police </li>
-                        <li>Called police </li>
-                    </ul>
-                    <p> Called police </p>
-                    <p> Police arrived </p>
-
-                </div>-->
             </div>
         </div>
         <div class="bottom">
@@ -126,14 +114,15 @@ and open the template in the editor.
             </div>
             <div class="console_container">  
                 <h2>Command Console</h2>
+                <input id="selectedCrisis" type="text"></input> 
                 <br> 
-                <select>
-                    <option> Police - 999</option>
-                    <option> SCDF - 995</option>
+                <select id="selectedAgencyContacts">
+                    <option id="Police"value="999"> Police - 999</option>
+                    <option id="SCDF"value="995"> SCDF - 995</option>
                 </select>
-                <input type ="button" value="Call"> </input>
+                <input type ="button" value="Call" onclick="call(this)"/>
                 <br/><br/>
-                <input type="button" value=" Set Crisis Resolved"/>
+                <input type="button" value=" Set Crisis Resolved" onclick="changeCrisisResolved()"/>
                 <input type="button" value=" Set Crisis Confirmed"/>
                 <br/><br/>
                 <input type="button" value="Set National State into Crisis State "/>

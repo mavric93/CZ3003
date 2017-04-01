@@ -188,5 +188,6 @@ Terrorism.onClick = function () {
         $("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
         $("#radius").val(crisis.radius).attr("disabled", true);
         $("#status").val(crisis.status);
+        $("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
     });
 };
