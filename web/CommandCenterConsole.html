@@ -85,17 +85,20 @@ and open the template in the editor.
                     <div class="tab-pane active" id="details" role="tabpanel">
                         <div class="crisisDetails_container">
                             <h2> Individual crisis details</h2>
-                            <div ></div>
+                            <div></div>
                         </div>
                     </div>
                     <div class="tab-pane" id="actions" role="tabpanel">
-                        <div class="crisisUpdates_container"> Individual crisis updates info
-                            <ul>
-                                <li>Called police </li>
-                                <li>Called police </li>
-                            </ul>
-                            <p> Called police </p>
-                            <p> Police arrived </p>
+                        <div class="crisisUpdates_container">
+                            <h2>Updates</h2>
+                            <div>
+                                <table border="1">
+                                    <tr>
+                                        <th>Details</th>
+                                        <th>Time Updated</th>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -105,11 +108,11 @@ and open the template in the editor.
 
             <div class="broadcast_container">
                 <h2> Broadcast Console </h2>
-                <textarea type="text" id="message" text="Message">  Message</textarea>     <br />
-                <input type="image" class="btn_social" src="assets/img/icon/tw-icon.png" value="twitter" onClick="broadcastMessage(this)"/>
-                <input type="image" class="btn_social" src="assets/img/icon/fb-icon.png" value="facebook" onClick="broadcastMessage(this)"/>
-                <input type="image" class="btn_social" src="assets/img/icon/sms-icon.png" value="sms" onClick="broadcastMessage(this)"/>
-                <input type="image" class="btn_social" src="assets/img/icon/email-icon.png" value="email" onClick="broadcastMessage(this)"/>
+                <textarea placeholder="Message" type="text" id="message" text="Message"></textarea>     <br />
+                <input type="image" class="btn_social" src="assets/img/icon/tw-icon.png" value="TwitterAgent" onClick="broadcastMessage(this)"/>
+                <input type="image" class="btn_social" src="assets/img/icon/fb-icon.png" value="FacebookAgent" onClick="broadcastMessage(this)"/>
+                <input type="image" class="btn_social" src="assets/img/icon/sms-icon.png" value="SMSAgent" onClick="broadcastMessage(this)"/>
+                <input type="image" class="btn_social" src="assets/img/icon/email-icon.png" value="EmailAgent" onClick="broadcastMessage(this)"/>
 
             </div>
             <div class="console_container">  
@@ -125,7 +128,7 @@ and open the template in the editor.
                 <input type="button" value=" Set Crisis Resolved" onclick="changeCrisisResolved()"/>
                 <input type="button" value=" Set Crisis Confirmed"/>
                 <br/><br/>
-                <input type="button" value="Set National State into Crisis State "/>
+                <input type="button" value="Set National State into Crisis State " onclick="updateMessage('Terrorism','96470860')"/>
                 <br>
                 <input type="button" value="display all hospital"/>
             </div>

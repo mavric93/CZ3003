@@ -4,7 +4,6 @@ TrainBreakDown = {
 };
 
 TrainBreakDown.plot = function (crisis) {
-    console.log(crisis);
     var locationfrom = {lat: crisis.latitude, lng: crisis.longitude};
     var locationto = {lat: crisis.secondMRTLat, lng: crisis.secondMRTLng};
 	var icon = crisis.icon+"_"+crisis.status+".png";
@@ -45,7 +44,6 @@ TrainBreakDown.submitCrisisInit = function () {
 
 //called when a crisis is submited
 TrainBreakDown.submitCrisis = function () {
-    console.log("form submiited");
     var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
     var action = "create";
     //general
@@ -55,6 +53,7 @@ TrainBreakDown.submitCrisis = function () {
     var address = document.getElementById("fromStation").value;
     var fromLatitude = document.getElementById("fromStationLat").value;
     var fromLongitude = document.getElementById("fromStationLng").value;
+    var mobilenumber = document.getElementById("mobilenumber").value;
     //specialized
     var address2 = document.getElementById("toStation").value;
     var toLatitude = document.getElementById("toStationLat").value;
@@ -65,11 +64,12 @@ TrainBreakDown.submitCrisis = function () {
         "address": address,
         "latitude": fromLatitude,
         "longitude": fromLongitude,
-		"description": description,
-		"secondMRTAddress": address2,
+        "description": description,
+	"secondMRTAddress": address2,
         "secondMRTLat": toLatitude,
         "secondMRTLng": toLongitude,
-        "action": action
+        "action": action,
+        "mobilenumber":mobilenumber
     };
     $.ajax({
         type: 'POST',
@@ -105,7 +105,6 @@ TrainBreakDown.updateCrisisInit = function () {
 
 //called when the update form is submitted
 TrainBreakDown.updateCrisis = function () {
-    console.log("form submiited");
     var url = "http://155.69.149.181:8080/SSAD/CrisisServlet";
     var action = "update";
     //general
@@ -118,7 +117,7 @@ TrainBreakDown.updateCrisis = function () {
         "crisisID":crisisID,
         "crisisType": crisisType,
         "status":status,
-		"description": description,
+	"description": description,
         "action": action
     };
     $.ajax({
@@ -151,6 +150,38 @@ TrainBreakDown.updateCrisis = function () {
 TrainBreakDown.onClick = function () {
     //set parameters
     var crisis = this.json;
+    
+    $.ajax({
+        type: 'GET',
+        url: "http://155.69.149.181:8080/SSAD/CrisisUpdateController?action=list&crisisID="+crisis.crisisID,
+        async: true,
+        beforeSend: function (xhr) {
+            if (xhr && xhr.overrideMimeType) {
+                xhr.overrideMimeType('application/json;charset=utf-8');
+            }
+        },
+        dataType: 'json',
+        success: function (data) {
+            var rows = $(".crisisUpdates_container>div>table tr");
+            var rowlength = rows.length;
+            while(rowlength>1){
+                $(rows[1]).remove();
+                rows = $(".crisisUpdates_container>div>table tr");
+                rowlength = rows.length;
+            }
+            
+            for(i = 0;i<data.length;i++){
+                var updateInfo = data[i];
+                $(".crisisUpdates_container>div>table").append("<tr><td>"+updateInfo.update+"</td><td>"+updateInfo.timeUpdated+"</td></tr>");
+            }
+        },
+        error: function (data) {
+            alert("Server returned an error");
+        }
+    });
+    
+    
+    
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
         //submit event
         document.getElementById("submit").onclick = function () {
@@ -171,6 +202,7 @@ TrainBreakDown.onClick = function () {
         $("#fromStation").val(crisis.address).attr("disabled",true);
 	$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
     	$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
+        $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
 	$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
 	$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
     	$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);

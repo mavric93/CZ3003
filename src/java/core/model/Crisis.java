@@ -21,6 +21,7 @@ public class Crisis {
     private String address;
     private double latitude;
     private double longitude;
+    private int mobileNumber;
     private String status;
     private Calendar timeReported;
     private Calendar timeResolved;
@@ -31,7 +32,7 @@ public class Crisis {
         
     }
 
-    public Crisis(String crisisType, String address, double latitude, double longitude, String description) {
+    public Crisis(String crisisType, String address, double latitude, double longitude, String description,int mobileNumber) {
         this.crisisType = crisisType;
         this.address = address;
         this.latitude = latitude;
@@ -41,8 +42,18 @@ public class Crisis {
         this.timeResolved = null;
         this.description = description;
         this.icon = "";
+        this.mobileNumber = mobileNumber;
     }
 
+    public int getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(int mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    
     public String getIcon() {
         return icon;
     }
@@ -165,12 +176,12 @@ public class Crisis {
     
     
     public JSONObject toJSON() {
-
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         JSONObject json = new JSONObject();
         json.put("crisisID", crisisID);
         json.put("crisisType", crisisType);
         json.put("address", address);
+        json.put("mobilenumber", mobileNumber);
         json.put("latitude", latitude);
         json.put("longitude", longitude);
         json.put("status", status);

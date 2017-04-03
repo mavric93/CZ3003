@@ -9,6 +9,7 @@ var timeResolved;
 var status;
 var selectedCrisis;
 var message;
+var msgParameter;
 
 //Terrorism Specific Variable
 var address;
@@ -39,29 +40,31 @@ function broadcastMessage(x) {
   });
 }
 
-function updateMessage(crisisType){
+function updateMessage(crisisType,recipient){
   switch (crisisType) {
     case "Terrorism":
-      terrorismForm();
+      terrorismForm(recipient);
       break;
-    case "MRTbreakdown":
-      mrtForm();
+    case "TrainBreakDown":
+      mrtForm(recipient);
       break;
     default:
     return "updateMessage Failed"
   }
 
   $.ajax({
-    type: "GET",
-    url: 'http://155.69.149.181:8080/SSAD/BroadcastController?agent=' + "sms" + '&message=' + message,
+    type: "POST",
+    data:msgParameter,
+    //url: 'http://155.69.149.181:8080/SSAD/BroadcastController?agent=' + "sms" + '&message=' + message,
+    url:"http://155.69.149.181:8080/SSAD/BroadcastController",
     success: function (result) {
-      alert("http://155.69.149.181:8080/SSAD/BroadcastController?agent=" + "sms" + "message=" + message);
+      alert(result);
     }
   });
 
 }
 
-function terrorismForm(){
+function terrorismForm(recipient){
   crisisType = $("#crisisType").val();
   //crisisID = $("#crisisID").val();
   description = $("#description").val();
@@ -75,19 +78,26 @@ function terrorismForm(){
   status = $("#status").val();
   //selectedCrisis = $("#selectedCrisis").val();
 
-  message =
+message =
   "Crisis: " + crisisType + "\n" +
-  "description: " + description "\n" +
-  "address: " + address + "\n"
-  "latitude: " + latitude + "\n"
-  "longitude: " + longitude + "\n"
-  "timeReported: " + timeReported + "\n"
-  "typeOfAttack: " + typeOfAttack + "\n"
-  "radius: " + radius + "\n"
-  "status: " +  status + "\n";
+  "Desc: " + description +"\n" +
+  "Add: " + address + "\n" +
+  //"latitude: " + latitude + "\n" +
+  //"longitude: " + longitude + "\n" +
+  "Time: " + timeReported + "\n" +
+  "Attack: " + typeOfAttack + "\n" +
+  //"radius: " + radius + "\n" +
+  "Status: " +  status + "\n";
+  
+msgParameter = {
+        "agent":"SMSAgent",
+        "message":message,
+        "recipient":recipient
+    };
+  
 }
 
-function mrtForm(){
+function mrtForm(recipient){
 
   crisisType = $("#crisisType").val();
   //crisisID = $("#crisisID").val();
@@ -105,17 +115,19 @@ function mrtForm(){
 
   message =
   "Crisis: " + crisisType + "\n" +
-  "description: " + description "\n" +
-  "fromStation: " + fromStation + "\n"
-  "fromStationLat: " + fromStationLat + "\n"
-  "fromStationLng: " + fromStationLng + "\n"
-  "toStation: " + toStation + "\n"
-  "toStationLat: " + toStationLat + "\n"
-  "toStationLng: " + toStationLng + "\n"
-  "timeReported: " + timeReported + "\n"
-  "typeOfAttack: " + typeOfAttack + "\n"
-  "radius: " + radius + "\n"
+  "Desc: " + description +"\n" +
+  "From: " + fromStation + "\n" +
+  //"fromStationLat: " + fromStationLat + "\n" +
+  //"fromStationLng: " + fromStationLng + "\n" +
+  "To: " + toStation + "\n" +
+  //"toStationLat: " + toStationLat + "\n" +
+  //"toStationLng: " + toStationLng + "\n" +
+  "Time: " + timeReported + "\n" +
   "status: " +  status + "\n";
-
-
+  
+  msgParameter = {
+        "agent":"SMSAgent",
+        "message":message,
+        "recipient":recipient
+    };
 }

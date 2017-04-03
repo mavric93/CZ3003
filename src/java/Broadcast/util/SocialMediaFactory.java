@@ -16,28 +16,6 @@ import Broadcast.Agent.SMSAgent;
  */
 public class SocialMediaFactory {
 
-    public static GroupPostable getInstance(String socialMediaAgent) throws Exception {
-
-        if (socialMediaAgent == null) {
-            throw new Exception("Agent parameter should not be null");
-        }
-
-        socialMediaAgent = socialMediaAgent.toLowerCase();
-
-        switch (socialMediaAgent) {
-            case "facebook":
-                return new FacebookAgent();
-            case "twitter":
-                return new TwitterAgent();
-            case "sms":
-                return new SMSAgent();
-            case "email":
-                return new EmailAgent();
-            default:
-                throw new Exception("Unsupported social media agent");      //reflection
-            }
-
-    }
     /**
      * Get Broadcast Agent instance based on class name
      * @param agent 
@@ -45,12 +23,20 @@ public class SocialMediaFactory {
      * @return GroupPostable 
      * @throws Exception 
      */
-    public static GroupPostable getAgentInstance(String agent) throws Exception{
+    public static GroupPostable getAgentGroupInstance(String agent) throws Exception{
         String agentString = "Broadcast.Agent."+agent;
         System.out.println("Received agentString" + agentString);
         
         Class<?> agentClass = Class.forName(agentString);        
         return getAgentClass(agentClass);
+        
+    }
+    public static IndividualPostable getAgentIndividualInstance(String agent) throws Exception{
+        String agentString = "Broadcast.Agent."+agent;
+        System.out.println("Received agentString" + agentString);
+        
+        Class<?> agentClass = Class.forName(agentString);        
+        return (IndividualPostable) agentClass.newInstance();
         
     }
     

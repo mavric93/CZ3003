@@ -51,7 +51,7 @@ public class BroadcastManagerSelvet extends HttpServlet {
             //get instance from factory
             //GroupPostable socialMedia = SocialMediaFactory.getInstance(agent);
             //Get instance from factory using reflection
-            GroupPostable socialMedia = SocialMediaFactory.getAgentInstance(agent);
+            GroupPostable socialMedia = SocialMediaFactory.getAgentGroupInstance(agent);
             
             //polymorphic ability to send message
             socialMedia.post(req.getParameterMap());

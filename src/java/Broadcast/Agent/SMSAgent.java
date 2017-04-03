@@ -26,7 +26,7 @@ public class SMSAgent implements GroupPostable, IndividualPostable {
     final private static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
     final private static String AUTHORIZATION_KEY = "AAAADG3DRnE:APA91bHa0pj4VagEU0QEa-iGO9H03E6DCNKGpUS1lvO9GNJq03BG0g4dUvuH7GffYzlzioQeZQzIY79COGnSIrNbr_8pQEE7WRE9QiPtsEFt7_TY1J9pEvR1wYVWp423JZ2QNPjiw5CS";
     final private String token = "dbeudyBiG50:APA91bFZrnFMCtphEWAbpFVD3Ni9dTZBwc-MMA6PaGwGmS8l2eHTWJuFJBUsyLQG4W_hOE9u1ouKviZatkxES1cCMJvBNwXBCrGzy6UuPuLAg8MhhTEl9ui_c73Bbe_oVQ_OA5PPBwSs";
-    final private static String CONTACTSFILE = "src/Broadcast/etc/contacts.csv";
+    final private static String CONTACTSFILE = "../etc/contacts.csv";//"src/Broadcast/etc/contacts.csv";
 
     public ArrayList<Integer> readContactList() throws Exception {
         BufferedReader br = null;

@@ -13,58 +13,79 @@ import core.DAO.TrainBreakDownCrisisDAO;
 import java.util.ArrayList;
 import java.util.List;
 import core.model.Crisis;
+import core.model.CrisisType;
 import core.model.CrisisUpdate;
 import core.model.TerrorismCrisis;
 import core.model.TrainBreakDownCrisis;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author mavric
  */
-public class CrisisUpdateController {
+public class CrisisUpdateController extends HttpServlet {
+
     private CrisisUpdateDAO dao;
+
     public CrisisUpdateController() {
         super();
         dao = new CrisisUpdateDAO();
     }
-    public int create(HttpServletRequest request) throws Exception {
-        int id = -1;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            String action = request.getParameter("action");
+            switch (action) {
+                case "add":
+                    JSONObject jo = new JSONObject();
+                    jo.put("success",create(request));
+                    response.getWriter().println(jo.toString());
+                    break;
+                case "list":
+                    String jsonObj = list(request);
+                    response.getWriter().write(jsonObj);
+                    break;
+            }
+
+    }
+
+    public boolean create(HttpServletRequest request) {
+        boolean success = false;
         try {
             int crisisID = Integer.parseInt(request.getParameter("crisisID"));
             String update = request.getParameter("update");
-            
-            CrisisUpdate newCrisisUpdate =  new CrisisUpdate(crisisID,update);
-            id = dao.addCrisisUpdate(newCrisisUpdate);
+
+            CrisisUpdate newCrisisUpdate = new CrisisUpdate(crisisID, update);
+            int id= dao.addCrisisUpdate(newCrisisUpdate);
+            if(id>-1){
+                success = true;
+            }
         } catch (Exception ex) {
             throw ex;
         }
-        return id;
+        return success;
     }
 
-    public Crisis read(HttpServletRequest request) {
-	int crisisID = Integer.parseInt(request.getParameter("crisisID"));
-        Crisis crisis  = dao.getCrisisById(crisisID);
-        return crisis;
-    }
+    public String list(HttpServletRequest request) {
+        ArrayList<CrisisUpdate> crisisUpdateList = new ArrayList();
+        JSONArray jsonArr = new JSONArray();
+        try {
+            crisisUpdateList = dao.getAllCrisisUpdate(Integer.parseInt(request.getParameter("crisisID")));
 
-    public List<Crisis> list(HttpServletRequest request) {
-        ArrayList<Crisis> crisisList = new ArrayList<Crisis>();
-        try{
-            crisisList = dao.getAllCrisis();
-            
-            for(int i=0;i<crisisList.size();i++){
-                Crisis crisis = crisisList.get(i);
-                if(crisis instanceof TrainBreakDownCrisis){
-                    TrainBreakDownCrisisDAO tbdDAO = new TrainBreakDownCrisisDAO();
-                    crisisList.set(i, tbdDAO.getCrisisById(crisis.getCrisisID(), crisis));
-                }else if(crisis instanceof TerrorismCrisis){
-                    TerrorismCrisisDAO tDAO = new TerrorismCrisisDAO();
-                    crisisList.set(i, tDAO.getCrisisById(crisis.getCrisisID(), crisis));
-                }
+            JSONObject jsonObj = new JSONObject();
+            for (int i = 0; i < crisisUpdateList.size(); i++) {
+                CrisisUpdate crisisupdate = crisisUpdateList.get(i);
+                jsonArr.put(crisisupdate.toJSON());
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return crisisList;
+        return jsonArr.toString();
     }
 }

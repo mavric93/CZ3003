@@ -16,8 +16,8 @@ public class TrainBreakDownCrisis extends Crisis {
     private double secondMRTLat;
     private double secondMRTLng;
 	
-    public TrainBreakDownCrisis(String crisisType, String address, double latitude, double longitude, String description,String secondMRTAddress,double secondMRTLng,double secondMRTLat) {
-        super(crisisType, address, latitude, longitude, description);
+    public TrainBreakDownCrisis(String crisisType, String address, double latitude, double longitude, String description,String secondMRTAddress,double secondMRTLng,double secondMRTLat,int mobileNumber) {
+        super(crisisType, address, latitude, longitude, description,mobileNumber);
         this.secondMRTAddress = secondMRTAddress;
         this.secondMRTLat = secondMRTLat;
 		this.secondMRTLng = secondMRTLng;

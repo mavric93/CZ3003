@@ -33,8 +33,8 @@ public class TerrorismCrisisController extends CrisisController {
             double longitude = Double.parseDouble(request.getParameter("longitude"));
             String description = request.getParameter("description");
             String typeOfAttack = request.getParameter("typeOfAttack");
-            
-            TerrorismCrisis crisis = new TerrorismCrisis(typeOfAttack, radius, type, address, latitude, longitude, description);
+            int mobileNumber = Integer.parseInt(request.getParameter("mobilenumber"));
+            TerrorismCrisis crisis = new TerrorismCrisis(typeOfAttack, radius, type, address, latitude, longitude, description,mobileNumber);
             crisis.setCrisisID(id);
             dao.create(crisis);
         } catch (Exception ex) {

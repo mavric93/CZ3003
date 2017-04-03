@@ -17,8 +17,8 @@ public class TerrorismCrisis extends Crisis {
     public TerrorismCrisis(){
     
     }
-    public TerrorismCrisis(String typeOfAttack, int radius, String crisisType, String address, double latitude, double longitude, String description) {
-        super(crisisType, address, latitude, longitude, description);
+    public TerrorismCrisis(String typeOfAttack, int radius, String crisisType, String address, double latitude, double longitude, String description,int mobileNumber) {
+        super(crisisType, address, latitude, longitude, description,mobileNumber);
         this.typeOfAttack = typeOfAttack;
         this.radius = radius;
     }

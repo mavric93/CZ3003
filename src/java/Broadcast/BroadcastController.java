@@ -5,7 +5,8 @@
  */
 package Broadcast;
 
-import Broadcast.util.Postable;
+import Broadcast.util.GroupPostable;
+import Broadcast.util.IndividualPostable;
 import Broadcast.util.SocialMediaFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -24,11 +25,25 @@ public class BroadcastController extends HttpServlet {
     }
     
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-            response.getWriter().write("No HTTP post allowed on this servlet");
-        
+        try {
+            String agent = request.getParameter("agent");
+            String message = request.getParameter("message");
+            String recipient = request.getParameter("recipient");
+
+            IndividualPostable socialMedia = SocialMediaFactory.getAgentIndividualInstance(agent);
+            socialMedia.post(request.getParameterMap(),recipient);
+            
+            //response.
+            response.getWriter().print(message + " has been posted to " + agent);
+            //response.getWriter().write(message + " has been posted to " + agent);
+        } catch (Exception ex) {
+            //return error page
+            System.out.println(request.getContextPath());
+            ex.printStackTrace();
+            response.getWriter().write(ex.getMessage());
+        }
     }
     
     @Override
@@ -39,8 +54,8 @@ public class BroadcastController extends HttpServlet {
             String agent = request.getParameter("agent");
             String message = request.getParameter("message");
 
-            Postable socialMedia = SocialMediaFactory.getInstance(agent);
-            socialMedia.post(message);
+            GroupPostable socialMedia = SocialMediaFactory.getAgentGroupInstance(agent);
+            socialMedia.post(request.getParameterMap());
             
             //response.
             response.getWriter().print(message + " has been posted to " + agent);

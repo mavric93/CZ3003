@@ -28,7 +28,6 @@
                     dataType: 'json',
                     success: function (result) {
                         var data = JSON.parse(result.data);
-                        console.log(data);
                         var ddl = $("#CrisisID");
                         for (i = 0; i < data.length; i++) {
                             var crisis = data[i];
@@ -40,7 +39,25 @@
                 });
             }
             function submitUpdates() {
-
+                var url = "http://155.69.149.181:8080/SSAD/CrisisUpdateController?";
+                var CrisisID = document.getElementById("CrisisID").value;
+                var update = document.getElementById("crisisUpdate").value;
+                if(CrisisID!=""&&update!=""){
+                    var parameter = "action=add&crisisID="+CrisisID+"&update="+update;
+                    $.ajax({
+                        type: 'GET',
+                        url: url+parameter,
+                        async: true,
+                        dataType: 'json',
+                        success: function (result) {
+                            if(result.success){
+                                alert("update has been created");
+                            }else{
+                                alert("update has not been created");
+                            }
+                        }
+                    });
+                }
             }
         </script>
     </head>

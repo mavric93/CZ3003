@@ -37,8 +37,8 @@ public class CrisisController {
             double latitude = Double.parseDouble(request.getParameter("latitude"));
             double longitude = Double.parseDouble(request.getParameter("longitude"));
             String description = request.getParameter("description");
-            
-            Crisis newCrisis =  new Crisis(type, address, latitude, longitude, description);
+            int mobileNumber = Integer.parseInt(request.getParameter("mobilenumber"));
+            Crisis newCrisis =  new Crisis(type, address, latitude, longitude, description,mobileNumber);
             id = dao.addCrisis(newCrisis);
         } catch (Exception ex) {
             throw ex;

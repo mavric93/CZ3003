@@ -33,12 +33,13 @@ public class TrainBreakDownCrisisController extends CrisisController {
             double latitude = Double.parseDouble(request.getParameter("latitude"));
             double longitude = Double.parseDouble(request.getParameter("longitude"));
             String description = request.getParameter("description");
-
+            int mobileNumber = Integer.parseInt(request.getParameter("mobilenumber"));
+            
             String second_address = request.getParameter("secondMRTAddress");
             double second_latitude = Double.parseDouble(request.getParameter("secondMRTLat"));
             double second_longitude = Double.parseDouble(request.getParameter("secondMRTLng"));
-
-            TrainBreakDownCrisis crisis = new TrainBreakDownCrisis(type, address, latitude, longitude, description,second_address,second_longitude,second_latitude);
+                
+            TrainBreakDownCrisis crisis = new TrainBreakDownCrisis(type, address, latitude, longitude, description,second_address,second_longitude,second_latitude,mobileNumber);
             crisis.setCrisisID(id);
             dao.create(crisis);
         } catch (Exception ex) {

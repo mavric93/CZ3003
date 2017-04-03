@@ -40,7 +40,7 @@ public class BroadCastManager {
 
             //get instance from factory
             for (String eachAgent : agent) {
-                socialMedia = SocialMediaFactory.getAgentInstance(eachAgent);
+                socialMedia = SocialMediaFactory.getAgentGroupInstance(eachAgent);
                 socialMedia.post(messageMap);
             }
             //polymorphic ability to send message

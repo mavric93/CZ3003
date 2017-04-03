@@ -4,7 +4,6 @@ Terrorism = {
 };
 
 Terrorism.plot = function (crisis) {
-    console.log(crisis);
     var location = {lat: crisis.latitude, lng: crisis.longitude};
     var icon = crisis.icon+"_"+crisis.status+".png";
     var marker = plot(map, location, icon, false, null, Terrorism.onClick);
@@ -18,7 +17,7 @@ Terrorism.plot = function (crisis) {
 Terrorism.submitCrisisInit = function () {
     //set the form onsubmit to submtiCrisis
     document.getElementById("submit").onclick = function () {
-        Terrorism.submitCrisis()
+        Terrorism.submitCrisis();
     };
 
     //hide fields
@@ -40,7 +39,6 @@ Terrorism.submitCrisisInit = function () {
             }
             marker = plot(map, geometry.location, null, true, null, null);
             //dragDrop and set address to textbox 
-
             google.maps.event.addListener(marker, "dragend", function (event) {
                 lat = event.latLng.lat();
                 lng = event.latLng.lng();
@@ -70,6 +68,7 @@ Terrorism.submitCrisis = function () {
     var address = document.getElementById("address").value;
     var latitude = document.getElementById("latitude").value;
     var longitude = document.getElementById("longitude").value;
+    var mobilenumber = document.getElementById("mobilenumber").value;
     //specialized
     var typeOfAttack = document.getElementById("typeOfAttack").value;
     var radius = document.getElementById("radius").value;
@@ -82,9 +81,9 @@ Terrorism.submitCrisis = function () {
         "description": description,
         "radius": radius,
         "typeOfAttack": typeOfAttack,
-        "action": action
+        "action": action,
+        "mobilenumber":mobilenumber
     };
-    console.log(parameter);
     $.ajax({
         type: 'POST',
         url: url,
@@ -164,6 +163,36 @@ Terrorism.updateCrisis = function () {
 //called when a terrorism crisis is onclick
 Terrorism.onClick = function () {
     var crisis = this.json;
+    
+    $.ajax({
+        type: 'GET',
+        url: "http://155.69.149.181:8080/SSAD/CrisisUpdateController?action=list&crisisID="+crisis.crisisID,
+        async: true,
+        beforeSend: function (xhr) {
+            if (xhr && xhr.overrideMimeType) {
+                xhr.overrideMimeType('application/json;charset=utf-8');
+            }
+        },
+        dataType: 'json',
+        success: function (data) {
+            var rows = $(".crisisUpdates_container>div>table tr");
+            var rowlength = rows.length;
+            while(rowlength>1){
+                $(rows[1]).remove();
+                rows = $(".crisisUpdates_container>div>table tr");
+                rowlength = rows.length;
+            }
+            
+            for(i = 0;i<data.length;i++){
+                var updateInfo = data[i];
+                $(".crisisUpdates_container>div>table").append("<tr><td>"+updateInfo.update+"</td><td>"+updateInfo.timeUpdated+"</td></tr>");
+            }
+        },
+        error: function (data) {
+            alert("Server returned an error");
+        }
+    });
+    
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
         document.getElementById("submit").onclick = function () {
             Terrorism.updateCrisis();
@@ -181,6 +210,7 @@ Terrorism.onClick = function () {
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
         $("#address").val(crisis.address).attr("disabled", true);
+        $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
 	$("#latitude").val(crisis.latitude).attr("disabled", true);
 	$("#longitude").val(crisis.longitude).attr("disabled", true);
         $("#timeReported").val(crisis.timereported).attr("disabled", true);

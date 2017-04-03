@@ -21,7 +21,7 @@ public class CrisisStateListener implements javax.servlet.ServletContextListener
     public void contextInitialized(ServletContextEvent sce) {
         timerTask = new StateMonitor(false);
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 5000, 5000);
+        timer.scheduleAtFixedRate(timerTask, 1000*60*30, 1000*60*30);
     }
 
     @Override

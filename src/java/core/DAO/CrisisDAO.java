@@ -42,8 +42,8 @@ public class CrisisDAO {
             SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO `ssad`.`crisis` "
-                            + "(`CType`, `Description`, `Address`, `Lat`, `Lng`, `Status`, `TimeReported`) "
-                            + "VALUES (?, ?, ?, ?, ?, ?, ?);");
+                            + "(`CType`, `Description`, `Address`, `Lat`, `Lng`, `Status`, `TimeReported`,`MobileNumber`) "
+                            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
             // Parameters start with 1
             preparedStatement.setString(1, crisis.getCrisisType());
             preparedStatement.setString(2, crisis.getDescription());
@@ -52,6 +52,7 @@ public class CrisisDAO {
             preparedStatement.setDouble(5, crisis.getLongitude());
             preparedStatement.setString(6, crisis.getStatus());
             preparedStatement.setString(7, datetimeformat.format(crisis.getTimeOccured().getTime()));
+            preparedStatement.setInt(8, crisis.getMobileNumber());
             preparedStatement.executeUpdate();
 
             PreparedStatement preparedStatement2 = connection.
@@ -133,6 +134,7 @@ public class CrisisDAO {
                 crisis.setTimeReported(rs.getString("TimeReported"));
                 crisis.setTimeResolved(rs.getString("TimeResolved"));
                 crisis.setDescription(rs.getString("Description"));
+                crisis.setMobileNumber(rs.getInt("MobileNumber"));
                 crisis.setIcon(rs.getString("Icon"));
                 crisisList.add(crisis);
             }
