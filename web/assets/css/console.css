@@ -66,6 +66,7 @@ body{
 .btn_social{
     width: 35px;
     height: auto;
+    vertical-align: middle;
 }
 .CrisisState{
     z-index:400;
