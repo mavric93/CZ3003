@@ -5,10 +5,10 @@
  */
 package Broadcast.util;
 
+import Broadcast.Agent.EmailAgent;
 import Broadcast.Agent.TwitterAgent;
 import Broadcast.Agent.FacebookAgent;
 import Broadcast.Agent.SMSAgent;
-import Broadcast.Agent.EmailAgent;
 
 /**
  *
@@ -16,7 +16,7 @@ import Broadcast.Agent.EmailAgent;
  */
 public class SocialMediaFactory {
 
-    public static Postable getInstance(String socialMediaAgent) throws Exception {
+    public static GroupPostable getInstance(String socialMediaAgent) throws Exception {
 
         if (socialMediaAgent == null) {
             throw new Exception("Agent parameter should not be null");
@@ -37,5 +37,24 @@ public class SocialMediaFactory {
                 throw new Exception("Unsupported social media agent");      //reflection
             }
 
+    }
+    /**
+     * Get Broadcast Agent instance based on class name
+     * @param agent 
+     * Exact string of the broadcast agent class. 
+     * @return GroupPostable 
+     * @throws Exception 
+     */
+    public static GroupPostable getAgentInstance(String agent) throws Exception{
+        String agentString = "Broadcast.Agent."+agent;
+        System.out.println("Received agentString" + agentString);
+        
+        Class<?> agentClass = Class.forName(agentString);        
+        return getAgentClass(agentClass);
+        
+    }
+    
+    public static GroupPostable getAgentClass(Class agentClass) throws Exception {
+        return (GroupPostable) agentClass.newInstance();
     }
 }

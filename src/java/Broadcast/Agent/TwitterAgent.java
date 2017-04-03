@@ -5,7 +5,6 @@
  */
 package Broadcast.Agent;
 
-import Broadcast.util.Postable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.Status;
@@ -13,6 +12,9 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
+import Broadcast.util.GroupPostable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -23,7 +25,7 @@ import twitter4j.conf.ConfigurationBuilder;
  * Can choose to use twitter4j.properties for account setup or use
  * configureTwitter function for init.
  */
-public class TwitterAgent implements Postable{
+public class TwitterAgent implements GroupPostable {
 
     static String TWITTER_CONSUMER_KEY = "YJJesWSbVH1o83DbDUUN42sii";
     static String TWITTER_CONSUMER_SECRET = "zs6ZljjO7FK8fjDPzBhUFUClP98rRU5BXpXy0qXkqlHscaBubv";
@@ -34,12 +36,14 @@ public class TwitterAgent implements Postable{
     TwitterFactory tf;
     Twitter twitter;
 
-    public void post(String statusMessage) {
+    public void post(Object messageObj) {
 
+        Map<String, String[]> pMap = (HashMap) messageObj;
+        String message = pMap.get("message")[0];
         try {
             //twitter = TwitterFactory.getSingleton();            
             initTwitter();
-            Status status = twitter.updateStatus(statusMessage);
+            Status status = twitter.updateStatus(message);
             System.out.println("Status Message Updated");
         } catch (TwitterException ex) {
             Logger.getLogger(TwitterAgent.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,6 +1,5 @@
 package Broadcast.Agent;
 
-import Broadcast.util.Postable;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,17 +16,17 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Broadcast.util.GroupPostable;
+import Broadcast.util.IndividualPostable;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SMSAgent implements Postable {
+public class SMSAgent implements GroupPostable, IndividualPostable {
 
     final private static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
     final private static String AUTHORIZATION_KEY = "AAAADG3DRnE:APA91bHa0pj4VagEU0QEa-iGO9H03E6DCNKGpUS1lvO9GNJq03BG0g4dUvuH7GffYzlzioQeZQzIY79COGnSIrNbr_8pQEE7WRE9QiPtsEFt7_TY1J9pEvR1wYVWp423JZ2QNPjiw5CS";
-    private String token = "dbeudyBiG50:APA91bFZrnFMCtphEWAbpFVD3Ni9dTZBwc-MMA6PaGwGmS8l2eHTWJuFJBUsyLQG4W_hOE9u1ouKviZatkxES1cCMJvBNwXBCrGzy6UuPuLAg8MhhTEl9ui_c73Bbe_oVQ_OA5PPBwSs";
-    private final static String CONTACTSFILE = "../etc/contacts.csv";
-
-    public static void main(String[] args) throws Exception {
-        new SMSAgent().readContactList();
-    }
+    final private String token = "dbeudyBiG50:APA91bFZrnFMCtphEWAbpFVD3Ni9dTZBwc-MMA6PaGwGmS8l2eHTWJuFJBUsyLQG4W_hOE9u1ouKviZatkxES1cCMJvBNwXBCrGzy6UuPuLAg8MhhTEl9ui_c73Bbe_oVQ_OA5PPBwSs";
+    final private static String CONTACTSFILE = "src/Broadcast/etc/contacts.csv";
 
     public ArrayList<Integer> readContactList() throws Exception {
         BufferedReader br = null;
@@ -61,50 +60,60 @@ public class SMSAgent implements Postable {
     }
 
     @Override
-    public void post(String msg) throws Exception {
+    public void post(Object messageObj) throws Exception {
 
-        //codes to sent to android
+        
+        ArrayList<Integer> contactList = readContactList();
+        for (int recipent : contactList) {
+            post(messageObj, Integer.toString(recipent));
+        }
+    }
+
+    @Override
+    public void post(Object messageObj, String recipent) throws Exception {
+                
+        Map <String,String[]> pMap = (HashMap)messageObj;
+        String message = pMap.get("message")[0];
+        
+        // codes to sent to android
         URL url;
         HttpURLConnection urlConnection = null;
         String resp = null;
         try {
-            ArrayList<Integer> contactList = readContactList();
-            for (int recipent : contactList) {
-                url = new URL(FCM_URL);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setRequestProperty("Authorization", "key=" + AUTHORIZATION_KEY);
 
-                JSONObject inputData = new JSONObject();
+            url = new URL(FCM_URL);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Authorization", "key=" + AUTHORIZATION_KEY);
 
-                inputData.put("phoneNumber", recipent);
-                inputData.put("Msg", msg);
+            JSONObject inputData = new JSONObject();
 
-                JSONObject jo = new JSONObject();
-                jo.put("to", token);
-                jo.put("data", inputData);
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
+            inputData.put("phoneNumber", recipent);
+            inputData.put("Msg", message);
 
-                DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-                String parameters = jo.toString();
-                wr.write(parameters.getBytes());
+            JSONObject jo = new JSONObject();
+            jo.put("to", token);
+            jo.put("data", inputData);
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
 
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader isw = new InputStreamReader(in);
-                int data = isw.read();
-                StringBuilder sb = new StringBuilder();
-                while (data != -1) {
-                    char current = (char) data;
-                    data = isw.read();
-                    sb.append(current);
-                }
-                resp = sb.toString();
+            DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+            String parameters = jo.toString();
+            wr.write(parameters.getBytes());
+
+            InputStream in = urlConnection.getInputStream();
+            InputStreamReader isw = new InputStreamReader(in);
+            int data = isw.read();
+            StringBuilder sb = new StringBuilder();
+            while (data != -1) {
+                char current = (char) data;
+                data = isw.read();
+                sb.append(current);
             }
+            resp = sb.toString();
+
             System.out.println(resp);
-        } catch (Exception e) {
-            throw e;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

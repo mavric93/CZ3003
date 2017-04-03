@@ -9,9 +9,9 @@ package Broadcast.util;
  *
  * @author zhijie
  */
-public interface Postable {
+public interface GroupPostable {
 
     //public abstract void init(String propertiesFile);
 
-    public abstract void post(String message) throws Exception;
+    public abstract void post(Object messageObj) throws Exception;
 }

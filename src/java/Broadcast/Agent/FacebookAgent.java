@@ -5,12 +5,13 @@
  */
 package Broadcast.Agent;
 
-import Broadcast.util.Postable;
 import facebook4j.Facebook;
-import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.auth.AccessToken;
-import facebook4j.conf.ConfigurationBuilder;
+import Broadcast.util.GroupPostable;
+import facebook4j.FacebookException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,35 +19,32 @@ import java.util.logging.Logger;
  *
  * @author zhijie
  */
-public class FacebookAgent implements Postable {
+public class FacebookAgent implements GroupPostable {
 
     static String OAUTH_FACEBOOK_APP_ID = "428690590809586";
     static String OAUTH_FACEBOOK_APP_SECRET = "a27efed8b5d57ea1e671792a477d7d30";
-    //cannot be final
-    static String OAUTH_ACCESS_TOKEN = "EAAGF5E5iPfIBADV6oIpbF7fzpUZBSBDLZBo1bY3qzTPBxdUSkdATsWsTZCZAhWTUVdY8XhzVS852Rh5IjmdZCtKg8kJleCRSf3cQMlUUMQnJpTA3O4ocxZB8DMBZAAdc1nZAIuEVHBTLLhoOW0m82x9t";
-    static String OAUTH_PERMISSIONS = "email,publish_stream,manage_pages";
-    static String PAGE_ACCESS_TOKEN = "EAACEdEose0cBAAutDFBHiwxhfmGoFXObs7xZBuyeNjTUw3laXAfdvnOsweEGyWV0fAFvmlOkHsajBfS3aQraQJt2M6WOcnbepsTZAX2dSxOENeaoZCCIwpx1zZAbQ7OMKzysXm0smRusSJjbci75QTyGEby0mDgs4j7OVFzTGEb8LdnNBv48I4Q8DboOFfIZD";
+    static String OAUTH_ACCESS_TOKEN = "EAAGF5E5iPfIBAHNSEvEbDkySZAnXX2cCofaz56k4IBjQT1UwShZBXPQdAPK1mNxocl81ZABgMtY6ap0Sm8EjOAnzcAQ6uccCI12nZCsTeYqq8zGb6rMLSnrBwzmpsYx69YMkfwE9yzQj0oicTcGmFnvkNI7NLz8ZBZCZAZCvERiuLFQBrNoxSf24";
+    static String PAGE_ACCESS_TOKEN = "EAAGF5E5iPfIBALXGrayg3tYlfeyDclw1yAG7fy3zOxF7kJZBwCTetB9u5TiUwR2iZAO0XtPNjtZBIlvbNzaoGOE9QWmsWtmGsDaKnPpIt0GpYf9iQ6TQkvXnm3ZBkYlZA56mv9KGJNxCkPAF76QK1J9Q8BkxvAg0ZD";
 
     @Override
-    public void post(String statusMessage) {
-
-        //initFacebook();
-        //TODO Need to get new page_access_token
-        //check if session is still valid
-        //retrieve token
-      //  reviveToken();
+    public void post(Object messageObj) {
         
-               
+        Map<String,String[]> parametersMap = (HashMap)messageObj;
+        
+        String message = parametersMap.get("message")[0];     
+
         Facebook facebook = new FacebookFactory().getInstance();
         facebook.setOAuthAppId(OAUTH_FACEBOOK_APP_ID, OAUTH_FACEBOOK_APP_SECRET);
-        facebook.setOAuthPermissions(OAUTH_PERMISSIONS);
-        facebook.setOAuthAccessToken(new AccessToken(PAGE_ACCESS_TOKEN, null));
+        facebook.setOAuthAccessToken(new AccessToken(PAGE_ACCESS_TOKEN, null)); //Set page access token to update page
 
         try {
-            facebook.postStatusMessage(statusMessage);
+            facebook.postStatusMessage(message);
+            
         } catch (FacebookException ex) {
             Logger.getLogger(FacebookAgent.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            System.out.println("Facebook Status post Completed!");
         }
-
+        
     }
 }
