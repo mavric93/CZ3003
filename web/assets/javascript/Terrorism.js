@@ -129,10 +129,9 @@ Terrorism.updateCrisis = function () {
         "crisisID":crisisID,
         "crisisType": crisisType,
         "status":status,
-	"description": description,
+		"description": description,
         "action": action
     };
-    console.log(parameter);
     $.ajax({
         type: 'POST',
         url: url,
@@ -194,30 +193,50 @@ Terrorism.onClick = function () {
     });
     
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
-        document.getElementById("submit").onclick = function () {
-            Terrorism.updateCrisis();
-        };
-        if(crisis.status=="Resolved"){
-            $("#status").attr("disabled",true);
-            $("#description").attr("disabled",true);
-            $("#submit").attr("disabled",true);
-        }
-        if(crisis.timeresolved=="null"){
-            $("#timeResolved").parent().parent().css("display","none");
-        }
+		if(public==true){
+			$("#submit").css("display","none");
+			if(crisis.timeresolved=="null"){
+				$("#timeResolved").parent().parent().css("display","none");
+			}
+			$("#crisisType").val(crisis.crisisType).attr("disabled", true);
+			$("#crisisID").val(crisis.crisisID).attr("disabled", true);
+			$("#description").val(crisis.description).attr("disabled", true);
+			$("#address").val(crisis.address).attr("disabled", true);
+			$("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
+			$("#latitude").val(crisis.latitude).attr("disabled", true);
+			$("#longitude").val(crisis.longitude).attr("disabled", true);
+			$("#timeReported").val(crisis.timereported).attr("disabled", true);
+			$("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
+			$("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
+			$("#radius").val(crisis.radius).attr("disabled", true);
+			$("#status").val(crisis.status).attr("disabled", true);
+		}else{
+			document.getElementById("submit").onclick = function () {
+				Terrorism.updateCrisis();
+			};
+			if(crisis.status=="Resolved"){
+				$("#status").attr("disabled",true);
+				$("#description").attr("disabled",true);
+				$("#submit").attr("disabled",true);
+			}
+			if(crisis.timeresolved=="null"){
+				$("#timeResolved").parent().parent().css("display","none");
+			}
+			
+			$("#crisisType").val(crisis.crisisType).attr("disabled", true);
+			$("#crisisID").val(crisis.crisisID);
+			$("#description").val(crisis.description);
+			$("#address").val(crisis.address).attr("disabled", true);
+			$("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
+			$("#latitude").val(crisis.latitude).attr("disabled", true);
+			$("#longitude").val(crisis.longitude).attr("disabled", true);
+			$("#timeReported").val(crisis.timereported).attr("disabled", true);
+			$("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
+			$("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
+			$("#radius").val(crisis.radius).attr("disabled", true);
+			$("#status").val(crisis.status);
+		}
         
-        $("#crisisType").val(crisis.crisisType).attr("disabled", true);
-        $("#crisisID").val(crisis.crisisID);
-        $("#description").val(crisis.description);
-        $("#address").val(crisis.address).attr("disabled", true);
-        $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
-	$("#latitude").val(crisis.latitude).attr("disabled", true);
-	$("#longitude").val(crisis.longitude).attr("disabled", true);
-        $("#timeReported").val(crisis.timereported).attr("disabled", true);
-        $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
-        $("#typeOfAttack").val(crisis.typeOfAttack).attr("disabled", true);
-        $("#radius").val(crisis.radius).attr("disabled", true);
-        $("#status").val(crisis.status);
-        $("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
+        //$("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
     });
 };

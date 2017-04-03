@@ -184,15 +184,54 @@ TrainBreakDown.onClick = function () {
     
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
         //submit event
-        document.getElementById("submit").onclick = function () {
-            TrainBreakDown.updateCrisis();
-        };
+		if(public==true){
+			$("#submit").css("display","none");
+			readMRTFromText();
+			if(crisis.timeresolved=="null"){
+				$("#timeResolved").parent().parent().css("display","none");
+			}
+			$("#crisisType").val(crisis.crisisType).attr("disabled",true);
+			$("#crisisID").val(crisis.crisisID).attr("disabled",true);
+			$("#description").val(crisis.description).attr("disabled",true);
+			$("#fromStation").val(crisis.address).attr("disabled",true);
+			$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
+			$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
+			$("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
+			$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+			$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
+			$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
+			$("#timeReported").val(crisis.timereported).attr("disabled",true);
+			$("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
+			$("#status").val(crisis.status).attr("disabled",true);
+		}else{
+			document.getElementById("submit").onclick = function () {
+				TrainBreakDown.updateCrisis();
+			};
+			readMRTFromText();
+			if(crisis.status=="Resolved"){
+				$("#status").attr("disabled",true);
+				$("#description").attr("disabled",true);
+				$("#submit").attr("disabled",true);
+			}
+			if(crisis.timeresolved=="null"){
+				$("#timeResolved").parent().parent().css("display","none");
+			}
+			$("#crisisType").val(crisis.crisisType).attr("disabled",true);
+			$("#crisisID").val(crisis.crisisID);
+			$("#description").val(crisis.description);
+			$("#fromStation").val(crisis.address).attr("disabled",true);
+			$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
+			$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
+			$("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
+			$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+			$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
+			$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
+			$("#timeReported").val(crisis.timereported).attr("disabled",true);
+			$("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
+			$("#status").val(crisis.status);
+		}
+        
         readMRTFromText();
-        if(crisis.status=="Resolved"){
-            $("#status").attr("disabled",true);
-            $("#description").attr("disabled",true);
-            $("#submit").attr("disabled",true);
-        }
         if(crisis.timeresolved=="null"){
             $("#timeResolved").parent().parent().css("display","none");
         }
@@ -200,16 +239,16 @@ TrainBreakDown.onClick = function () {
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
         $("#fromStation").val(crisis.address).attr("disabled",true);
-	$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
+		$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
     	$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
         $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
-	$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
-	$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
+		$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
+		$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
     	$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
         $("#timeReported").val(crisis.timereported).attr("disabled",true);
         $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
         $("#status").val(crisis.status);
-        $("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
+        //$("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
     });
     editButton();
 };
