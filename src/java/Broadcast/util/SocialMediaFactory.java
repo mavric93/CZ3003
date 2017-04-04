@@ -5,11 +5,6 @@
  */
 package Broadcast.util;
 
-import Broadcast.Agent.EmailAgent;
-import Broadcast.Agent.TwitterAgent;
-import Broadcast.Agent.FacebookAgent;
-import Broadcast.Agent.SMSAgent;
-
 /**
  *
  * @author zhijie
@@ -23,20 +18,12 @@ public class SocialMediaFactory {
      * @return GroupPostable 
      * @throws Exception 
      */
-    public static GroupPostable getAgentGroupInstance(String agent) throws Exception{
+    public static GroupPostable getAgentInstance(String agent) throws Exception{
         String agentString = "Broadcast.Agent."+agent;
         System.out.println("Received agentString" + agentString);
         
         Class<?> agentClass = Class.forName(agentString);        
         return getAgentClass(agentClass);
-        
-    }
-    public static IndividualPostable getAgentIndividualInstance(String agent) throws Exception{
-        String agentString = "Broadcast.Agent."+agent;
-        System.out.println("Received agentString" + agentString);
-        
-        Class<?> agentClass = Class.forName(agentString);        
-        return (IndividualPostable) agentClass.newInstance();
         
     }
     

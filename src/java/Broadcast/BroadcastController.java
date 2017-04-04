@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServletResponse;
  * @author zhijie
  */
 public class BroadcastController extends HttpServlet {
-    
+
     public BroadcastController() {
         super();
     }
-    
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,9 +32,9 @@ public class BroadcastController extends HttpServlet {
             String message = request.getParameter("message");
             String recipient = request.getParameter("recipient");
 
-            IndividualPostable socialMedia = SocialMediaFactory.getAgentIndividualInstance(agent);
+            GroupPostable socialMedia = SocialMediaFactory.getAgentGroupInstance(agent);
             socialMedia.post(request.getParameterMap(),recipient);
-            
+
             //response.
             response.getWriter().print(message + " has been posted to " + agent);
             //response.getWriter().write(message + " has been posted to " + agent);
@@ -45,7 +45,7 @@ public class BroadcastController extends HttpServlet {
             response.getWriter().write(ex.getMessage());
         }
     }
-    
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,7 +56,7 @@ public class BroadcastController extends HttpServlet {
 
             GroupPostable socialMedia = SocialMediaFactory.getAgentGroupInstance(agent);
             socialMedia.post(request.getParameterMap());
-            
+
             //response.
             response.getWriter().print(message + " has been posted to " + agent);
             //response.getWriter().write(message + " has been posted to " + agent);
@@ -66,8 +66,8 @@ public class BroadcastController extends HttpServlet {
             ex.printStackTrace();
             response.getWriter().write(ex.getMessage());
         }
-        
-        //action type = contact&agency = POLICE&message =  
-        
+
+        //action type = contact&agency = POLICE&message =
+
     }
 }

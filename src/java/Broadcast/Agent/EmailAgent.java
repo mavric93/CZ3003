@@ -26,8 +26,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
-
 /**
  *
  * @author zhijie
@@ -41,9 +39,16 @@ public class EmailAgent implements GroupPostable, IndividualPostable {
     @Override
     public void post(Object messageObj) throws Exception {
 
-        ArrayList<String> subscriberEmails = readfromFile();
-        for (String receiptant : subscriberEmails) {            
-            post(messageObj, receiptant);
+        Map<String, String[]> pMap = (HashMap) messageObj;
+        String recipientGroup = null;
+        if (pMap.get("group") != null) {
+            recipientGroup = pMap.get("group")[0];
+        }
+        ArrayList<String> subscriberEmails = readfromFile(recipientGroup);
+        
+        for (String recipient : subscriberEmails) {
+            //post(messageObj, receiptant);
+            System.out.println("Recipient:" + recipient);
         }
         System.out.println("Email broadcast completed!");
 
@@ -52,10 +57,10 @@ public class EmailAgent implements GroupPostable, IndividualPostable {
     @Override
     public void post(Object messageObj, String recipent) throws Exception {
 
-        Map <String,String[]> messageMap = (HashMap)messageObj;
+        Map<String, String[]> messageMap = (HashMap) messageObj;
         String message = messageMap.get("message")[0];
         String subject = messageMap.get("subject")[0];
-        
+
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -82,7 +87,7 @@ public class EmailAgent implements GroupPostable, IndividualPostable {
 
     }
 
-    private ArrayList<String> readfromFile() throws Exception {
+    private ArrayList<String> readfromFile(String recipientGrp) throws Exception {
         BufferedReader br = null;
         try {
             ArrayList<String> recipents = new ArrayList();
@@ -96,7 +101,12 @@ public class EmailAgent implements GroupPostable, IndividualPostable {
                 System.out.println(line);
                 String lineArr[] = line.split(",");
                 String recipentsEmail = lineArr[1].trim();
-                recipents.add(recipentsEmail);
+
+                if (recipientGrp == null) {
+                    recipents.add(recipentsEmail);
+                } else if (recipientGrp.equals(lineArr[2].trim())) {
+                    recipents.add(recipentsEmail);
+                }
             }
             br.close();
             return recipents;

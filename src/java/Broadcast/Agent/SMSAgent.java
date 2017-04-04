@@ -26,22 +26,29 @@ public class SMSAgent implements GroupPostable, IndividualPostable {
     final private static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
     final private static String AUTHORIZATION_KEY = "AAAADG3DRnE:APA91bHa0pj4VagEU0QEa-iGO9H03E6DCNKGpUS1lvO9GNJq03BG0g4dUvuH7GffYzlzioQeZQzIY79COGnSIrNbr_8pQEE7WRE9QiPtsEFt7_TY1J9pEvR1wYVWp423JZ2QNPjiw5CS";
     final private String token = "dbeudyBiG50:APA91bFZrnFMCtphEWAbpFVD3Ni9dTZBwc-MMA6PaGwGmS8l2eHTWJuFJBUsyLQG4W_hOE9u1ouKviZatkxES1cCMJvBNwXBCrGzy6UuPuLAg8MhhTEl9ui_c73Bbe_oVQ_OA5PPBwSs";
-    final private static String CONTACTSFILE = "../etc/contacts.csv";//"src/Broadcast/etc/contacts.csv";
+    final private static String CONTACTSFILE = "../etc/contacts.csv";//"../etc/contacts.csv";//"src/Broadcast/etc/contacts.csv";
 
-    public ArrayList<Integer> readContactList() throws Exception {
+    public ArrayList<Integer> readContactList(String recipientGroup) throws Exception {
         BufferedReader br = null;
         try {
+
             ArrayList<Integer> recipents = new ArrayList();
             File f = new File(CONTACTSFILE);
             System.out.println(f.getAbsoluteFile());
             FileReader fr = new FileReader(f);
             br = new BufferedReader(fr);
             String line = "";
+
             while ((line = br.readLine()) != null) {
                 System.out.println(line);
                 String lineArr[] = line.split(",");
                 int recipentNum = Integer.parseInt(lineArr[1].trim());
-                recipents.add(recipentNum);
+                if (recipientGroup == null) {
+                    recipents.add(recipentNum);
+                } else if (recipientGroup.equals(lineArr[2].trim())) {
+                    recipents.add(recipentNum);
+                }
+
             }
             return recipents;
         } catch (FileNotFoundException ex) {
@@ -62,8 +69,12 @@ public class SMSAgent implements GroupPostable, IndividualPostable {
     @Override
     public void post(Object messageObj) throws Exception {
 
-        
-        ArrayList<Integer> contactList = readContactList();
+        Map<String, String[]> pMap = (HashMap) messageObj;
+        String recipient = null;
+        if (pMap.get("group") != null) {
+            recipient = pMap.get("group")[0];
+        }
+        ArrayList<Integer> contactList = readContactList(recipient);
         for (int recipent : contactList) {
             post(messageObj, Integer.toString(recipent));
         }
@@ -71,10 +82,10 @@ public class SMSAgent implements GroupPostable, IndividualPostable {
 
     @Override
     public void post(Object messageObj, String recipent) throws Exception {
-                
-        Map <String,String[]> pMap = (HashMap)messageObj;
+
+        Map<String, String[]> pMap = (HashMap) messageObj;
         String message = pMap.get("message")[0];
-        
+
         // codes to sent to android
         URL url;
         HttpURLConnection urlConnection = null;
