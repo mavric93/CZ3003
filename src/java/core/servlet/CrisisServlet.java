@@ -33,8 +33,8 @@ public class CrisisServlet extends HttpServlet {
         super();
         dao = new CrisisTypeDAO();
     }
-    
-     @Override
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //retrieve all information from post
         String type = "";
@@ -42,36 +42,36 @@ public class CrisisServlet extends HttpServlet {
         String action = "";
         action = request.getParameter("action");
         CrisisController controller = CrisisFactory.createController(type);
-        
+
         JSONObject output = new JSONObject();
         try {
             switch (action) {
                 case "create":
                     int id = controller.create(request);
-                    if(id!=-1){
-			output.put("status", "success");
-                    }else{
-			output.put("status", "fail");
+                    if (id != -1) {
+                        output.put("status", "success");
+                    } else {
+                        output.put("status", "fail");
                     }
                     break;
                 case "update":
-                    if(controller.update(request)){
-			output.put("status", "success");
-                    }else{
-			output.put("status", "fail");
+                    if (controller.update(request)) {
+                        output.put("status", "success");
+                    } else {
+                        output.put("status", "fail");
                     }
                     break;
                 case "read":
                     Crisis crisis = controller.read(request);
-                    output.put("data",crisis.toJSON());
+                    output.put("data", crisis.toJSON());
                     break;
                 case "list":
                     List<Crisis> list = controller.list();
                     JSONArray ja = new JSONArray();
-                    for(int i=0;i<list.size();i++){
+                    for (int i = 0; i < list.size(); i++) {
                         ja.put(list.get(i).toJSON());
                     }
-                    output = output.put("data",ja.toString());
+                    output = output.put("data", ja.toString());
                 default:
             }
         } catch (Exception ex) {
@@ -80,28 +80,28 @@ public class CrisisServlet extends HttpServlet {
         response.setContentType("application/json");
         response.getWriter().print(output.toString());
     }
-    
+
     //GET for Read and List
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //retrieve all information from get
         String type = "";
-        if(request.getParameter("crisistype")!=null){
+        if (request.getParameter("crisistype") != null) {
             type = request.getParameter("crisistype");
         }
-        
+
         String action = "";
         action = request.getParameter("action");
         CrisisController controller = CrisisFactory.createController(type);
-        
+
         String output = "";
         try {
             switch (action) {
                 case "create":
                     int id = controller.create(request);
-                    if(id!=-1){
+                    if (id != -1) {
                         output = "success";
-                    }else{
+                    } else {
                         output = "fail";
                     }
                     break;
@@ -113,9 +113,15 @@ public class CrisisServlet extends HttpServlet {
                     output = crisis.toJSON().toString();
                     break;
                 case "list":
-                    List<Crisis> list = controller.list();
+                    List<Crisis> list;
+                    if (request.getParameter("crisisType") == null) {
+                        list = controller.list();
+                        
+                    } else {
+                        list = controller.list(request.getParameter("crisisType"));
+                    }
                     JSONArray ja = new JSONArray();
-                    for(int i=0;i<list.size();i++){
+                    for (int i = 0; i < list.size(); i++) {
                         ja.put(list.get(i).toJSON());
                     }
                     output = ja.toString();

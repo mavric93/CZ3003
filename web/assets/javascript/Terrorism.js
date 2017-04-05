@@ -3,18 +3,35 @@
 Terrorism = {
 };
 
-Terrorism.init = function (){
+Terrorism.init = function () {
     alert("Terrorism");
 };
 
-Terrorism.plot = function (crisis) {
-    var location = {lat: crisis.latitude, lng: crisis.longitude};
-    var icon = crisis.icon + "_" + crisis.status + ".png";
-    var marker = plot(map, location, icon, false, null, Terrorism.onClick);
-    marker.json = crisis;
-    var circle = plotCircle(location, crisis.radius);
-    markers.push(marker);
-    circlesOverlays.push(circle);
+Terrorism.plot = function () {
+    console.log("terrorism plot")
+    var parameter = {
+        "action": "list",
+        "crisisType": "Terrorism"
+    };
+    $.ajax({
+        type: 'GET',
+        url: 'http://155.69.149.181:8080/SSAD/CrisisServlet',
+        data: parameter,
+        async: true,
+        dataType: 'json',
+        success: function (results) {
+            for (var i = 0 ; i < results.length; i++){
+                var crisis = results[i];
+                var location = {lat: crisis.latitude, lng: crisis.longitude};
+                var icon = crisis.icon + "_" + crisis.status + ".png";
+                var marker = plot(map, location, icon, false, null, Terrorism.onClick);
+                marker.json = crisis;
+                var circle = plotCircle(location, crisis.radius);
+                markers.push(marker);
+                circlesOverlays.push(circle);
+            }
+        }
+    });
 };
 
 //called when the submission form is loaded

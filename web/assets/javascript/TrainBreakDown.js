@@ -3,23 +3,41 @@
 TrainBreakDown = {
 };
 
-TrainBreakDown.init = function (){
+TrainBreakDown.init = function () {
     alert("Train");
 };
 
 TrainBreakDown.plot = function (crisis) {
-    var locationfrom = {lat: crisis.latitude, lng: crisis.longitude};
-    var locationto = {lat: crisis.secondMRTLat, lng: crisis.secondMRTLng};
-    var icon = crisis.icon + "_" + crisis.status + ".png";
-    var fromMarker = plot(map, locationfrom, icon, false, null, TrainBreakDown.onClick);
-    var toMarker = plot(map, locationto, icon, false, null, TrainBreakDown.onClick);
-    fromMarker.json = crisis;
-    toMarker.json = crisis;
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    calculateAndDisplayRoute(directionsService, directionsDisplay, crisis.address, crisis.secondMRTAddress);
-    markers.push(fromMarker);
-    markers.push(toMarker);
+
+    var parameter = {
+        "action": "list",
+        "crisisType": "TrainBreakDown"
+    };
+    $.ajax({
+        type: 'GET',
+        url: 'http://155.69.149.181:8080/SSAD/CrisisServlet',
+        data: parameter,
+        async: true,
+        dataType: 'json',
+        success: function (results) {
+            for (var i = 0; i < results.length; i++) {
+                var crisis = results[i];
+                var locationfrom = {lat: crisis.latitude, lng: crisis.longitude};
+                var locationto = {lat: crisis.secondMRTLat, lng: crisis.secondMRTLng};
+                var icon = crisis.icon + "_" + crisis.status + ".png";
+                var fromMarker = plot(map, locationfrom, icon, false, null, TrainBreakDown.onClick);
+                var toMarker = plot(map, locationto, icon, false, null, TrainBreakDown.onClick);
+                fromMarker.json = crisis;
+                toMarker.json = crisis;
+                var directionsService = new google.maps.DirectionsService;
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                calculateAndDisplayRoute(directionsService, directionsDisplay, crisis.address, crisis.secondMRTAddress);
+                markers.push(fromMarker);
+                markers.push(toMarker);
+            }
+        }
+    });
+
 };
 
 //called when the submission form is loaded
@@ -188,7 +206,7 @@ TrainBreakDown.onClick = function () {
 
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
         //submit event
-        if (public ==false) {
+        if (public == false) {
             document.getElementById("submit").onclick = function () {
                 TrainBreakDown.updateCrisis();
             };

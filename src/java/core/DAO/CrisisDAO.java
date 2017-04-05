@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 public class CrisisDAO {
 
     //FUNCTIONS: CREATE,UPDATE,READ,LIST
-
     private Connection connection;
 
     public CrisisDAO() {
@@ -35,7 +34,6 @@ public class CrisisDAO {
     }
 
     //DONE
-
     public int addCrisis(Crisis crisis) {
         int id = -1;
         try {
@@ -68,7 +66,6 @@ public class CrisisDAO {
     }
 
     //NOT SURE NEEDED OR NOT
-
     public void deleteCrisis(String crisisID) {
         try {
             PreparedStatement preparedStatement = connection
@@ -83,7 +80,6 @@ public class CrisisDAO {
     }
 
     //DONE
-
     public boolean updateCrisis(Crisis crisis) {
         SimpleDateFormat datetimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sqlStatement_resolved = "update ssad.crisis set Description=?,Status=?,TimeResolved=NOW() where crisisid =?";
@@ -111,7 +107,6 @@ public class CrisisDAO {
     }
 
     //DONE
-
     public ArrayList<Crisis> getAllCrisis() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ArrayList<Crisis> crisisList = new ArrayList<>();
 
@@ -144,12 +139,49 @@ public class CrisisDAO {
 
         return crisisList;
     }
-     public ArrayList<Crisis> getResolvedCrisis(String from,String to) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+
+    public ArrayList<Crisis> getAllCrisis(String crisisType) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        ArrayList<Crisis> crisisList = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM ssad.crisis join ssad.crisistype "
+                    + "on ssad.crisis.CType = ssad.crisistype.CType where ssad.crisistype.CType = ?;");
+
+            preparedStatement.setString(1, crisisType);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
+                //initialise general fields
+                //Crisis crisis = new Crisis();
+                CrisisFactory fact = new CrisisFactory();
+                Crisis crisis = fact.createCrisis(rs.getString("CType"));
+                crisis.setCrisisID(rs.getInt("CrisisID"));
+                crisis.setCrisisType(rs.getString("CType"));
+                crisis.setAddress(rs.getString("Address"));
+                crisis.setLatitude(rs.getDouble("Lat"));
+                crisis.setLongitude(rs.getDouble("Lng"));
+                crisis.setStatus(rs.getString("Status"));
+                crisis.setTimeReported(rs.getString("TimeReported"));
+                crisis.setTimeResolved(rs.getString("TimeResolved"));
+                crisis.setDescription(rs.getString("Description"));
+                crisis.setMobileNumber(rs.getInt("MobileNumber"));
+                crisis.setIcon(rs.getString("Icon"));
+                crisisList.add(crisis);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return crisisList;
+    }
+
+    public ArrayList<Crisis> getResolvedCrisis(String from, String to) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ArrayList<Crisis> crisisList = new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.
                     prepareStatement("SELECT * FROM ssad.crisis join ssad.crisistype "
-                    + "on ssad.crisis.CType = ssad.crisistype.CType WHERE Status=? AND TimeResolved BETWEEN ? AND ?");
+                            + "on ssad.crisis.CType = ssad.crisistype.CType WHERE Status=? AND TimeResolved BETWEEN ? AND ?");
             preparedStatement.setString(1, "Comfirmed");
             preparedStatement.setString(2, from);
             preparedStatement.setString(3, to);
@@ -179,13 +211,14 @@ public class CrisisDAO {
 
         return crisisList;
     }
+
     public ArrayList<Crisis> getAllOngoingCrisis() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         ArrayList<Crisis> crisisList = new ArrayList<>();
 
         try {
             PreparedStatement preparedStatement = connection.
                     prepareStatement("SELECT * FROM ssad.crisis join ssad.crisistype "
-                    + "on ssad.crisis.CType = ssad.crisistype.CType WHERE Status=?");
+                            + "on ssad.crisis.CType = ssad.crisistype.CType WHERE Status=?");
             preparedStatement.setString(1, "Comfirmed");
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -244,16 +277,18 @@ public class CrisisDAO {
         }
         return crisis;
     }
-	//to check if any crisis is in comfirmed status
-	public boolean checkComfirmedCrisis() {
-		boolean crisis = false;
+
+    //to check if any crisis is in comfirmed status
+
+    public boolean checkComfirmedCrisis() {
+        boolean crisis = false;
         try {
             PreparedStatement preparedStatement = connection.
                     prepareStatement("SELECT CrisisID FROM ssad.crisis  WHERE Status=? LIMIT 1");
             preparedStatement.setString(1, "Comfirmed");
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-				crisis = true;
+                crisis = true;
             }
         } catch (SQLException ex) {
             Logger.getLogger(CrisisDAO.class.getName()).log(Level.SEVERE, null, ex);

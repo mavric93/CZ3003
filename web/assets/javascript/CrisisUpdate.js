@@ -8,10 +8,12 @@ function initMap() {
 
 var INTERVAL = 20000;
 var timer;
+var markers = [];
+var circlesOverlays = [];
+var polylines = [];
 function refresh() {
-
     //retrieve new crisis
-    retrieveNewCrisis();
+    replotCrisis(crisisTypes);
     //check crisisState
     checkCrisisState();
     timer = setTimeout(refresh, INTERVAL);
@@ -38,32 +40,16 @@ function checkCrisisState() {
         }
     });
 }
-function retrieveNewCrisis() {
-    //standard function for retrieve data
-    var parameter = {
-        "action": "list",
-        "crisisType": "ALL"
+function replotCrisis(crisistypes) {
+    //remove old markers and overlays first
+    removePlot(markers, circlesOverlays, polylines);
+    //call on each individual crisis type to query server and plot their own markers
+    for (var i = 0; i < crisistypes.length; i++) {
+        console.log(crisistypes[i]);
+        eval(crisistypes[i] + ".plot()");
     }
-    $.ajax({
-        type: 'POST',
-        url: 'http://155.69.149.181:8080/SSAD/CrisisServlet',
-        data: parameter,
-        async: true,
-        dataType: 'json',
-        success: function (result) {
-            var oldmarkers = markers;
-            var oldcirclesOverlays = circlesOverlays;
-            var oldpolylines = polylines;
-            markers = [];
-            circlesOverlays = [];
-            polylines = [];
-            var data = JSON.parse(result.data);
-            for (i = 0; i < data.length; i++) {
-                eval(data[i].crisisType + ".plot(data[i]);");
-            }
-            removePlot(oldmarkers, oldcirclesOverlays, oldpolylines);
-        }
-    });
+    //
+
 }
 function formatDate(ms) {
     var date = new Date(parseInt(ms));

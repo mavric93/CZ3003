@@ -49,7 +49,6 @@ and open the template in the editor.
                             crisisTypes.push(type.crisisType);
                             //load individual javascripts
                             $.getScript("assets/javascript/" + type.crisisType + ".js", function () {
-                                //init();
                             });
                         }
 
@@ -57,7 +56,9 @@ and open the template in the editor.
                         //load crisis from DB
                         $.getScript("assets/javascript/CrisisUpdate.js", function () {
                             //obtain each crisis from database and plot onto map
-                            refresh();
+                            setTimeout(function () {
+                                refresh(crisisTypes);
+                            }, 500);
                         });
                     }
                 });

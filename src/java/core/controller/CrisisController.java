@@ -100,6 +100,27 @@ public class CrisisController {
         return crisisList;
     }
     
+    public List<Crisis> list(String crisisType) {
+        ArrayList<Crisis> crisisList = new ArrayList<Crisis>();
+        try{
+            crisisList = dao.getAllCrisis(crisisType);
+            
+            for(int i=0;i<crisisList.size();i++){
+                Crisis crisis = crisisList.get(i);
+                if(crisis instanceof TrainBreakDownCrisis){
+                    TrainBreakDownCrisisDAO tbdDAO = new TrainBreakDownCrisisDAO();
+                    crisisList.set(i, tbdDAO.getCrisisById(crisis.getCrisisID(), crisis));
+                }else if(crisis instanceof TerrorismCrisis){
+                    TerrorismCrisisDAO tDAO = new TerrorismCrisisDAO();
+                    crisisList.set(i, tDAO.getCrisisById(crisis.getCrisisID(), crisis));
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return crisisList;
+    }
+    
     public JSONArray listJSON(){
         List<Crisis> crisisList = list();
         JSONArray JSONArr = new JSONArray();
