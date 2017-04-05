@@ -32,7 +32,7 @@ import javax.mail.internet.MimeMessage;
  */
 public class EmailAgent implements GroupPostable, IndividualPostable {
 
-    private final static String CONTACTSFILE = "../etc/emailContacts.csv;";//"src/Broadcast/etc/emailContacts.csv";
+    private final static String CONTACTSFILE = "../etc/emailContacts.csv";//"src/Broadcast/etc/emailContacts.csv";
     private final static String USERNAME = "cmsystem007@gmail.com";
     private final static String PASSWORD = "system007";
 

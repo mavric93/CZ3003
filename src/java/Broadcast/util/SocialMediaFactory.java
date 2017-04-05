@@ -18,7 +18,7 @@ public class SocialMediaFactory {
      * @return GroupPostable 
      * @throws Exception 
      */
-    public static GroupPostable getAgentInstance(String agent) throws Exception{
+    public static GroupPostable getAgentGroupInstance(String agent) throws Exception{
         String agentString = "Broadcast.Agent."+agent;
         System.out.println("Received agentString" + agentString);
         

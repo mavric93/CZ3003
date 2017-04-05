@@ -63,5 +63,8 @@ public class TwitterAgent implements GroupPostable {
         twitter = tf.getInstance();
 
     }
-
+    @Override
+    public void post(Object messageObj, String recipent) throws Exception {
+    
+    }
 }

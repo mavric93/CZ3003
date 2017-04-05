@@ -3,17 +3,21 @@
 TrainBreakDown = {
 };
 
+TrainBreakDown.init = function (){
+    alert("Train");
+};
+
 TrainBreakDown.plot = function (crisis) {
     var locationfrom = {lat: crisis.latitude, lng: crisis.longitude};
     var locationto = {lat: crisis.secondMRTLat, lng: crisis.secondMRTLng};
-	var icon = crisis.icon+"_"+crisis.status+".png";
+    var icon = crisis.icon + "_" + crisis.status + ".png";
     var fromMarker = plot(map, locationfrom, icon, false, null, TrainBreakDown.onClick);
     var toMarker = plot(map, locationto, icon, false, null, TrainBreakDown.onClick);
     fromMarker.json = crisis;
     toMarker.json = crisis;
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
-    calculateAndDisplayRoute(directionsService,directionsDisplay,crisis.address,crisis.secondMRTAddress);
+    calculateAndDisplayRoute(directionsService, directionsDisplay, crisis.address, crisis.secondMRTAddress);
     markers.push(fromMarker);
     markers.push(toMarker);
 };
@@ -23,10 +27,10 @@ TrainBreakDown.submitCrisisInit = function () {
     //read textfile
     readMRTFromText();
     //hide fields
-    $("#status").parent().parent().css("display","none");
-    $("#timeReported").parent().parent().css("display","none");
-    $("#timeResolved").parent().parent().css("display","none");
-	
+    $("#status").parent().parent().css("display", "none");
+    $("#timeReported").parent().parent().css("display", "none");
+    $("#timeResolved").parent().parent().css("display", "none");
+
     //set submit parameters
     document.getElementById("submit").onclick = function () {
         TrainBreakDown.submitCrisis()
@@ -65,11 +69,11 @@ TrainBreakDown.submitCrisis = function () {
         "latitude": fromLatitude,
         "longitude": fromLongitude,
         "description": description,
-	"secondMRTAddress": address2,
+        "secondMRTAddress": address2,
         "secondMRTLat": toLatitude,
         "secondMRTLng": toLongitude,
         "action": action,
-        "mobilenumber":mobilenumber
+        "mobilenumber": mobilenumber
     };
     $.ajax({
         type: 'POST',
@@ -84,9 +88,9 @@ TrainBreakDown.submitCrisis = function () {
         dataType: 'json',
         success: function (data) {
             if (data.status == 'success') {
-                
+
                 alert("Crisis has been submitted");
-                
+
             } else if (data.status == 'error') {
                 alert("Error on submission");
             }
@@ -114,10 +118,10 @@ TrainBreakDown.updateCrisis = function () {
     var status = document.getElementById("status").value;
 
     var parameter = {
-        "crisisID":crisisID,
+        "crisisID": crisisID,
         "crisisType": crisisType,
-        "status":status,
-	"description": description,
+        "status": status,
+        "description": description,
         "action": action
     };
     $.ajax({
@@ -150,10 +154,10 @@ TrainBreakDown.updateCrisis = function () {
 TrainBreakDown.onClick = function () {
     //set parameters
     var crisis = this.json;
-    
+
     $.ajax({
         type: 'GET',
-        url: "http://155.69.149.181:8080/SSAD/CrisisUpdateController?action=list&crisisID="+crisis.crisisID,
+        url: "http://155.69.149.181:8080/SSAD/CrisisUpdateController?action=list&crisisID=" + crisis.crisisID,
         async: true,
         beforeSend: function (xhr) {
             if (xhr && xhr.overrideMimeType) {
@@ -164,88 +168,91 @@ TrainBreakDown.onClick = function () {
         success: function (data) {
             var rows = $(".crisisUpdates_container>div>table tr");
             var rowlength = rows.length;
-            while(rowlength>1){
+            while (rowlength > 1) {
                 $(rows[1]).remove();
                 rows = $(".crisisUpdates_container>div>table tr");
                 rowlength = rows.length;
             }
-            
-            for(i = 0;i<data.length;i++){
+
+            for (i = 0; i < data.length; i++) {
                 var updateInfo = data[i];
-                $(".crisisUpdates_container>div>table").append("<tr><td>"+updateInfo.update+"</td><td>"+updateInfo.timeUpdated+"</td></tr>");
+                $(".crisisUpdates_container>div>table").append("<tr><td>" + updateInfo.update + "</td><td>" + updateInfo.timeUpdated + "</td></tr>");
             }
         },
         error: function (data) {
             alert("Server returned an error");
         }
     });
-    
-    
-    
+
+
+
     $(".crisisDetails_container>div").load(crisis.crisisType + "form.html", function () {
         //submit event
-		if(public==true){
-			$("#submit").css("display","none");
-			readMRTFromText();
-			if(crisis.timeresolved=="null"){
-				$("#timeResolved").parent().parent().css("display","none");
-			}
-			$("#crisisType").val(crisis.crisisType).attr("disabled",true);
-			$("#crisisID").val(crisis.crisisID).attr("disabled",true);
-			$("#description").val(crisis.description).attr("disabled",true);
-			$("#fromStation").val(crisis.address).attr("disabled",true);
-			$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
-			$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
-			$("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
-			$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
-			$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
-			$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
-			$("#timeReported").val(crisis.timereported).attr("disabled",true);
-			$("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
-			$("#status").val(crisis.status).attr("disabled",true);
-		}else{
-			document.getElementById("submit").onclick = function () {
-				TrainBreakDown.updateCrisis();
-			};
-			readMRTFromText();
-			if(crisis.status=="Resolved"){
-				$("#status").attr("disabled",true);
-				$("#description").attr("disabled",true);
-				$("#submit").attr("disabled",true);
-			}
-			if(crisis.timeresolved=="null"){
-				$("#timeResolved").parent().parent().css("display","none");
-			}
-			$("#crisisType").val(crisis.crisisType).attr("disabled",true);
-			$("#crisisID").val(crisis.crisisID);
-			$("#description").val(crisis.description);
-			$("#fromStation").val(crisis.address).attr("disabled",true);
-			$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
-			$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
-			$("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
-			$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
-			$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
-			$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
-			$("#timeReported").val(crisis.timereported).attr("disabled",true);
-			$("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
-			$("#status").val(crisis.status);
-		}
-        
-        readMRTFromText();
-        if(crisis.timeresolved=="null"){
-            $("#timeResolved").parent().parent().css("display","none");
+        if (public ==false) {
+            document.getElementById("submit").onclick = function () {
+                TrainBreakDown.updateCrisis();
+            };
+            readMRTFromText();
+            if (crisis.status == "Resolved") {
+                $("#status").attr("disabled", true);
+                $("#description").attr("disabled", true);
+                $("#submit").attr("disabled", true);
+            }
+            if (crisis.timeresolved == "null") {
+                $("#timeResolved").parent().parent().css("display", "none");
+            }
+            $("#crisisType").val(crisis.crisisType).attr("disabled", true);
+            $("#crisisID").val(crisis.crisisID);
+            $("#description").val(crisis.description);
+            $("#fromStation").val(crisis.address).attr("disabled", true);
+            $("#fromStationLat").val(crisis.latitude).attr("disabled", true);
+            $("#fromStationLng").val(crisis.longitude).attr("disabled", true);
+            $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
+            $("#toStation").val(crisis.secondMRTAddress).attr("disabled", true);
+            $("#toStationLat").val(crisis.secondMRTLat).attr("disabled", true);
+            $("#toStationLng").val(crisis.secondMRTLng).attr("disabled", true);
+            $("#timeReported").val(crisis.timereported).attr("disabled", true);
+            $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
+            $("#status").val(crisis.status);
+        } else {
+
+            $("#submit").css("display", "none");
+            readMRTFromText();
+            if (crisis.timeresolved == "null") {
+                $("#timeResolved").parent().parent().css("display", "none");
+            }
+            $("#crisisType").val(crisis.crisisType).attr("disabled", true);
+            $("#crisisID").val(crisis.crisisID).attr("disabled", true);
+            $("#description").val(crisis.description).attr("disabled", true);
+            $("#fromStation").val(crisis.address).attr("disabled", true);
+            $("#fromStationLat").val(crisis.latitude).attr("disabled", true);
+            $("#fromStationLng").val(crisis.longitude).attr("disabled", true);
+            $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
+            $("#toStation").val(crisis.secondMRTAddress).attr("disabled", true);
+            $("#toStationLat").val(crisis.secondMRTLat).attr("disabled", true);
+            $("#toStationLng").val(crisis.secondMRTLng).attr("disabled", true);
+            $("#timeReported").val(crisis.timereported).attr("disabled", true);
+            $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
+            $("#status").val(crisis.status).attr("disabled", true);
+
+
         }
-        $("#crisisType").val(crisis.crisisType).attr("disabled",true);
+
+        readMRTFromText();
+        if (crisis.timeresolved == "null") {
+            $("#timeResolved").parent().parent().css("display", "none");
+        }
+        $("#crisisType").val(crisis.crisisType).attr("disabled", true);
         $("#crisisID").val(crisis.crisisID);
         $("#description").val(crisis.description);
-        $("#fromStation").val(crisis.address).attr("disabled",true);
-		$("#fromStationLat").val(crisis.latitude).attr("disabled",true);
-    	$("#fromStationLng").val(crisis.longitude).attr("disabled",true);
+        $("#fromStation").val(crisis.address).attr("disabled", true);
+        $("#fromStationLat").val(crisis.latitude).attr("disabled", true);
+        $("#fromStationLng").val(crisis.longitude).attr("disabled", true);
         $("#mobilenumber").val(crisis.mobilenumber).attr("disabled", true);
-		$("#toStation").val(crisis.secondMRTAddress).attr("disabled",true);
-		$("#toStationLat").val(crisis.secondMRTLat).attr("disabled",true);
-    	$("#toStationLng").val(crisis.secondMRTLng).attr("disabled",true);
-        $("#timeReported").val(crisis.timereported).attr("disabled",true);
+        $("#toStation").val(crisis.secondMRTAddress).attr("disabled", true);
+        $("#toStationLat").val(crisis.secondMRTLat).attr("disabled", true);
+        $("#toStationLng").val(crisis.secondMRTLng).attr("disabled", true);
+        $("#timeReported").val(crisis.timereported).attr("disabled", true);
         $("#timeResolved").val(crisis.timeresolved).attr("disabled", true);
         $("#status").val(crisis.status);
         //$("#selectedCrisis").val(crisis.crisisID);  //hidden input for selected crisis
@@ -255,8 +262,8 @@ TrainBreakDown.onClick = function () {
 
 // called togehter with on click
 // will enable or disable dispatch for each crisistype
-function editButton(){
-    
+function editButton() {
+
 }
 
 function readMRTFromText() {

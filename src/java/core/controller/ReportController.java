@@ -79,7 +79,11 @@ public class ReportController {
                     jaUpdate.put(updates.get(j).toJSON());
                 }
                 jo.put("updates",jaUpdate);
-                ja.put(jo);
+                
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("data",jo);
+                System.out.println(jsonObj.toString());
+                ja.put(jsonObj);
             }
         }catch(Exception ex){
             ex.printStackTrace();

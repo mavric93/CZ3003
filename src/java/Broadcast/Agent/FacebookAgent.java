@@ -45,6 +45,9 @@ public class FacebookAgent implements GroupPostable {
         } finally {
             System.out.println("Facebook Status post Completed!");
         }
+    }
+    @Override
+    public void post(Object messageObj, String recipent) throws Exception {
         
     }
 }

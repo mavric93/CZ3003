@@ -16,6 +16,9 @@ import core.model.Crisis;
 import core.model.TerrorismCrisis;
 import core.model.TrainBreakDownCrisis;
 import java.util.Calendar;
+import java.util.HashMap;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -76,7 +79,7 @@ public class CrisisController {
         return crisis;
     }
 
-    public List<Crisis> list(HttpServletRequest request) {
+    public List<Crisis> list() {
         ArrayList<Crisis> crisisList = new ArrayList<Crisis>();
         try{
             crisisList = dao.getAllCrisis();
@@ -95,6 +98,15 @@ public class CrisisController {
             ex.printStackTrace();
         }
         return crisisList;
+    }
+    
+    public JSONArray listJSON(){
+        List<Crisis> crisisList = list();
+        JSONArray JSONArr = new JSONArray();
+        for(Crisis c : crisisList){
+            JSONArr.put(c.toJSON());
+        }
+        return JSONArr;
     }
     
 }

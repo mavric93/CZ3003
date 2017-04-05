@@ -6,9 +6,11 @@
 package core.util;
 
 import core.DAO.CrisisDAO;
-import java.awt.event.ActionListener;
+import core.controller.ReportController;
+import java.util.Calendar;
 import java.util.TimerTask;
-import javax.swing.Timer;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -17,13 +19,12 @@ import javax.swing.Timer;
 public class StateMonitor extends TimerTask {
 
     private boolean currentCrisisState;
-    CrisisDAO crisisDAO ;
-	Calendar start,end;
-	
-	
+    CrisisDAO crisisDAO;
+    Calendar start, end;
+
     public StateMonitor(boolean isCrisis) {
         this.currentCrisisState = isCrisis;
-		crisisDAO = new CrisisDAO();
+        crisisDAO = new CrisisDAO();
         System.out.println("started");
     }
 
@@ -31,28 +32,35 @@ public class StateMonitor extends TimerTask {
     public void run() {
         boolean newCrisisState = crisisDAO.checkComfirmedCrisis();
         boolean stateChanged = newCrisisState && this.currentCrisisState;
-		
-		if (!currentCrisisState && newCrisisState) {//from non-crisisState to crisisState
-			start = Calendar.getInstance();
-		}
+
+        if (!currentCrisisState && newCrisisState) {//from non-crisisState to crisisState
+            start = Calendar.getInstance();
+        }
         if (currentCrisisState && !newCrisisState) {//from crisisState to non-crisisState
             //send final report
-			end = Calendar.getInstance();
+            end = Calendar.getInstance();
             System.out.println("send last report " + System.nanoTime());
-			ReportController con = new ReportController();
-			JSONArray reportContent = con.listResolved(start,end);
-			
-			//after sending final report
-			start = null;
-			end = null;
+            //ReportController con = new ReportController();
+            //JSONArray reportContent = con.listResolved(start, end);
+            //System.out.println("LAST JSON:" + reportContent.toString());
+            //after sending final report
+            start = null;
+            end = null;
         }
-		
 
         currentCrisisState = newCrisisState;
         if (currentCrisisState) {
-            System.out.println("send email " + System.nanoTime());
-			ReportController con = new ReportController();
-			JSONArray reportContent = con.listOngoing();
+            System.out.println("In Crisis State " + System.nanoTime());
+        //    ReportController con = new ReportController();
+        //    JSONArray reportContent = con.listOngoing();
+
+//            for (int i = 0; i < reportContent.length(); i++) {
+//                JSONObject crisisJSON = reportContent.getJSONObject(i);
+//                String typeOfCrisis = crisisJSON.getString("crisisType");
+//                String crisisID = crisisJSON.getInt("crisisID")+"";
+//                ReportGenerator.generateReport(crisisID, typeOfCrisis,crisisJSON.toString());
+//            }
+
         } else {
             System.out.println("no ongoing crisis new message " + System.nanoTime());
 

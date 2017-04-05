@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-19T22:14:27 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Hello" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c3cf0096-9204-4d07-8a1d-878b96d29e01">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sample.json"/>
+	<queryString language="json">
+		<![CDATA[Northwind.Customers]]>
+	</queryString>
+	<field name="Phone" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="Phone"/>
+		<fieldDescription><![CDATA[Phone]]></fieldDescription>
+	</field>
+	<field name="ContactName" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="ContactName"/>
+		<fieldDescription><![CDATA[ContactName]]></fieldDescription>
+	</field>
+	<field name="CustomerID" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="CustomerID"/>
+		<fieldDescription><![CDATA[CustomerID]]></fieldDescription>
+	</field>
+	<field name="City" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="City"/>
+		<fieldDescription><![CDATA[City]]></fieldDescription>
+	</field>
+	<field name="Address" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="CustomerID"/>
+		<fieldDescription><![CDATA[Address]]></fieldDescription>
+	</field>
+	<group name="Phone">
+		<groupExpression><![CDATA[$F{Phone}]]></groupExpression>
+	</group>
+	<group name="ContactName">
+		<groupExpression><![CDATA[$F{ContactName}]]></groupExpression>
+	</group>
+	<group name="CustomerID">
+		<groupExpression><![CDATA[$F{CustomerID}]]></groupExpression>
+	</group>
+	<group name="City">
+		<groupExpression><![CDATA[$F{City}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="0" width="100" height="30" uuid="467a20ff-0f44-47e3-a766-1e8007002661"/>
+				<text><![CDATA[Phone]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="0" width="100" height="30" uuid="8387eaeb-9a7d-49a1-9ce2-084420efbaeb"/>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="152" y="22" width="100" height="30" uuid="da5ac4a8-88ee-4365-ab49-1ee589e53fde"/>
+				<textFieldExpression><![CDATA[$F{Phone}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="329" y="32" width="100" height="30" uuid="094fdf0b-2c69-4cf7-b775-b407c422009f"/>
+				<textFieldExpression><![CDATA[$F{Address}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

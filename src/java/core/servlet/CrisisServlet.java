@@ -66,7 +66,7 @@ public class CrisisServlet extends HttpServlet {
                     output.put("data",crisis.toJSON());
                     break;
                 case "list":
-                    List<Crisis> list = controller.list(request);
+                    List<Crisis> list = controller.list();
                     JSONArray ja = new JSONArray();
                     for(int i=0;i<list.size();i++){
                         ja.put(list.get(i).toJSON());
@@ -113,7 +113,7 @@ public class CrisisServlet extends HttpServlet {
                     output = crisis.toJSON().toString();
                     break;
                 case "list":
-                    List<Crisis> list = controller.list(request);
+                    List<Crisis> list = controller.list();
                     JSONArray ja = new JSONArray();
                     for(int i=0;i<list.size();i++){
                         ja.put(list.get(i).toJSON());

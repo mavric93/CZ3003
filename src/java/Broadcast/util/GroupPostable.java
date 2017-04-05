@@ -14,4 +14,5 @@ public interface GroupPostable {
     //public abstract void init(String propertiesFile);
 
     public abstract void post(Object messageObj) throws Exception;
+    public abstract void post(Object messageObj, String recipent) throws Exception;
 }
