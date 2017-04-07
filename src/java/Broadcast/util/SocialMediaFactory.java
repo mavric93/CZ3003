@@ -18,16 +18,29 @@ public class SocialMediaFactory {
      * @return GroupPostable 
      * @throws Exception 
      */
-    public static GroupPostable getAgentGroupInstance(String agent) throws Exception{
+    public static Broadcastable getBroadcastAgentInstance(String agent) throws Exception{
         String agentString = "Broadcast.Agent."+agent;
         System.out.println("Received agentString" + agentString);
         
         Class<?> agentClass = Class.forName(agentString);        
-        return getAgentClass(agentClass);
+        return getBroadcastAgent(agentClass);
         
     }
     
-    public static GroupPostable getAgentClass(Class agentClass) throws Exception {
+    public static GroupPostable getIndividualAgentInstance(String agent) throws Exception{
+        String agentString = "Broadcast.Agent."+agent;
+        System.out.println("Received agentString" + agentString);
+        
+        Class<?> agentClass = Class.forName(agentString);        
+        return getIndividualAgent(agentClass);
+        
+    }
+    
+    private static Broadcastable getBroadcastAgent(Class agentClass) throws Exception {
+        return (Broadcastable) agentClass.newInstance();
+    }
+    
+    private static GroupPostable getIndividualAgent(Class agentClass) throws Exception {
         return (GroupPostable) agentClass.newInstance();
     }
 }

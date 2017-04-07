@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Crisis Management System</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -33,6 +33,9 @@ and open the template in the editor.
                     center: {lat: 1.359599, lng: 103.812364},
                     zoom: 12
                 });
+                
+                var transitLayer = new google.maps.TransitLayer();
+                transitLayer.setMap(map);
                 //$(".top").css("height",$(document).height()*0.49);
                 //load crisistypes and scripts
 
@@ -88,7 +91,7 @@ and open the template in the editor.
                     <div class="tab-pane active" id="details" role="tabpanel">
                         <div class="crisisDetails_container">
                             <h2> Individual crisis details</h2>
-                            <div></div>
+                            <div id="details-content"> </div>
                         </div>
                     </div>
                     <div class="tab-pane" id="actions" role="tabpanel">
@@ -124,21 +127,7 @@ and open the template in the editor.
                 <input type="image" class="btn_social" src="assets/img/icon/ff_icon.jpg" onClick="updateMessage('Fire')"/>Notify Fire Fighter<br/>
                 <input type="image" class="btn_social" src="assets/img/icon/bomb-icon.png" onClick="updateMessage('Bomb')"/>Notify Bomb Disfuser<br/>
                 <input type="image" class="btn_social" src="assets/img/icon/rescue-icon.png" onClick="updateMessage('Rescue')"/>Notify Rescue<br/>
-                <!--
-                <input id="selectedCrisis" type="text"></input> 
-                <br> 
-                <select id="selectedAgencyContacts">
-                    <option id="Police"value="999"> Police - 999</option>
-                    <option id="SCDF"value="995"> SCDF - 995</option>
-                </select>
-                <input type ="button" value="Call" onclick="call(this)"/>
-                <br/><br/>
-                <input type="button" value=" Set Crisis Resolved" onclick="changeCrisisResolved()"/>
-                <input type="button" value=" Set Crisis Confirmed"/>
-                <br/><br/>
-                <input type="button" value="Set National State into Crisis State " onclick="updateMessage('Terrorism','96470860')"/>
-                <br>
-                <input type="button" value="display all hospital"/>-->
+      
             </div>
         </div>
     </body>

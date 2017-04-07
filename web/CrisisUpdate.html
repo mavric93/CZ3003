@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="assets/css/console.css">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                retrieveCrisis();
+            });
+            function retrieveCrisis() {
+                var parameter = {
+                    "action": "list",
+                    "crisisType": "ALL"
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://155.69.149.181:8080/SSAD/CrisisServlet',
+                    data: parameter,
+                    async: true,
+                    dataType: 'json',
+                    success: function (result) {
+                        var data = JSON.parse(result.data);
+                        var ddl = $("#CrisisID");
+                        for (i = 0; i < data.length; i++) {
+                            var crisis = data[i];
+                            if (crisis.status != "Resolved") {
+                                ddl.append("<option value='" + crisis.crisisID + "'>" + crisis.crisisType + " at " + crisis.address + "</option>");
+                            }
+                        }
+                    }
+                });
+            }
+            function submitUpdates() {
+                var url = "http://155.69.149.181:8080/SSAD/CrisisUpdateController?";
+                var CrisisID = document.getElementById("CrisisID").value;
+                var update = document.getElementById("crisisUpdate").value;
+                if(CrisisID!=""&&update!=""){
+                    var parameter = "action=add&crisisID="+CrisisID+"&update="+update;
+                    $.ajax({
+                        type: 'GET',
+                        url: url+parameter,
+                        async: true,
+                        dataType: 'json',
+                        success: function (result) {
+                            if(result.success){
+                                alert("update has been created");
+                            }else{
+                                alert("update has not been created");
+                            }
+                        }
+                    });
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <center>
+                        <h2>
+                            Submit Crisis Updates
+                        </h2>
+                        <table>
+                            <tr>
+                                <td>Crisis:</td>
+                                <td>
+                                    <select class="form-control" id="CrisisID">
+                                        <option value="">Select a Crisis</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Update:</td>
+                                <td>
+                                    <textarea class="form-control" id="crisisUpdate"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input class="btn btn-success" type="button" id="submit" onclick="submitUpdates()" value="submit"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

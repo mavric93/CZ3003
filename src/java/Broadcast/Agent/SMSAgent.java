@@ -16,12 +16,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Broadcast.util.Broadcastable;
 import Broadcast.util.GroupPostable;
-import Broadcast.util.IndividualPostable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SMSAgent implements GroupPostable, IndividualPostable {
+public class SMSAgent implements Broadcastable, GroupPostable {
 
     final private static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
     final private static String AUTHORIZATION_KEY = "AAAADG3DRnE:APA91bHa0pj4VagEU0QEa-iGO9H03E6DCNKGpUS1lvO9GNJq03BG0g4dUvuH7GffYzlzioQeZQzIY79COGnSIrNbr_8pQEE7WRE9QiPtsEFt7_TY1J9pEvR1wYVWp423JZ2QNPjiw5CS";
@@ -66,26 +66,50 @@ public class SMSAgent implements GroupPostable, IndividualPostable {
         }
     }
 
-    @Override
-    public void post(Object messageObj) throws Exception {
+    public ArrayList<Integer> readContactList() throws Exception {
+        BufferedReader br = null;
+        try {
 
-        Map<String, String[]> pMap = (HashMap) messageObj;
-        String recipient = null;
-        if (pMap.get("group") != null) {
-            recipient = pMap.get("group")[0];
-        }
-        ArrayList<Integer> contactList = readContactList(recipient);
-        for (int recipent : contactList) {
-            post(messageObj, Integer.toString(recipent));
+            ArrayList<Integer> recipents = new ArrayList();
+            File f = new File(CONTACTSFILE);
+            System.out.println(f.getAbsoluteFile());
+            FileReader fr = new FileReader(f);
+            br = new BufferedReader(fr);
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+                String lineArr[] = line.split(",");
+                int recipentNum = Integer.parseInt(lineArr[1].trim());
+
+                recipents.add(recipentNum);
+            }
+            return recipents;
+        } catch (FileNotFoundException ex) {
+            System.out.println(Paths.get(".").toAbsolutePath().normalize().toString());
+            System.out.println("File not found");
+            throw new Exception("SMS contact file missing");
+        } catch (NumberFormatException nfex) {
+            throw new Exception("Erronous input in SMS contact File");
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SMSAgent.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
-    public void post(Object messageObj, String recipent) throws Exception {
+    public void broadcast(String message) throws Exception {
+        ArrayList<Integer> contactList = readContactList();
+        for (int recipent : contactList) {
+            sendToGroup(message, Integer.toString(recipent));
+        }
+    }
 
-        Map<String, String[]> pMap = (HashMap) messageObj;
-        String message = pMap.get("message")[0];
-
+    @Override
+    public void sendToGroup(String message, String recipentGroup) throws Exception {
         // codes to sent to android
         URL url;
         HttpURLConnection urlConnection = null;
@@ -100,9 +124,10 @@ public class SMSAgent implements GroupPostable, IndividualPostable {
 
             JSONObject inputData = new JSONObject();
 
-            inputData.put("phoneNumber", recipent);
-            inputData.put("Msg", message);
-
+            for (int recipent : readContactList(recipentGroup)) {
+                inputData.put("phoneNumber", recipent);
+                inputData.put("Msg", message);
+            }
             JSONObject jo = new JSONObject();
             jo.put("to", token);
             jo.put("data", inputData);

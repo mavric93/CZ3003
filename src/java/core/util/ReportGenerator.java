@@ -7,10 +7,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.query.JsonQueryExecuterFactory;
@@ -22,50 +22,47 @@ public class ReportGenerator {
     public static void main(String[] args) throws JRException, FileNotFoundException {
         ReportController con = new ReportController();
         JSONArray reportContent = con.listOngoing();
-        System.out.println(reportContent.toString());
 
         for (int i = 0; i < reportContent.length(); i++) {
-            JSONObject crisisJSON = reportContent.getJSONObject(i);
-
+            JSONObject jsonobj = reportContent.getJSONObject(i);
+            JSONObject crisisJSON = jsonobj.getJSONObject("data");
             String typeOfCrisis = crisisJSON.getString("crisisType");
             String crisisID = crisisJSON.getInt("crisisID") + "";
-            ReportGenerator.generateReport(crisisID, typeOfCrisis, crisisJSON.toString());
+            ReportGenerator.generateReport(crisisID, typeOfCrisis, jsonobj.toString());
         }
     }
 
     public static String generateReport(String crisisID, String crisisType, String jsonString) {
 
         try {
-            String filePath = Thread.currentThread().getContextClassLoader().toString();
-            System.out.println(filePath);
-            System.out.println(System.getProperty("user.dir"));
-            // Compile jrxml file.
+
+            // Compile jrxml file. ../etc/contacts.csv
             JasperReport jasperReport = JasperCompileManager.compileReport("./resource/" + crisisType + ".jrxml");
 
-            // Parameters for report
             Map<String, Object> parameters = new HashMap<String, Object>();
 
-            //have to do this in order to link the ".json" file
-            InputStream iostream = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8));
-
-            //have to do this in order to link the ".json" file
+            System.out.println(jsonString);
+            InputStream iostream = new ByteArrayInputStream(jsonString.getBytes());
             parameters.put(JsonQueryExecuterFactory.JSON_INPUT_STREAM, iostream);
 
+            // Parameters for report
+            //File jsonFile = new File("C:\\Users\\mavric\\GlassFish_Server\\glassfish\\domains\\SSAD\\config\\resource/1.json");
+            //Map<String, Object> parameters = new HashMap();
+            //parameters.put(JsonQueryExecuterFactory.JSON_INPUT_STREAM, new FileInputStream(jsonFile));
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters);
 
             // Make sure the output directory exists.
-            File outDir = new File("jasperoutput");
+            File outDir = new File("C:\\Users\\mavric\\Documents\\NetBeansProjects\\SSAD\\web\\JasperReport");
             outDir.mkdirs();
 
             // Export to PDF.
-            String outputPath = "jasperoutput/Crisis_" + crisisID + ".pdf";
+            String outputPath = outDir.toString()+"/Crisis_" + crisisID + ".pdf";
             JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);
 
-            System.out.println("Done!");
-            return outputPath;
+            return "C:\\Users\\mavric\\Documents\\NetBeansProjects\\SSAD\\web\\JasperReport\\"+"Crisis_" + crisisID + ".pdf";
         } catch (JRException ex) {
             ex.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

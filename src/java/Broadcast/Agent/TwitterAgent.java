@@ -12,7 +12,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import Broadcast.util.GroupPostable;
+import Broadcast.util.Broadcastable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  * Can choose to use twitter4j.properties for account setup or use
  * configureTwitter function for init.
  */
-public class TwitterAgent implements GroupPostable {
+public class TwitterAgent implements Broadcastable {
 
     static String TWITTER_CONSUMER_KEY = "YJJesWSbVH1o83DbDUUN42sii";
     static String TWITTER_CONSUMER_SECRET = "zs6ZljjO7FK8fjDPzBhUFUClP98rRU5BXpXy0qXkqlHscaBubv";
@@ -36,10 +36,8 @@ public class TwitterAgent implements GroupPostable {
     TwitterFactory tf;
     Twitter twitter;
 
-    public void post(Object messageObj) {
+    public void broadcast(String message) {
 
-        Map<String, String[]> pMap = (HashMap) messageObj;
-        String message = pMap.get("message")[0];
         try {
             //twitter = TwitterFactory.getSingleton();            
             initTwitter();
@@ -62,9 +60,5 @@ public class TwitterAgent implements GroupPostable {
         tf = new TwitterFactory(cb.build());
         twitter = tf.getInstance();
 
-    }
-    @Override
-    public void post(Object messageObj, String recipent) throws Exception {
-    
     }
 }

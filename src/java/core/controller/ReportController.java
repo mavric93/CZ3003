@@ -82,7 +82,6 @@ public class ReportController {
                 
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("data",jo);
-                System.out.println(jsonObj.toString());
                 ja.put(jsonObj);
             }
         }catch(Exception ex){

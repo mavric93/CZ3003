@@ -5,8 +5,8 @@
  */
 package Broadcast;
 
+import Broadcast.util.Broadcastable;
 import Broadcast.util.GroupPostable;
-import Broadcast.util.IndividualPostable;
 import Broadcast.util.SocialMediaFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -25,18 +25,19 @@ public class BroadcastController extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String agent = request.getParameter("agent");
             String message = request.getParameter("message");
-            String recipient = request.getParameter("recipient");
-
-            GroupPostable socialMedia = SocialMediaFactory.getAgentGroupInstance(agent);
-            socialMedia.post(request.getParameterMap(),recipient);
-
-            //response.
-            response.getWriter().print(message + " has been posted to " + agent);
+            String recipent = request.getParameter("recipient");
+            if (recipent == null) {
+                Broadcastable socialMedia = SocialMediaFactory.getBroadcastAgentInstance(agent);
+                socialMedia.broadcast(message);
+                response.getWriter().print(message + " has been broadcasted to " + agent);
+            } else {
+                GroupPostable targetedRecipents = SocialMediaFactory.getIndividualAgentInstance(agent);
+                targetedRecipents.sendToGroup(message, recipent);
+            }
             //response.getWriter().write(message + " has been posted to " + agent);
         } catch (Exception ex) {
             //return error page
@@ -47,18 +48,20 @@ public class BroadcastController extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // action type == broadcast
         try {
             String agent = request.getParameter("agent");
             String message = request.getParameter("message");
-
-            GroupPostable socialMedia = SocialMediaFactory.getAgentGroupInstance(agent);
-            socialMedia.post(request.getParameterMap());
-
-            //response.
-            response.getWriter().print(message + " has been posted to " + agent);
+            String recipent = request.getParameter("recipient");
+            if (recipent == null) {
+                Broadcastable socialMedia = SocialMediaFactory.getBroadcastAgentInstance(agent);
+                socialMedia.broadcast(message);
+                response.getWriter().print(message + " has been broadcasted to " + agent);
+            } else {
+                GroupPostable targetedRecipents = SocialMediaFactory.getIndividualAgentInstance(agent);
+                targetedRecipents.sendToGroup(message, recipent);
+            }
             //response.getWriter().write(message + " has been posted to " + agent);
         } catch (Exception ex) {
             //return error page
@@ -66,8 +69,5 @@ public class BroadcastController extends HttpServlet {
             ex.printStackTrace();
             response.getWriter().write(ex.getMessage());
         }
-
-        //action type = contact&agency = POLICE&message =
-
     }
 }

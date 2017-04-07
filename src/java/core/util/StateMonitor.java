@@ -5,8 +5,10 @@
  */
 package core.util;
 
+import Broadcast.Agent.EmailAgent;
 import core.DAO.CrisisDAO;
 import core.controller.ReportController;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimerTask;
 import org.json.JSONArray;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
  */
 public class StateMonitor extends TimerTask {
 
+    private final static String EMAILDST = "limjaichyi@gmail.com";
     private boolean currentCrisisState;
     CrisisDAO crisisDAO;
     Calendar start, end;
@@ -50,17 +53,31 @@ public class StateMonitor extends TimerTask {
 
         currentCrisisState = newCrisisState;
         if (currentCrisisState) {
-            System.out.println("In Crisis State " + System.nanoTime());
-        //    ReportController con = new ReportController();
-        //    JSONArray reportContent = con.listOngoing();
+            try {
+                System.out.println("In Crisis State " + System.nanoTime());
+                ReportController con = new ReportController();
+                JSONArray reportContent = con.listOngoing();
+                ArrayList filePaths = new ArrayList();
 
-//            for (int i = 0; i < reportContent.length(); i++) {
-//                JSONObject crisisJSON = reportContent.getJSONObject(i);
-//                String typeOfCrisis = crisisJSON.getString("crisisType");
-//                String crisisID = crisisJSON.getInt("crisisID")+"";
-//                ReportGenerator.generateReport(crisisID, typeOfCrisis,crisisJSON.toString());
-//            }
+                String message = "";
+                for (int i = 0; i < reportContent.length(); i++) {
 
+                    JSONObject jsonobj = reportContent.getJSONObject(i);
+                    JSONObject crisisJSON = jsonobj.getJSONObject("data");
+
+                    String typeOfCrisis = crisisJSON.getString("crisisType");
+                    String crisisID = crisisJSON.getInt("crisisID") + "";
+                    String filepath = ReportGenerator.generateReport(crisisID, typeOfCrisis, jsonobj.toString());
+
+                    filePaths.add(filepath);
+                    System.out.println("sent to " + EMAILDST);
+                }
+                EmailAgent emailAgent = new EmailAgent();
+                emailAgent.sendWithAttachment(filePaths, "Crisis Management System", EMAILDST);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         } else {
             System.out.println("no ongoing crisis new message " + System.nanoTime());
 

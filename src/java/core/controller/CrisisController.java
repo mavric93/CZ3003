@@ -16,9 +16,7 @@ import core.model.Crisis;
 import core.model.TerrorismCrisis;
 import core.model.TrainBreakDownCrisis;
 import java.util.Calendar;
-import java.util.HashMap;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *

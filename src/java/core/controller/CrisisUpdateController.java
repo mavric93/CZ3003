@@ -8,18 +8,9 @@ package core.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import core.DAO.CrisisUpdateDAO;
-import core.DAO.TerrorismCrisisDAO;
-import core.DAO.TrainBreakDownCrisisDAO;
 import java.util.ArrayList;
-import java.util.List;
-import core.model.Crisis;
-import core.model.CrisisType;
 import core.model.CrisisUpdate;
-import core.model.TerrorismCrisis;
-import core.model.TrainBreakDownCrisis;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
