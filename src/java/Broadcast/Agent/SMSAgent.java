@@ -114,46 +114,47 @@ public class SMSAgent implements Broadcastable, GroupPostable {
         URL url;
         HttpURLConnection urlConnection = null;
         String resp = null;
-        try {
+            try {
+                
+                url = new URL(FCM_URL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Authorization", "key=" + AUTHORIZATION_KEY);
 
-            url = new URL(FCM_URL);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Authorization", "key=" + AUTHORIZATION_KEY);
+                JSONObject inputData = new JSONObject();
 
-            JSONObject inputData = new JSONObject();
-
-            for (int recipent : readContactList(recipentGroup)) {
-                inputData.put("phoneNumber", recipent);
+                inputData.put("phoneNumber", recipentGroup);
                 inputData.put("Msg", message);
-            }
-            JSONObject jo = new JSONObject();
-            jo.put("to", token);
-            jo.put("data", inputData);
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
 
-            DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-            String parameters = jo.toString();
-            wr.write(parameters.getBytes());
+                JSONObject jo = new JSONObject();
+                jo.put("to", token);
+                jo.put("data", inputData);
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
 
-            InputStream in = urlConnection.getInputStream();
-            InputStreamReader isw = new InputStreamReader(in);
-            int data = isw.read();
-            StringBuilder sb = new StringBuilder();
-            while (data != -1) {
-                char current = (char) data;
-                data = isw.read();
-                sb.append(current);
-            }
-            resp = sb.toString();
+                DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
+                String parameters = jo.toString();
+                wr.write(parameters.getBytes());
 
-            System.out.println(resp);
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader isw = new InputStreamReader(in);
+                int data = isw.read();
+                StringBuilder sb = new StringBuilder();
+                while (data != -1) {
+                    char current = (char) data;
+                    data = isw.read();
+                    sb.append(current);
+                }
+                resp = sb.toString();
+
+                System.out.println(resp);
+                 
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            
         }
     }
 }

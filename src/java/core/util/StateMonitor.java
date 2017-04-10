@@ -20,7 +20,7 @@ import org.json.JSONObject;
  */
 public class StateMonitor extends TimerTask {
 
-    private final static String EMAILDST = "limjaichyi@gmail.com";
+    private final static String EMAILDST = "rfang001@e.ntu.edu.sg";
     private boolean currentCrisisState;
     CrisisDAO crisisDAO;
     Calendar start, end;

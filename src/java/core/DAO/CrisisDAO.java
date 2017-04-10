@@ -113,7 +113,7 @@ public class CrisisDAO {
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM ssad.crisis join ssad.crisistype "
-                    + "on ssad.crisis.CType = ssad.crisistype.CType;");
+                    + "on ssad.crisis.CType = ssad.crisistype.CType ;");
             while (rs.next()) {
                 //CrisisID, CType, Description, Address, Lat, Lng, Status, TimeReported, TimeResolved
                 //initialise general fields

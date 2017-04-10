@@ -30,7 +30,8 @@ public class BroadcastController extends HttpServlet {
             String agent = request.getParameter("agent");
             String message = request.getParameter("message");
             String recipent = request.getParameter("recipient");
-            if (recipent == null) {
+            System.out.println(recipent+"@@@@@@@");
+            if (recipent.isEmpty()) {
                 Broadcastable socialMedia = SocialMediaFactory.getBroadcastAgentInstance(agent);
                 socialMedia.broadcast(message);
                 response.getWriter().print(message + " has been broadcasted to " + agent);

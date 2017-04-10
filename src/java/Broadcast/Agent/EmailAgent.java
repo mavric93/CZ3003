@@ -172,6 +172,7 @@ public class EmailAgent implements Broadcastable, GroupPostable {
                 String lineArr[] = line.split(",");
                 String recipentsEmail = lineArr[1].trim();
 
+                System.out.println(line);
                 if (recipientGrp == null) {
                     recipents.add(recipentsEmail);
                 } else if (recipientGrp.equals(lineArr[2].trim())) {
@@ -209,7 +210,6 @@ public class EmailAgent implements Broadcastable, GroupPostable {
                 System.out.println(line);
                 String lineArr[] = line.split(",");
                 String recipentsEmail = lineArr[1].trim();
-
                 recipents.add(recipentsEmail);
 
             }
